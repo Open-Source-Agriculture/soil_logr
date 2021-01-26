@@ -49,6 +49,8 @@ class _AddSamplePageState extends State<AddSamplePage> {
 
   TextureClass selectedTexture = AusClassification().getTextureList()[0];
 
+  bool sendingSample = false;
+
   @override
   Widget build(BuildContext context) {
     Site iSite = Site(
@@ -298,33 +300,36 @@ class _AddSamplePageState extends State<AddSamplePage> {
         icon: Icon(Icons.done),
         elevation: 2,
         onPressed: () {
-          setState(() {
-            Future<void> saveDataPushHome() async {
-              Position position = await _determinePosition();
+          if (sendingSample != true) {
+            sendingSample = true;
+            setState(() {
+              Future<void> saveDataPushHome() async {
+                Position position = await _determinePosition();
 
-              Sample s = Sample(
-                lat: position.latitude,
-                lon: position.longitude,
-                textureClass: selectedTexture.name,
-                depthShallow: depthUpper,
-                depthDeep: depthLower,
-                sand: selectedTexture.sand,
-                silt: selectedTexture.silt,
-                clay: selectedTexture.clay,
-                id: site.increment,
-              );
-              site.addSample(s);
-              site.increment = site.increment + 1;
+                Sample s = Sample(
+                  lat: position.latitude,
+                  lon: position.longitude,
+                  textureClass: selectedTexture.name,
+                  depthShallow: depthUpper,
+                  depthDeep: depthLower,
+                  sand: selectedTexture.sand,
+                  silt: selectedTexture.silt,
+                  clay: selectedTexture.clay,
+                  id: site.increment,
+                );
+                site.addSample(s);
+                site.increment = site.increment + 1;
 
-              await overrideSite(site);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SampleList()),
-              );
-            }
+                await overrideSite(site);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SampleList()),
+                );
+              }
 
-            saveDataPushHome();
-          });
+              saveDataPushHome();
+            });
+          }
         },
       ),
     );
