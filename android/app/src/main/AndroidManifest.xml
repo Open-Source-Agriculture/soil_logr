@@ -9,7 +9,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="soil_mate"
+        android:label="Soil Mate"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
