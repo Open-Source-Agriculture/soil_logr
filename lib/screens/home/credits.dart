@@ -82,7 +82,7 @@ class _CreditsState extends State<Credits> {
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
-                          image: NetworkImage('https://images-ext-1.discordapp.net/external/8237GLHWkjvA13Gii2N8rvtXKmHD9AXy61iH8J1goEs/https/lh3.googleusercontent.com/proxy/gUpjlzvXpX3rjvG4gONdObt1P2QTSSU_-g3OmglGlLLvfvQtaTqq-KbNaXp65kaZzZZ9KDV5oW97HC62uNTSQZtyGfDQpVyY2PEiewUXc5-ZIljG43IvCxv7jvdoYHXujgE1QSuDSCJg4LJPVpTtzLvnRC9m?width=428&height=428'),
+                          image: NetworkImage('https://cdn4.iconfinder.com/data/icons/vector-brand-logos/40/Patreon-512.png'),
                           fit: BoxFit.fill
                       ),
                     ),
