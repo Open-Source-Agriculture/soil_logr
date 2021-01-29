@@ -10,6 +10,7 @@ import 'package:soil_mate/services/site_database.dart';
 
 import '../../models/texture_models.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../widgets/add_sample_widgets.dart';
 
 void main() => runApp(MyApp());
 
@@ -254,44 +255,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
               ],
             ),
             SizedBox(height: 17),
-            Center(
-              child: Container(
-                width: 250,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: selectedTexture.getColor().withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: selectedTexture.getColor(),
-                    width: 2,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      'Sample Summary',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    Text(
-                      'Texture:  ' +
-                          selectedTexture.name +
-                          '\nDepth range:  ' +
-                          depthUpper.toString() +
-                          ' cm to ' +
-                          depthLower.toString() +
-                          ' cm' +
-                          '\nSample ID:  ' +
-                          site.increment.toString(),
-                      style: TextStyle(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            SampleSummary(),
           ],
         ),
       ),
@@ -334,6 +298,46 @@ class _AddSamplePageState extends State<AddSamplePage> {
       ),
     );
   }
+  Center SampleSummary() {
+    return Center(
+      child: Container(
+        width: 250,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: selectedTexture.getColor().withOpacity(0.5),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: selectedTexture.getColor(),
+            width: 2,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'Sample Summary',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              'Texture:  ' +
+                  selectedTexture.name +
+                  '\nDepth range:  ' +
+                  depthUpper.toString() +
+                  ' cm to ' +
+                  depthLower.toString() +
+                  ' cm' +
+                  '\nSample ID:  ' +
+                  site.increment.toString(),
+              style: TextStyle(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 // setState(() {
 // // print(locationDict.toString());
@@ -359,38 +363,4 @@ class _AddSamplePageState extends State<AddSamplePage> {
 // );
 // );
 
-class TextureButton extends StatelessWidget {
-  final TextureClass textureClass;
-  final Function setTextureFunction;
 
-  TextureButton({
-    Key /*?*/ key,
-    @required this.textureClass,
-    @required this.setTextureFunction,
-  }) : super(key: key) {}
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: FlatButton(
-        padding: EdgeInsets.all(0),
-        color: textureClass.getColor().withOpacity(0.5),
-        shape: RoundedRectangleBorder(
-            side: BorderSide(
-                color: textureClass.getColor(),
-                width: 2,
-                style: BorderStyle.solid),
-            borderRadius: BorderRadius.circular(15)),
-        onPressed: () {
-          print(this.textureClass.name);
-          this.setTextureFunction(this.textureClass);
-        },
-        child: Text(
-          textureClass.name,
-          style: TextStyle(),
-        ),
-      ),
-    );
-  }
-}
