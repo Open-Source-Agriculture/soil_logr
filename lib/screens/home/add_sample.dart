@@ -11,6 +11,7 @@ import 'package:soil_mate/services/site_database.dart';
 import '../../models/texture_models.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../widgets/add_sample_widgets.dart';
+import 'loading.dart';
 
 void main() => runApp(MyApp());
 
@@ -253,6 +254,10 @@ class _AddSamplePageState extends State<AddSamplePage> {
         icon: Icon(Icons.done),
         elevation: 2,
         onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Loading()),
+          );
           if (sendingSample != true) {
             sendingSample = true;
             setState(() {
@@ -279,7 +284,6 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   MaterialPageRoute(builder: (context) => SampleList()),
                 );
               }
-
               saveDataPushHome();
             });
           }
