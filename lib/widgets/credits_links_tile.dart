@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:soil_mate/screens/home/credits.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CreditsButton extends StatefulWidget {
+class LinksTile extends StatefulWidget {
 
   @override
-  _CreditsButtonState createState() => _CreditsButtonState();
+  _LinksTileState createState() => _LinksTileState();
 }
 
-class _CreditsButtonState extends State<CreditsButton> {
+class _LinksTileState extends State<LinksTile> {
   int index;
 
   List<LinkList> links = [
