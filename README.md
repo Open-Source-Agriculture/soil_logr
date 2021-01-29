@@ -3,7 +3,7 @@
 
 The soil mate app provides a simple and convenient way to collect soil data at sample locations in the field. The Soil Mate app is targeted across multiple industries, including agriculture, environmental science, geology, and mining. The current version of the app collects soil texture data.
 
-![image](assets/sm_screenshots.png)
+<img src="assets/sm_screenshots.png" alt="drawing" width="400"/>
 
 Read about the app in this [article](https://open-source-agriculture.github.io/2021-01-09-soil-mate-texture-app/)
 
@@ -36,7 +36,7 @@ Run `flutter doctor` again to check dependencies.
 
 ## Join us
 
-Chat to us on Discord:
 
-[![image](/assets/discord_logo.jpg)](https://discord.gg/8x58DuxfGz) <!-- .element height="5%" width="5%" -->
+<img src="/assets/discord_logo.jpg" alt="drawing" width="200"/>
+Chat to us on [Discord](https://discord.gg/8x58DuxfGz) 
 
