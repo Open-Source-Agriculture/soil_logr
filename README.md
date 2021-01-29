@@ -38,5 +38,6 @@ Run `flutter doctor` again to check dependencies.
 
 
 <img src="/assets/discord_logo.jpg" alt="drawing" width="200"/>
+
 Chat to us on [Discord](https://discord.gg/8x58DuxfGz) 
 
