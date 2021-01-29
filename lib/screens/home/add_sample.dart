@@ -151,19 +151,18 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 fontSize: 20,
               ),
             ),
-            Container(
-              height: 180,
-              child: GridView.count(
-                childAspectRatio: (3 / 1),
-                crossAxisCount: 3,
-                children: AusClassification()
-                    .getTextureList()
-                    .map((texture) => TextureButton(
-                          textureClass: texture,
-                          setTextureFunction: setTexture,
-                        ))
-                    .toList(),
-              ),
+            GridView.count(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              childAspectRatio: (3 / 1),
+              crossAxisCount: 3,
+              children: AusClassification()
+                  .getTextureList()
+                  .map((texture) => TextureButton(
+                        textureClass: texture,
+                        setTextureFunction: setTexture,
+                      ))
+                  .toList(),
             ),
             Text(
               'Depth Range',
