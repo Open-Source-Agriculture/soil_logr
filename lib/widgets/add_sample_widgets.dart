@@ -1,2 +1,2 @@
 export 'texture_button.dart';
-export 'sample_summay_container.dart';
+export 'sample_summary_container.dart';
