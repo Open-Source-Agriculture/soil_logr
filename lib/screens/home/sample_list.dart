@@ -7,6 +7,7 @@ import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/models/sample.dart';
 import 'dart:async';
 import 'credits.dart';
+import '../../widgets/sample_list_tile.dart';
 
 
 class SampleList extends StatefulWidget {
@@ -145,34 +146,11 @@ class _SampleListState extends State<SampleList> {
           reverse: true,
             itemCount: reverseBaseSamples.length,
             itemBuilder: (context, index){
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay), width: 3.0),
-                    color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay).withOpacity(0.7),
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      print("Nothing");
-                    },
-                    // title: Text(locations[index].location),
-                    title: Text('ID: '+ reverseBaseSamples[index].id.toString()
-                        + '    Texture: ' + reverseBaseSamples[index].textureClass
-                        + '\n' + reverseBaseSamples[index].lat.toString() + ', '
-                        + reverseBaseSamples[index].lon.toString()),
-                    subtitle: Text('Sand: ' + reverseBaseSamples[index].sand.toString()
-                        + ', Silt: ' + reverseBaseSamples[index].silt.toString()
-                        + ', Clay: ' +  reverseBaseSamples[index].clay.toString()
-                        + '\nDepth Upper: ' +  reverseBaseSamples[index].depthShallow.toString()
-                        + ', Depth Lower: '  + reverseBaseSamples[index].depthDeep.toString()
-                    ),
-                    /*leading: Text('1') CircleAvatar(
-                      backgroundImage: AssetImage('assets/${locations[index].flag}'),
-                    ),*/
-                  ),
-                ),
+              return SampleListTile(
+                baseSamples: baseSamples,
+                baseSite: baseSite,
+                reverseBaseSamples: reverseBaseSamples,
+                index: index,
               );
             }
         ),

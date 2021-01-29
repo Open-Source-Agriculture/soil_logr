@@ -10,6 +10,7 @@ import 'package:soil_mate/services/site_database.dart';
 
 import '../../models/texture_models.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../widgets/add_sample_widgets.dart';
 
 void main() => runApp(MyApp());
 
@@ -139,17 +140,16 @@ class _AddSamplePageState extends State<AddSamplePage> {
         elevation: 2.0,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
-        child: ListView(
+        padding: const EdgeInsets.all(17.0),
+        child: Wrap(
+          runSpacing: 17,
           children: <Widget>[
-            SizedBox(height: 17),
             Text(
               'Soil Texture',
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 17),
             Container(
               height: 180,
               child: GridView.count(
@@ -164,14 +164,12 @@ class _AddSamplePageState extends State<AddSamplePage> {
                     .toList(),
               ),
             ),
-            SizedBox(height: 17),
             Text(
               'Depth Range',
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 17),
             Row(
               children: [
                 Text('Upper depth: '),
@@ -180,9 +178,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     maxLength: 3,
                     decoration: InputDecoration(counterText: ''),
-                    // initialValue: att.toString(),
                     controller: txt2,
-                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
@@ -195,7 +191,6 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 ),
               ],
             ),
-            SizedBox(height: 17),
             Row(
               children: [
                 Text('Lower depth: '),
@@ -204,10 +199,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     maxLength: 3,
                     decoration: InputDecoration(counterText: ''),
-
-                    // initialValue: att.toString(),
                     controller: txt3,
-                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
@@ -220,14 +212,12 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 ),
               ],
             ),
-            SizedBox(height: 17),
             Text(
               'Sample ID',
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 17),
             Row(
               children: [
                 Text('ID: '),
@@ -236,12 +226,8 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     maxLength: 5,
                     decoration: InputDecoration(counterText: ''),
-
-                    // initialValue: att.toString(),
                     controller: txt4,
-                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     autovalidateMode: AutovalidateMode.always,
-
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
                       setState(() {
@@ -253,45 +239,12 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 ),
               ],
             ),
-            SizedBox(height: 17),
-            Center(
-              child: Container(
-                width: 250,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: selectedTexture.getColor().withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: selectedTexture.getColor(),
-                    width: 2,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      'Sample Summary',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    Text(
-                      'Texture:  ' +
-                          selectedTexture.name +
-                          '\nDepth range:  ' +
-                          depthUpper.toString() +
-                          ' cm to ' +
-                          depthLower.toString() +
-                          ' cm' +
-                          '\nSample ID:  ' +
-                          site.increment.toString(),
-                      style: TextStyle(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            Center(child: SampleSummary(
+              selectedTexture: selectedTexture,
+              depthUpper: depthUpper,
+              depthLower: depthLower,
+              sampleID: site.increment,
+            )),
           ],
         ),
       ),
@@ -359,38 +312,4 @@ class _AddSamplePageState extends State<AddSamplePage> {
 // );
 // );
 
-class TextureButton extends StatelessWidget {
-  final TextureClass textureClass;
-  final Function setTextureFunction;
 
-  TextureButton({
-    Key /*?*/ key,
-    @required this.textureClass,
-    @required this.setTextureFunction,
-  }) : super(key: key) {}
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: FlatButton(
-        padding: EdgeInsets.all(0),
-        color: textureClass.getColor().withOpacity(0.5),
-        shape: RoundedRectangleBorder(
-            side: BorderSide(
-                color: textureClass.getColor(),
-                width: 2,
-                style: BorderStyle.solid),
-            borderRadius: BorderRadius.circular(15)),
-        onPressed: () {
-          print(this.textureClass.name);
-          this.setTextureFunction(this.textureClass);
-        },
-        child: Text(
-          textureClass.name,
-          style: TextStyle(),
-        ),
-      ),
-    );
-  }
-}
