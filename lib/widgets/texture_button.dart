@@ -29,8 +29,7 @@ class TextureButton extends StatelessWidget {
           this.setTextureFunction(this.textureClass);
         },
         child: Text(
-          textureClass.name,
-          style: TextStyle(),
+          textureClass.name
         ),
       ),
     );

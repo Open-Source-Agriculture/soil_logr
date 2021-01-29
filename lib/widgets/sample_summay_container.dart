@@ -4,11 +4,11 @@ import 'package:soil_mate/models/texture_models.dart';
 
 // NOTE: currently this doesn't work properly so I am commenting it out for now.
 
-TextureClass selectedTexture = AusClassification().getTextureList()[0];
-int depthUpper = 0;
-int depthLower = 10;
-Site site = Site(
-    name: 'placeHolder', classification: "aus", rawSamples: [], increment: 0);
+// TextureClass selectedTexture = AusClassification().getTextureList()[0];
+// int depthUpper = 0;
+// int depthLower = 10;
+// Site site = Site(
+//     name: 'placeHolder', classification: "aus", rawSamples: [], increment: 0);
 
 // Center SampleSummary() {
 //   return Center(
