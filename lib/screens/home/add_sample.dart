@@ -178,9 +178,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     maxLength: 3,
                     decoration: InputDecoration(counterText: ''),
-                    // initialValue: att.toString(),
                     controller: txt2,
-                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
@@ -201,10 +199,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     maxLength: 3,
                     decoration: InputDecoration(counterText: ''),
-
-                    // initialValue: att.toString(),
                     controller: txt3,
-                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
@@ -231,12 +226,8 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     maxLength: 5,
                     decoration: InputDecoration(counterText: ''),
-
-                    // initialValue: att.toString(),
                     controller: txt4,
-                    // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     autovalidateMode: AutovalidateMode.always,
-
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
                       setState(() {
