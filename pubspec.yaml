@@ -32,6 +32,7 @@ dependencies:
   csv: ^4.1.0
   url_launcher: ^5.7.10
   geolocator: ^6.1.14
+  flutter_spinkit: ^4.1.2+1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.8.1
