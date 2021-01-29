@@ -66,6 +66,10 @@ flutter:
   assets:
     - assets/car_icon.png
     - assets/credits_selfie.jpg
+    - assets/discord_logo.jpg
+    - assets/patreon_logo.png
+    - assets/github_logo.png
+    - assets/website_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

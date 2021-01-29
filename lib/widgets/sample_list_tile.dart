@@ -9,9 +9,6 @@ Color getColor(int sand, int silt, int clay) {
 }
 
 class SampleListTile extends StatelessWidget {
-  // baseSite = baseSiteList[0];
-  // baseSamples = baseSite.samples;
-  // reverseBaseSamples = baseSamples.reversed.toList();
   final baseSite;
   final baseSamples;
   final reverseBaseSamples;
