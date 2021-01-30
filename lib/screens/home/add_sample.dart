@@ -12,6 +12,7 @@ import '../../models/texture_models.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../widgets/add_sample_widgets.dart';
 import 'loading.dart';
+import '../../services/sizes_helper.dart';
 
 void main() => runApp(MyApp());
 
@@ -141,15 +142,13 @@ class _AddSamplePageState extends State<AddSamplePage> {
         elevation: 2.0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(17.0),
+        padding: const EdgeInsets.all(17),
         child: Wrap(
           runSpacing: 17,
           children: <Widget>[
             Text(
               'Soil Texture',
-              style: TextStyle(
-                fontSize: 20,
-              ),
+              style: headingTextStyle(context),
             ),
             GridView.count(
               physics: NeverScrollableScrollPhysics(),
@@ -166,16 +165,17 @@ class _AddSamplePageState extends State<AddSamplePage> {
             ),
             Text(
               'Depth Range',
-              style: TextStyle(
-                fontSize: 20,
-              ),
+              style: headingTextStyle(context),
             ),
             Row(
               children: [
-                Text('Upper depth: '),
+                Text('Upper depth: ',
+                  style: bodyTextStyle(context),
+                ),
                 ConstrainedBox(
                   constraints: BoxConstraints.tight(Size(55, 25)),
                   child: TextFormField(
+                    style: bodyTextStyle(context),
                     maxLength: 3,
                     decoration: InputDecoration(counterText: ''),
                     controller: txt2,
@@ -193,10 +193,13 @@ class _AddSamplePageState extends State<AddSamplePage> {
             ),
             Row(
               children: [
-                Text('Lower depth: '),
+                Text('Lower depth: ',
+                  style: bodyTextStyle(context),
+                ),
                 ConstrainedBox(
                   constraints: BoxConstraints.tight(Size(55, 25)),
                   child: TextFormField(
+                    style: bodyTextStyle(context),
                     maxLength: 3,
                     decoration: InputDecoration(counterText: ''),
                     controller: txt3,
@@ -214,16 +217,17 @@ class _AddSamplePageState extends State<AddSamplePage> {
             ),
             Text(
               'Sample ID',
-              style: TextStyle(
-                fontSize: 20,
-              ),
+              style: headingTextStyle(context),
             ),
             Row(
               children: [
-                Text('ID: '),
+                Text('ID: ',
+                style: bodyTextStyle(context),
+                ),
                 ConstrainedBox(
                   constraints: BoxConstraints.tight(Size(100, 25)),
                   child: TextFormField(
+                    style: bodyTextStyle(context),
                     maxLength: 5,
                     decoration: InputDecoration(counterText: ''),
                     controller: txt4,
@@ -249,8 +253,12 @@ class _AddSamplePageState extends State<AddSamplePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Submit'),
-        icon: Icon(Icons.done),
+        label: Text('Submit',
+          style: headingTextStyle(context),
+        ),
+        icon: Icon(Icons.done,
+          size: displayWidth(context) * 0.04,
+        ),
         elevation: 2,
         onPressed: () {
           Navigator.push(

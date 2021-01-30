@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/models/texture_models.dart';
+import '../services/sizes_helper.dart';
 
 class SampleSummary extends StatelessWidget {
   final TextureClass selectedTexture;
@@ -22,8 +23,7 @@ class SampleSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 250,
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(displayWidth(context) * 0.03),
       decoration: BoxDecoration(
         color: selectedTexture.getColor().withOpacity(0.5),
         borderRadius: BorderRadius.circular(15),
@@ -38,9 +38,7 @@ class SampleSummary extends StatelessWidget {
         children: [
           Text(
             'Sample Summary',
-            style: TextStyle(
-              fontSize: 20,
-            ),
+            style: headingTextStyle(context),
           ),
           Text(
             'Texture:  ' +
@@ -52,7 +50,7 @@ class SampleSummary extends StatelessWidget {
                 ' cm' +
                 '\nSample ID:  ' +
                 sampleID.toString(),
-            style: TextStyle(),
+            style: bodyTextStyle(context),
           ),
         ],
       ),
