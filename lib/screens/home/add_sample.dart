@@ -177,7 +177,11 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     style: bodyTextStyle(context),
                     maxLength: 3,
-                    decoration: InputDecoration(counterText: ''),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      filled: true,
+                    ),
                     controller: txt2,
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
@@ -201,7 +205,11 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     style: bodyTextStyle(context),
                     maxLength: 3,
-                    decoration: InputDecoration(counterText: ''),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      filled: true,
+                    ),
                     controller: txt3,
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
@@ -229,7 +237,11 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   child: TextFormField(
                     style: bodyTextStyle(context),
                     maxLength: 5,
-                    decoration: InputDecoration(counterText: ''),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      filled: true,
+                    ),
                     controller: txt4,
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.number,
