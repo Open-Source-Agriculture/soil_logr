@@ -35,25 +35,25 @@ class _CreditsState extends State<Credits> {
           children: [
             Text(
                 'Thank you for using Soil Mate!',
-              style: buttonTextStyle(),
+              style: headingTextStyle(context),
             ),
             Text('To keep the development of the app free and open-source, please consider supporting us.',
-            style: bodyTextStyle(),
+            style: bodyTextStyle(context),
             ),
             LinksTile(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 250,
+                  width: (displayWidth(context)*0.5),
                   child: Text(
                     'This app was developed by Open Source Agriculture. We are siblings who are passionate about agriculture and open-source.',
-                    style: bodyTextStyle(),
+                    style: bodyTextStyle(context),
                   ),
                 ),
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: (displayWidth(context)*0.3),
+                  height: (displayWidth(context)*0.3),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.black,
@@ -74,20 +74,4 @@ class _CreditsState extends State<Credits> {
   }
 }
 
-
-buttonTextStyle() {
-  return TextStyle(
-  fontFamily: 'Dosis',
-  fontWeight: FontWeight.w900,
-  fontSize: 20,
-  );
-}
-
-bodyTextStyle() {
-  return TextStyle(
-    fontFamily: 'Dosis',
-    fontWeight: FontWeight.w900,
-    fontSize: 16,
-  );
-}
 
