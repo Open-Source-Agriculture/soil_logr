@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soil_mate/models/texture_models.dart';
+import '../services/sizes_helper.dart';
 
 class TextureButton extends StatelessWidget {
   final TextureClass textureClass;
@@ -29,7 +30,8 @@ class TextureButton extends StatelessWidget {
           this.setTextureFunction(this.textureClass);
         },
         child: Text(
-          textureClass.name
+          textureClass.name,
+          style: textureButtonTextStyle(context),
         ),
       ),
     );
