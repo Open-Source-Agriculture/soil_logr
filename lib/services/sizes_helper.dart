@@ -19,19 +19,34 @@ double displayWidth(BuildContext context) {
 
 bodyTextStyle(context) {
   return TextStyle(
-    fontFamily: 'Dosis',
-    fontWeight: FontWeight.w900,
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w300,
     fontSize: displayWidth(context) * 0.04,
   );
 }
 
 headingTextStyle(context) {
   return TextStyle(
-    fontFamily: 'Dosis',
-    fontWeight: FontWeight.w900,
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w400,
   fontSize: displayWidth(context) * 0.06,
   );
 }
 
+creditsButtonTextStyle(context) {
+  return TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w300,
+    fontSize: displayWidth(context) * 0.06,
+  );
+}
+
+textureButtonTextStyle(context) {
+  return TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w300,
+    fontSize: displayWidth(context) * 0.035,
+  );
+}
 
 

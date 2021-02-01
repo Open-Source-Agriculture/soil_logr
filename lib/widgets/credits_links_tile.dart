@@ -43,7 +43,7 @@ class _LinksTileState extends State<LinksTile> {
                   }
                 },
                 title: Text(links[index].label,
-                  style: headingTextStyle(context),
+                  style: creditsButtonTextStyle(context),
                 ),
                 leading: CircleAvatar(
                   backgroundImage: AssetImage('assets/${links[index].image}'),

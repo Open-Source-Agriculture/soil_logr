@@ -31,9 +31,7 @@ class TextureButton extends StatelessWidget {
         },
         child: Text(
           textureClass.name,
-          style: TextStyle(
-            fontSize: displayWidth(context) * 0.035,
-          ),
+          style: textureButtonTextStyle(context),
         ),
       ),
     );
