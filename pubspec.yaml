@@ -72,6 +72,7 @@ flutter:
     - assets/patreon_logo.png
     - assets/github_logo.png
     - assets/website_logo.png
+    - assets/farmOS/taxonomy_term.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
