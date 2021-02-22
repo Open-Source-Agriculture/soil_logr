@@ -1,0 +1,40 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_mailer (0.0.1):
+    - Flutter
+  - geolocator (6.2.0):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_mailer (from `.symlinks/plugins/flutter_mailer/ios`)
+  - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_mailer:
+    :path: ".symlinks/plugins/flutter_mailer/ios"
+  geolocator:
+    :path: ".symlinks/plugins/geolocator/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_mailer: 2ef5a67087bc8c6c4cefd04a178bf1ae2c94cd83
+  geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+
+PODFILE CHECKSUM: 51752d9eda8cc02f44d0c79c55ddc10f09d167a6
+
+COCOAPODS: 1.10.1
