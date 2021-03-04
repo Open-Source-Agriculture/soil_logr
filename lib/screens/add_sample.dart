@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
 }
 
 class AddSamplePage extends StatefulWidget {
-  AddSamplePage({Key key, this.title = 'Add Sample'}) : super(key: key);
+  final Future<void> loadData;
+  dynamic sheetContext;
+  AddSamplePage({Key key, this.loadData, this.sheetContext, this.title = 'Add Sample'}) : super(key: key);
 
   final String title;
 
@@ -53,6 +55,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
   TextureClass selectedTexture = AusClassification().getTextureList()[0];
 
   bool sendingSample = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -273,10 +276,10 @@ class _AddSamplePageState extends State<AddSamplePage> {
         ),
         elevation: 2,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Loading()),
-          );
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(builder: (context) => Loading()),
+//          );
           if (sendingSample != true) {
             sendingSample = true;
             setState(() {
@@ -298,9 +301,12 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 site.increment = site.increment + 1;
 
                 await overrideSite(site);
-                Navigator.pop(context);
+                await widget.loadData;
+                await Navigator.pop(widget.sheetContext);
+
               }
               saveDataPushHome();
+
             });
           }
         },

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soil_mate/screens/add_sample.dart';
@@ -26,34 +28,16 @@ class _SampleListState extends State<SampleList> {
   List<Sample> reverseBaseSamples = [];
 
 
-
-
   @override
   Widget build(BuildContext context) {
 
-    void _showAddSamplePanel() {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          child: AddSamplePage(),
-        );
-      });
-    }
-
     //Add samples to sites
     Site iSite = Site(
-        name: baseSiteKey,
-        classification: "aus",
-        rawSamples: [],
-        increment: 0,
+      name: baseSiteKey,
+      classification: "aus",
+      rawSamples: [],
+      increment: 0,
     );
-
-    Color getColor(int sand, int silt, int clay) {
-    int R = (225*sand + 225*clay)~/100;
-    int G = (225*sand + 225*silt)~/100;
-    int B = (225*silt + 225*clay)~/100;
-    return Color.fromRGBO(R, G, B, 1);
-  }
-
 
     Future<void> loadData() async {
       bool alreadySite = await saveSite(iSite);
@@ -74,6 +58,26 @@ class _SampleListState extends State<SampleList> {
       print(baseSamples);
       setState(() {});
     }
+
+    void _showAddSamplePanel() {
+      showModalBottomSheet(context: context, builder: (context) {
+        return Container(
+          child: AddSamplePage(loadData: loadData(),sheetContext: context,),
+        );
+      });
+    }
+
+
+
+    Color getColor(int sand, int silt, int clay) {
+    int R = (225*sand + 225*clay)~/100;
+    int G = (225*sand + 225*silt)~/100;
+    int B = (225*silt + 225*clay)~/100;
+    return Color.fromRGBO(R, G, B, 1);
+  }
+
+
+
     if (!dataLoaded){
       print("trying to load");
       loadData();
