@@ -94,14 +94,14 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                           BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.TextureSurveyClickedEvent);
                         },
                       ),
-                      // ListTile(
-                      //   title: Text('Ground Cover Survey'),
-                      //   leading: Icon(Icons.home),
-                      //   onTap: () {
-                      //     onIconPressed();
-                      //     BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.GroundCoverSurveyClickedEvent);
-                      //   },
-                      // ),
+                      ListTile(
+                        title: Text('Ground Cover Survey'),
+                        leading: Icon(Icons.home),
+                        onTap: () {
+                          onIconPressed();
+                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.GroundCoverSurveyClickedEvent);
+                        },
+                      ),
                       Divider(
                         height: 64,
                         thickness: 0.5,
