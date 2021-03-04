@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:soil_mate/models/texture_models.dart';
-import 'package:soil_mate/screens/home/sample_list.dart';
+import 'package:soil_mate/screens/sample_list.dart';
 import 'package:soil_mate/models/sample.dart';
 import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/services/site_database.dart';
 
-import '../../models/texture_models.dart';
+import '../models/texture_models.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../widgets/add_sample_widgets.dart';
+import '../widgets/add_sample_widgets.dart';
 import 'loading.dart';
-import '../../services/sizes_helper.dart';
+import '../services/sizes_and_themes.dart';
 
 void main() => runApp(MyApp());
 
@@ -298,10 +298,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 site.increment = site.increment + 1;
 
                 await overrideSite(site);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SampleList()),
-                );
+                Navigator.pop(context);
               }
               saveDataPushHome();
             });

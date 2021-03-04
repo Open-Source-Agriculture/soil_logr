@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:soil_mate/screens/home/add_sample.dart';
+import 'package:soil_mate/screens/add_sample.dart';
+import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/send_email.dart';
 import 'package:soil_mate/services/site_database.dart';
 import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/models/sample.dart';
 import 'dart:async';
 import 'credits.dart';
-import '../../widgets/sample_list_tile.dart';
+import '../widgets/sample_list_tile.dart';
 
 
-class SampleList extends StatefulWidget {
+class SampleList extends StatefulWidget with NavigationStates{
 
   @override
   _SampleListState createState() => _SampleListState();
@@ -29,6 +30,15 @@ class _SampleListState extends State<SampleList> {
 
   @override
   Widget build(BuildContext context) {
+
+    void _showAddSamplePanel() {
+      showModalBottomSheet(context: context, builder: (context) {
+        return Container(
+          child: AddSamplePage(),
+        );
+      });
+    }
+
     //Add samples to sites
     Site iSite = Site(
         name: baseSiteKey,
@@ -158,12 +168,7 @@ class _SampleListState extends State<SampleList> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FlatButton.icon(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddSamplePage()),
-                  );
-                },
+              onPressed: () => _showAddSamplePanel(),
                 icon: Icon(Icons.add),
                 label: Text('Add'),
             ),

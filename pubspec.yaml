@@ -34,6 +34,8 @@ dependencies:
   url_launcher: ^5.7.10
   geolocator: ^6.1.14
   flutter_spinkit: ^4.1.2+1
+  flutter_bloc: ^6.1.2
+  rxdart: ^0.25.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.8.0
