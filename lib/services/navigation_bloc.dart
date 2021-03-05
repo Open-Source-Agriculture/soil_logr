@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:soil_mate/ground_cover/GC_screens/GC_form.dart';
 import 'package:soil_mate/screens/home.dart';
 import 'package:soil_mate/screens/sample_list.dart';
-import 'package:soil_mate/ground_cover/GC_screens/GC_sample_list.dart';
+//import 'package:soil_mate/ground_cover/GC_screens/GC_sample_list.dart';
 
 enum NavigationEvents {
   HomePageClickedEvent,
@@ -27,7 +28,7 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
         yield SampleList();
         break;
       case NavigationEvents.GroundCoverSurveyClickedEvent:
-        yield GroundCoverSampleList();
+        yield GroundCoverForm();
         break;
     }
   }
