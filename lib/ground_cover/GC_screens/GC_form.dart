@@ -22,12 +22,41 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
 
 
   List listItem = [
-    "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"
+    "Grasses perennial ", "Grasses annual", "Forbs perennial", "Forbs annual", "Legumes ", "Native pasture "
   ];
+
+  int att = 0;
 
   @override
   Widget build(BuildContext context) {
     final halfMediaWidth = MediaQuery.of(context).size.width / 2.0;
+
+    var txt2 = TextEditingController();
+    txt2.text = att.toString();
+    txt2.selection = TextSelection.fromPosition(TextPosition(offset: att.toString().length));
+
+    void incrementAttendance() {
+      setState(() {
+        att++;
+        print(att);
+        txt2.text = att.toString();
+      });
+
+
+    }
+
+    void deIncrementAttendance() {
+      setState(() {
+        if (att > 0){
+          att+=-1;
+        }else{
+          att = 0;
+        }
+        txt2.text = att.toString();
+        print(att);
+      });
+
+    }
 
 
     return Form(
@@ -70,6 +99,8 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
               min: 0,
               max: 100,
             ),
+
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Container(
@@ -93,7 +124,36 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
                   items: listItem.map((valueItem) {
                     return DropdownMenuItem(
                       value: valueItem,
-                      child: Text(valueItem),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(valueItem),
+                          Row(
+                            children: [
+                              RawMaterialButton(
+                                //elevation: 2.0,
+                                // fillColor: Color(0xff2C9C0A),
+                                // shape: CircleBorder(),
+                                child: Icon(Icons.remove),
+                                onPressed: (){
+                                  deIncrementAttendance();
+                                },
+                              ),
+                              Text('${att}'),
+                              RawMaterialButton(
+                                //elevation: 2.0,
+                                // fillColor: Color(0xff2C9C0A),
+                                // shape: CircleBorder(),
+                                child: Icon(Icons.add),
+                                onPressed: (){
+                                  incrementAttendance();
+                                },
+                              ),
+                            ],
+                          ),
+
+                        ],
+                      ),
                     );
                   }).toList(),
                 ),
