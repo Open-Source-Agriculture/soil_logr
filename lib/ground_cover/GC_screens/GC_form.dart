@@ -20,15 +20,22 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
   final _formKey = GlobalKey<FormState>();
   GroundCoverModel model = GroundCoverModel();
 
+
+  List listItem = [
+    "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"
+  ];
+
   @override
   Widget build(BuildContext context) {
     final halfMediaWidth = MediaQuery.of(context).size.width / 2.0;
+
 
     return Form(
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            SizedBox(height: displayHeight(context)*0.03,),
             Text('Percentage of Ground Cover'),
             Slider(
               value: model.coverPercentage == null ? 0.0 : model.coverPercentage,
@@ -63,19 +70,53 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
               min: 0,
               max: 100,
             ),
-            Text("List of species (separate by ',')"),
-            MyTextFormField(
-              hintText: 'Species',
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Enter plant species observed';
-                }
-                return null;
-              },
-              onSaved: (String value) {
-                model.speciesList = value;
-              },
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(15)
+                ),
+                child: DropdownButton(
+                  hint: Text('Select Species: '),
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: 30,
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  value: model.speciesList,
+                  onChanged: (newValue) {
+                    setState(() {
+                      model.speciesList = newValue;
+                    });
+                  },
+                  items: listItem.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
+            // RaisedButton(onPressed: () {
+            //   showModalBottomSheet(
+            //     context: context,
+            //     builder: ((builder) => bottomSheet(context)),
+            //   );
+            // }),
+            // MyTextFormField(
+            //   hintText: 'Species',
+            //   validator: (String value) {
+            //     if (value.isEmpty) {
+            //       return 'Enter plant species observed';
+            //     }
+            //     return null;
+            //   },
+            //   onSaved: (String value) {
+            //     model.speciesList = value;
+            //   },
+            // ),
             imageProfile(context),
             RaisedButton(
               color: Colors.blueAccent,
@@ -127,42 +168,13 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
 
   // Widget bottomSheet(BuildContext context) {
   //   return Container(
-  //     height: 100,
+  //     height: displayHeight(context)*0.4,
   //     width: displayWidth(context),
   //     margin: EdgeInsets.symmetric(
   //       horizontal: 20,
   //       vertical: 20,
   //     ),
-  //     child: Column(
-  //       children: <Widget>[
-  //         Text(
-  //           'Choose Photo',
-  //           style: TextStyle(
-  //             fontSize: 20,
-  //           ),
-  //         ),
-  //         SizedBox(height: 20,),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //           FlatButton.icon(
-  //               onPressed: (){
-  //                 takePhoto(ImageSource.camera);
-  //               },
-  //               icon: Icon(Icons.camera),
-  //               label: Text('Camera')
-  //           ),
-  //           // FlatButton.icon(
-  //           //     onPressed: (){
-  //           //       takePhoto(ImageSource.gallery);
-  //           //     },
-  //           //     icon: Icon(Icons.image),
-  //           //     label: Text('Gallery')
-  //           // ),
-  //         ],
-  //         ),
-  //       ],
-  //     ),
+  //     child:
   //   );
   // }
 
