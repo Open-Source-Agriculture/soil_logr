@@ -10,16 +10,9 @@ class Site{
   List<Sample> samples = [];
   var defaultList;
   int increment;
-//  Incrementer incrementer = Incrementer();
-
-
 
   Site({this.name, this.classification, this.rawSamples, this.increment}){
-//    this.name = name;
-//    this.classification = classification;// e[TEXTURE_CLACIFICATION];
-//    this.rawSamples = rawSamples;// e[SAMPLES].toList();
-//    print("rawSamples");
-//    print(this.rawSamples);
+
     this.rawSamples = this.rawSamples.map((rawSample) => rawSample).toList();
     List<Sample> mysamples = this.rawSamples.map((e) => Sample(
       lat: e[LAT],
