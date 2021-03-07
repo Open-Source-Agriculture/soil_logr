@@ -14,7 +14,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
   StreamController<bool> isSidebarOpenedStreamController;
   Stream<bool> isSidebarOpenedStream;
   StreamSink<bool> isSidebarOpenedSink;
-  final _animationDuration = const Duration(milliseconds: 500);
+  final _animationDuration = const Duration(milliseconds: 200);
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: const Color(0xFF262AAA),
+                  color:  Colors.white,
                   child: Column(
                     children: <Widget>[
                       SizedBox(
@@ -82,7 +82,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                       Divider(
                         height: 64,
                         thickness: 0.5,
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.grey.withOpacity(0.3),
                         indent: 32,
                         endIndent: 32,
                       ),
@@ -105,7 +105,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                       Divider(
                         height: 64,
                         thickness: 0.5,
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.grey.withOpacity(0.3),
                         indent: 32,
                         endIndent: 32,
                       ),
@@ -114,7 +114,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                 ),
               ),
               Align(
-                alignment: Alignment(0, -0.9),
+                alignment: Alignment(0, -0.90),
                 child: GestureDetector(
                   onTap: () {
                     onIconPressed();
@@ -123,13 +123,13 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                     clipper: CustomMenuClipper(),
                     child: Container(
                       width: 35,
-                      height: 110,
-                      color: Color(0xFF262AAA),
+                      height: 50,
+                      color: Colors.white,
                       alignment: Alignment.centerLeft,
                       child: AnimatedIcon(
                         progress: _animationController.view,
                         icon: AnimatedIcons.menu_close,
-                        color: Color(0xFF1BB5FD),
+                        color: Colors.grey,
                         size: 25,
                       ),
                     ),
