@@ -40,6 +40,8 @@ class _SampleListState extends State<SampleList> {
       increment: 0,
     );
 
+    baseSite = iSite;
+
     Future<void> loadData() async {
       bool alreadySite = await saveSite(iSite);
       if (alreadySite) {
