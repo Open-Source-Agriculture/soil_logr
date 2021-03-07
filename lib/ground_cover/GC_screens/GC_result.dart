@@ -30,7 +30,12 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
               backgroundImage: widget.model.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(widget.model.imageFile.path)),
             ),
               title: Text('Species: ' + widget.model.totalSpeciesCount.toString()),
-            subtitle: Text( 'Cover %: ${widget.model.coverPercentage} ' + 'Cover Heihgt: ${widget.model.coverHeight}' + 'Weeds Ratio: ${widget.model.weedsRatio}'),
+            subtitle: Text(
+                'Cover %: ${widget.model.coverPercentage} ' +
+                    'Cover Heihgt: ${widget.model.coverHeight}' +
+                    'Weeds Ratio: ${widget.model.weedsRatio}' +
+                '\n Lat: ${widget.model.lat} Lon: ${widget.model.lon}'
+            ),
           ),
         );
         }
