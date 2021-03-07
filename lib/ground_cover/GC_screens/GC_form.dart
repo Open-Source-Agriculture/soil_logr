@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:validators/validators.dart' as validator;
 import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
@@ -41,67 +42,72 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
     final halfMediaWidth = MediaQuery.of(context).size.width / 2.0;
 
 
-
+    sliderColor(value) {
+      if (value < 50) {
+        return Colors.green[200];
+      } else {
+        return Colors.green[500];
+      }
+    }
 
 
     return Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            SizedBox(height: displayHeight(context)*0.03,),
-            Text('Percentage of Ground Cover'),
-            Slider(
-              value: coverPercentage == null ? 0.0 : coverPercentage,
-              onChanged: (newCoverPercentage) {
-                setState(() => coverPercentage = newCoverPercentage);
-              },
-              divisions: 10,
-              label: '$coverPercentage %',
-              min: 0,
-              max: 100,
-            ),
-            Text('Height of Cover'),
-            Slider(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20,30,10,10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: displayHeight(context)*0.03,),
+              Text('Percentage of Ground Cover'),
+              Slider.adaptive(
+                value: coverPercentage == null ? 0.0 : coverPercentage,
+                onChanged: (newCoverPercentage) {
+                  setState(() => coverPercentage = newCoverPercentage);
+                },
+                divisions: 10,
+                label: '$coverPercentage %',
+                min: 0,
+                max: 100,
+                activeColor: sliderColor(coverPercentage),
+                inactiveColor: Colors.brown[100],
+              ),
+              Text('Height of Cover'),
+              Slider(
 
-              value: coverHeight== null ? 0.0 : coverHeight,
-              onChanged: (newCoverHeight) {
-                setState(() => coverHeight = newCoverHeight);
-              },
-              divisions: 10,
-              label: '$coverHeight cm',
-              min: 0,
-              max: 100,
-            ),
-            Text('Percentage of Weeds from total vegetation'),
-            Slider(
-              value: weedsRatio== null ? 0.0 : weedsRatio,
-              onChanged: (newWeeds) {
-                setState(() => weedsRatio = newWeeds);
-              },
-              divisions: 10,
-              label: '$weedsRatio %',
-              min: 0,
-              max: 100,
-            ),
+                value: coverHeight== null ? 0.0 : coverHeight,
+                onChanged: (newCoverHeight) {
+                  setState(() => coverHeight = newCoverHeight);
+                },
+                divisions: 10,
+                label: '$coverHeight cm',
+                min: 0,
+                max: 100,
+              ),
+              Text('Percentage of Weeds from total vegetation'),
+              Slider(
+                value: weedsRatio== null ? 0.0 : weedsRatio,
+                onChanged: (newWeeds) {
+                  setState(() => weedsRatio = newWeeds);
+                },
+                divisions: 10,
+                label: '$weedsRatio %',
+                min: 0,
+                max: 100,
+              ),
 
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: mySpecies.length,
-              itemBuilder: (context, index) {
-                String speciesName = mySpecies.keys.toList()[index];
-                int speciesCount = mySpecies[speciesName];
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: Row(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: mySpecies.length,
+                itemBuilder: (context, index) {
+                  String speciesName = mySpecies.keys.toList()[index];
+                  int speciesCount = mySpecies[speciesName];
+                  return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(speciesName),
@@ -137,66 +143,61 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
                       ),
 
                     ],
-                  ),
-                );
-              }),
-            ),
-            imageProfile(context),
-            RaisedButton(
-              color: Colors.blueAccent,
-              onPressed: () {
-
-                model.coverPercentage = coverPercentage;
-                model.coverHeight = coverHeight;
-                model.weedsRatio = weedsRatio;
-                model.lat = 32.0;
-                model.lon = 32.0;
-
-
-                model.speciesMap = mySpecies;
-                model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GroundCoverResult(model: this.model)));
-                }
-              },
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                  );
+                }),
               ),
-            )
-          ],
+              imageProfile(context),
+              RaisedButton(
+                color: Colors.blueAccent,
+                onPressed: () {
+
+                  model.coverPercentage = coverPercentage;
+                  model.coverHeight = coverHeight;
+                  model.weedsRatio = weedsRatio;
+                  model.lat = 32.0;
+                  model.lon = 32.0;
+
+
+                  model.speciesMap = mySpecies;
+                  model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
+                  if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save();
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroundCoverResult(model: this.model)));
+                  }
+                },
+                child: Text(
+                  'Submit',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
   }
 
   Widget imageProfile(BuildContext context) {
-    return Center(
-      child: Stack(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 80,
-            backgroundImage: model.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(model.imageFile.path)),
-          ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: IconButton(
-                onPressed: (){
-                  takePhoto(ImageSource.camera);
-                },
-                icon: Icon(Icons.camera_alt),
-              color: Colors.pink,
-            ),
-          ),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        CircleAvatar(
+          radius: 27,
+          backgroundImage: model.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(model.imageFile.path)),
+        ),
+        IconButton(
+            onPressed: (){
+              takePhoto(ImageSource.camera);
+            },
+            icon: Icon(Icons.camera_alt),
+          iconSize: 40,
+          color: Colors.pink,
+        ),
+      ],
     );
   }
 
