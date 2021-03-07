@@ -176,7 +176,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   style: bodyTextStyle(context),
                 ),
                 ConstrainedBox(
-                  constraints: BoxConstraints.tight(Size((0.06 * displayHeight(context)), (0.035 * displayHeight(context)))),
+                  constraints: BoxConstraints.tight(Size((0.1 * displayHeight(context)), (0.035 * displayHeight(context)))),
                   child: TextFormField(
                     style: bodyTextStyle(context),
                     maxLength: 3,
@@ -204,7 +204,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
                   style: bodyTextStyle(context),
                 ),
                 ConstrainedBox(
-                  constraints: BoxConstraints.tight(Size((0.06 * displayHeight(context)), (0.035 * displayHeight(context)))),
+                  constraints: BoxConstraints.tight(Size((0.1 * displayHeight(context)), (0.035 * displayHeight(context)))),
                   child: TextFormField(
                     style: bodyTextStyle(context),
                     maxLength: 3,
