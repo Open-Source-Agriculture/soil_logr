@@ -19,6 +19,10 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
   final ImagePicker _picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
   GroundCoverModel model = GroundCoverModel();
+  double coverPercentage = 0.0;
+  double weedsRatio  = 0.0;
+  double coverHeight = 0.0;
+
 
 
 
@@ -48,35 +52,35 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
             SizedBox(height: displayHeight(context)*0.03,),
             Text('Percentage of Ground Cover'),
             Slider(
-              value: model.coverPercentage == null ? 0.0 : model.coverPercentage,
+              value: coverPercentage == null ? 0.0 : coverPercentage,
               onChanged: (newCoverPercentage) {
-                setState(() => model.coverPercentage = newCoverPercentage);
+                setState(() => coverPercentage = newCoverPercentage);
               },
               divisions: 10,
-              label: '$model.coverPercentage %',
+              label: '$coverPercentage %',
               min: 0,
               max: 100,
             ),
             Text('Height of Cover'),
             Slider(
 
-              value: model.coverHeight== null ? 0.0 : model.coverHeight,
+              value: coverHeight== null ? 0.0 : coverHeight,
               onChanged: (newCoverHeight) {
-                setState(() => model.coverHeight = newCoverHeight);
+                setState(() => coverHeight = newCoverHeight);
               },
               divisions: 10,
-              label: '$model.coverHeight cm',
+              label: '$coverHeight cm',
               min: 0,
               max: 100,
             ),
             Text('Percentage of Weeds from total vegetation'),
             Slider(
-              value: model.weedsRatio== null ? 0.0 : model.weedsRatio,
+              value: weedsRatio== null ? 0.0 : weedsRatio,
               onChanged: (newWeeds) {
-                setState(() => model.weedsRatio = newWeeds);
+                setState(() => weedsRatio = newWeeds);
               },
               divisions: 10,
-              label: '$model.weedsRatio %',
+              label: '$weedsRatio %',
               min: 0,
               max: 100,
             ),
@@ -141,6 +145,14 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
             RaisedButton(
               color: Colors.blueAccent,
               onPressed: () {
+
+                model.coverPercentage = coverPercentage;
+                model.coverHeight = coverHeight;
+                model.weedsRatio = weedsRatio;
+                model.lat = 32.0;
+                model.lon = 32.0;
+
+
                 model.speciesMap = mySpecies;
                 model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
                 if (_formKey.currentState.validate()) {
