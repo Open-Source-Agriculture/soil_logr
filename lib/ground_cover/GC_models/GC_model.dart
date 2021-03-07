@@ -11,8 +11,11 @@ class GroundCoverModel {
   double coverHeight;
   double coverPercentage;
   double weedsRatio;
-  String speciesList;
+  Map<String, int> speciesMap;
+  int totalSpeciesCount;
+
   PickedFile imageFile;
 
-  GroundCoverModel({this.imageFile, lat, this.lon, this.gcId, this.coverHeight, this.coverPercentage, this.weedsRatio, this.speciesList});
+  GroundCoverModel({this.imageFile, lat, this.lon, this.gcId, this.coverHeight, this.coverPercentage, this.weedsRatio, this.speciesMap});
 }
+
