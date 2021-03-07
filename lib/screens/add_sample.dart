@@ -314,28 +314,5 @@ class _AddSamplePageState extends State<AddSamplePage> {
     );
   }
 }
-// setState(() {
-// // print(locationDict.toString());
-// // if (locationDict[LAT] != null){
-// //   sampledLat = locationDict[LAT];
-// //   sampledLon = locationDict[LON];
-
-// site.addSample(s);
-// print(site.samples.map((e) => e.textureClass));
-// site.increment = site.increment + 1;
-// print(site.increment);
-
-// saveDataPushHome();
-//
-// // } else {
-// //
-// //   Navigator.push(
-// //     context,
-// //     MaterialPageRoute(builder: (context) => SampleList()),
-// //   );
-// // }
-// },
-// );
-// );
 
 
