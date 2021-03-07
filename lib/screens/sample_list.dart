@@ -67,27 +67,7 @@ class _SampleListState extends State<SampleList> {
       loadData();
     }
 
-    var txt2 = TextEditingController();
-    txt2.text = depthUpper.toString();
-    txt2.selection = TextSelection.fromPosition(
-        TextPosition(offset: depthUpper.toString().length));
 
-    var txt3 = TextEditingController();
-    txt3.text = depthLower.toString();
-    txt3.selection = TextSelection.fromPosition(
-        TextPosition(offset: depthLower.toString().length));
-
-    var txt4 = TextEditingController();
-    txt4.text = baseSite.increment.toString();
-    txt4.selection = TextSelection.fromPosition(
-        TextPosition(offset: baseSite.increment.toString().length));
-
-    Function setTexture(TextureClass tc) {
-      this.selectedTexture = tc;
-      setState(() {
-        this.selectedTexture = tc;
-      });
-    }
 
     Future<Position> _determinePosition() async {
       bool serviceEnabled;
@@ -120,7 +100,27 @@ class _SampleListState extends State<SampleList> {
 
 
 
+      var txt2 = TextEditingController();
+      txt2.text = depthUpper.toString();
+      txt2.selection = TextSelection.fromPosition(
+          TextPosition(offset: depthUpper.toString().length));
 
+      var txt3 = TextEditingController();
+      txt3.text = depthLower.toString();
+      txt3.selection = TextSelection.fromPosition(
+          TextPosition(offset: depthLower.toString().length));
+
+      var txt4 = TextEditingController();
+      txt4.text = baseSite.increment.toString();
+      txt4.selection = TextSelection.fromPosition(
+          TextPosition(offset: baseSite.increment.toString().length));
+
+      Function setTexture(TextureClass tc) {
+        this.selectedTexture = tc;
+        setState(() {
+          this.selectedTexture = tc;
+        });
+      }
 
 
 
