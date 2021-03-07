@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soil_mate/screens/home/credits.dart';
+import 'package:soil_mate/screens/credits.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../services/sizes_helper.dart';
-export '../services/sizes_helper.dart';
+import '../services/sizes_and_themes.dart';
+export '../services/sizes_and_themes.dart';
 
 class LinksTile extends StatefulWidget {
 

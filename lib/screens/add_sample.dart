@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:soil_mate/models/texture_models.dart';
-import 'package:soil_mate/screens/home/sample_list.dart';
+import 'package:soil_mate/screens/sample_list.dart';
 import 'package:soil_mate/models/sample.dart';
 import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/services/site_database.dart';
 
-import '../../models/texture_models.dart';
+import '../models/texture_models.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../widgets/add_sample_widgets.dart';
+import '../widgets/add_sample_widgets.dart';
 import 'loading.dart';
-import '../../services/sizes_helper.dart';
+import '../services/sizes_and_themes.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
 }
 
 class AddSamplePage extends StatefulWidget {
-  AddSamplePage({Key key, this.title = 'Add Sample'}) : super(key: key);
+  final Future<void> loadData;
+  dynamic sheetContext;
+  AddSamplePage({Key key, this.loadData, this.sheetContext, this.title = 'Add Sample'}) : super(key: key);
 
   final String title;
 
@@ -53,6 +55,7 @@ class _AddSamplePageState extends State<AddSamplePage> {
   TextureClass selectedTexture = AusClassification().getTextureList()[0];
 
   bool sendingSample = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -273,10 +276,10 @@ class _AddSamplePageState extends State<AddSamplePage> {
         ),
         elevation: 2,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Loading()),
-          );
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(builder: (context) => Loading()),
+//          );
           if (sendingSample != true) {
             sendingSample = true;
             setState(() {
@@ -298,12 +301,12 @@ class _AddSamplePageState extends State<AddSamplePage> {
                 site.increment = site.increment + 1;
 
                 await overrideSite(site);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SampleList()),
-                );
+                await widget.loadData;
+                await Navigator.pop(widget.sheetContext);
+
               }
               saveDataPushHome();
+
             });
           }
         },
@@ -311,28 +314,5 @@ class _AddSamplePageState extends State<AddSamplePage> {
     );
   }
 }
-// setState(() {
-// // print(locationDict.toString());
-// // if (locationDict[LAT] != null){
-// //   sampledLat = locationDict[LAT];
-// //   sampledLon = locationDict[LON];
-
-// site.addSample(s);
-// print(site.samples.map((e) => e.textureClass));
-// site.increment = site.increment + 1;
-// print(site.increment);
-
-// saveDataPushHome();
-//
-// // } else {
-// //
-// //   Navigator.push(
-// //     context,
-// //     MaterialPageRoute(builder: (context) => SampleList()),
-// //   );
-// // }
-// },
-// );
-// );
 
 

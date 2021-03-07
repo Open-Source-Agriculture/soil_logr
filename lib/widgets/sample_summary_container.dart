@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/models/texture_models.dart';
-import '../services/sizes_helper.dart';
+import '../services/sizes_and_themes.dart';
 
 class SampleSummary extends StatelessWidget {
   final TextureClass selectedTexture;
@@ -37,13 +37,13 @@ class SampleSummary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Sample Summary',
+            'Summary',
             style: headingTextStyle(context),
           ),
           Text(
             'Texture:  ' +
                 selectedTexture.name +
-                '\nDepth range:  ' +
+                '\nDepth:  ' +
                 depthUpper.toString() +
                 ' cm to ' +
                 depthLower.toString() +

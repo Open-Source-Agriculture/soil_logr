@@ -70,8 +70,8 @@ Future<bool> overrideSite(Site site) async {
 
     };
 //    print(siteMap.toString());
-    appBoxes.queSiteBox.put(site.name,siteMap);
-    appBoxes.siteBox.put(site.name, siteMap);
+    await appBoxes.queSiteBox.put(site.name,siteMap);
+    await appBoxes.siteBox.put(site.name, siteMap);
   }
   return siteExists;
 }
