@@ -33,7 +33,7 @@ Future<Map> loadTaxonomyMap(String taxonomy) async {
       filteredTaxonomyMap[key] = value;
     };
   });
-                  filteredTaxonomyMap.forEach((key, value) {print(value["name"]);});
+//                  filteredTaxonomyMap.forEach((key, value) {print(value["name"]);});
 
   return(filteredTaxonomyMap);
 }
