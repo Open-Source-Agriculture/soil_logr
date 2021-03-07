@@ -66,59 +66,134 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: displayHeight(context)*0.08,),
-              Text(
-                'Percentage of Ground Cover',
-                style: bodyTextStyle(context),
-              ),
-              Slider.adaptive(
-                value: coverPercentage == null ? 0.0 : coverPercentage,
-                onChanged: (newCoverPercentage) {
-                  setState(() => coverPercentage = newCoverPercentage);
-                },
-                label: '$coverPercentage %',
-                divisions: 20,
-                min: 0,
-                max: 100,
-                activeColor: sliderColor(coverPercentage),
-                inactiveColor: sliderColor(coverPercentage),
-              ),
-              Text('Height of Cover', style: bodyTextStyle(context),),
-              Slider(
-                value: coverHeight== null ? 0.0 : coverHeight,
-                onChanged: (newCoverHeight) {
-                  setState(() => coverHeight = newCoverHeight);
-                },
-                label: '$coverHeight cm',
-                min: 0,
-                max: 100,
-                divisions: 20,
-                activeColor: sliderColor(coverHeight),
-                inactiveColor: sliderColor(coverHeight),
-              ),
-              Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
-              Slider(
-                value: weedsRatio== null ? 0.0 : weedsRatio,
-                onChanged: (newWeeds) {
-                  setState(() => weedsRatio = newWeeds);
-                },
-                label: '$weedsRatio %',
-                min: 0,
-                max: 100,
-                activeColor: sliderColor(weedsRatio),
-                inactiveColor: sliderColor(weedsRatio),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  color: Colors.grey[200],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10, top: 8),
+                      child: Text(
+                        'Percentage of Ground Cover',
+                        style: bodyTextStyle(context),
+                      ),
+                    ),
+                    Container(
+                      //margin: EdgeInsets.symmetric(horizontal: 10),
+                      color: Colors.white,
+                      child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackShape: RoundedRectSliderTrackShape(),
+                          trackHeight: 4.0,
+                          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                          overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                          tickMarkShape: RoundSliderTickMarkShape(),
+                          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                          valueIndicatorTextStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        child: Slider.adaptive(
+                          value: coverPercentage == null ? 0.0 : coverPercentage,
+                          onChanged: (newCoverPercentage) {
+                            setState(() => coverPercentage = newCoverPercentage);
+                          },
+                          label: '${coverPercentage.round()} %',
+                          divisions: 20,
+                          min: 0,
+                          max: 100,
+                          activeColor: sliderColor(coverPercentage),
+                          inactiveColor: sliderColor(coverPercentage),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10, top: 8),
+                      child: Text('Height of Cover', style: bodyTextStyle(context),),
+                    ),
+                    Container(
+                      //margin: EdgeInsets.symmetric(horizontal: 10),
+                      color: Colors.white,
+                      child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackShape: RoundedRectSliderTrackShape(),
+                          trackHeight: 4.0,
+                          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                          overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                          tickMarkShape: RoundSliderTickMarkShape(),
+                          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                          valueIndicatorTextStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        child: Slider.adaptive(
+                          value: coverHeight== null ? 0.0 : coverHeight,
+                          onChanged: (newCoverHeight) {
+                            setState(() => coverHeight = newCoverHeight);
+                          },
+                          label: '${coverHeight.round()} cm',
+                          min: 0,
+                          max: 100,
+                          divisions: 20,
+                          activeColor: sliderColor(coverHeight),
+                          inactiveColor: sliderColor(coverHeight),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10, top: 8),
+                      child: Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
+                    ),
+                    Container(
+                      //margin: EdgeInsets.symmetric(horizontal: 10),
+                      color: Colors.white,
+                      child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackShape: RoundedRectSliderTrackShape(),
+                          trackHeight: 4.0,
+                          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                          overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                          tickMarkShape: RoundSliderTickMarkShape(),
+                          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                          valueIndicatorTextStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        child: Slider.adaptive(
+                          value: weedsRatio== null ? 0.0 : weedsRatio,
+                          onChanged: (newWeeds) {
+                            setState(() => weedsRatio = newWeeds);
+                          },
+                          label: '${weedsRatio.round()} %',
+                          min: 0,
+                          max: 100,
+                          divisions: 20,
+                          activeColor: sliderColor(weedsRatio),
+                          inactiveColor: sliderColor(weedsRatio),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: mySpecies.length,
-                itemBuilder: (context, index) {
-                  String speciesName = mySpecies.keys.toList()[index];
-                  int speciesCount = mySpecies[speciesName];
-                  return Row(
+              ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: mySpecies.length,
+              itemBuilder: (context, index) {
+                String speciesName = mySpecies.keys.toList()[index];
+                int speciesCount = mySpecies[speciesName];
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    //color: Colors.grey[200],
+                  ),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(speciesName, style: bodyTextStyle(context),),
@@ -154,38 +229,43 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
                       ),
 
                     ],
-                  );
-                }),
-              ),
-              imageProfile(context),
-              RaisedButton(
-                color: Colors.blueAccent,
-                onPressed: () {
-
-                  model.coverPercentage = coverPercentage;
-                  model.coverHeight = coverHeight;
-                  model.weedsRatio = weedsRatio;
-                  model.lat = 32.0;
-                  model.lon = 32.0;
-
-
-                  model.speciesMap = mySpecies;
-                  model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GroundCoverResult(model: this.model)));
-                  }
-                },
-                child: Text(
-                  'Submit',
-                  style: TextStyle(
-                    color: Colors.white,
                   ),
-                ),
+                );
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  imageProfile(context),
+                  RaisedButton(
+                    color: Colors.blueAccent,
+                    onPressed: () {
+                      print(mySpecies.length);
+                      model.coverPercentage = coverPercentage;
+                      model.coverHeight = coverHeight;
+                      model.weedsRatio = weedsRatio;
+                      model.lat = 32.0;
+                      model.lon = 32.0;
+
+
+                      model.speciesMap = mySpecies;
+                      model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GroundCoverResult(model: this.model)));
+                      }
+                    },
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           ),
