@@ -32,7 +32,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
               title: Text('Species: ' + widget.model.totalSpeciesCount.toString()),
             subtitle: Text(
                 'Cover %: ${widget.model.coverPercentage} ' +
-                    'Cover Heihgt: ${widget.model.coverHeight}' +
+                    'Cover Height: ${widget.model.coverHeight}' +
                     'Weeds Ratio: ${widget.model.weedsRatio}' +
                 '\n Lat: ${widget.model.lat} Lon: ${widget.model.lon}'
             ),
