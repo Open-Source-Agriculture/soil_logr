@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:validators/validators.dart' as validator;
 import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
-import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:image_picker/image_picker.dart';
 
 
-class GroundCoverForm extends StatefulWidget with NavigationStates{
+class GroundCoverForm extends StatefulWidget  with NavigationStates{
 
   @override
   _GroundCoverFormState createState() => _GroundCoverFormState();
@@ -23,6 +23,9 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
   double coverPercentage = 0.0;
   double weedsRatio  = 0.0;
   double coverHeight = 0.0;
+  int totalSpeciesCount = 0;
+  PickedFile imageFile = PickedFile("assets/placeholder.png");
+
 
 
 
@@ -43,10 +46,13 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
 
 
     sliderColor(value) {
-      if (value < 50) {
+      if (value < 30) {
         return Colors.green[200];
-      } else {
-        return Colors.green[500];
+      } if (value < 70) {
+        return Colors.green[400];
+      }
+      else {
+        return Colors.green[700];
       }
     }
 
@@ -59,42 +65,47 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: displayHeight(context)*0.03,),
-              Text('Percentage of Ground Cover'),
+              SizedBox(height: displayHeight(context)*0.08,),
+              Text(
+                'Percentage of Ground Cover',
+                style: bodyTextStyle(context),
+              ),
               Slider.adaptive(
                 value: coverPercentage == null ? 0.0 : coverPercentage,
                 onChanged: (newCoverPercentage) {
                   setState(() => coverPercentage = newCoverPercentage);
                 },
-                divisions: 10,
                 label: '$coverPercentage %',
+                divisions: 20,
                 min: 0,
                 max: 100,
                 activeColor: sliderColor(coverPercentage),
-                inactiveColor: Colors.brown[100],
+                inactiveColor: sliderColor(coverPercentage),
               ),
-              Text('Height of Cover'),
+              Text('Height of Cover', style: bodyTextStyle(context),),
               Slider(
-
                 value: coverHeight== null ? 0.0 : coverHeight,
                 onChanged: (newCoverHeight) {
                   setState(() => coverHeight = newCoverHeight);
                 },
-                divisions: 10,
                 label: '$coverHeight cm',
                 min: 0,
                 max: 100,
+                divisions: 20,
+                activeColor: sliderColor(coverHeight),
+                inactiveColor: sliderColor(coverHeight),
               ),
-              Text('Percentage of Weeds from total vegetation'),
+              Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
               Slider(
                 value: weedsRatio== null ? 0.0 : weedsRatio,
                 onChanged: (newWeeds) {
                   setState(() => weedsRatio = newWeeds);
                 },
-                divisions: 10,
                 label: '$weedsRatio %',
                 min: 0,
                 max: 100,
+                activeColor: sliderColor(weedsRatio),
+                inactiveColor: sliderColor(weedsRatio),
               ),
 
 
@@ -110,7 +121,7 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(speciesName),
+                      Text(speciesName, style: bodyTextStyle(context),),
                       Row(
                         children: [
                           RawMaterialButton(
@@ -126,7 +137,7 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
                                 }
                               },
                           ),
-                          Text(speciesCount.toString()),
+                          Text(speciesCount.toString(), style: bodyTextStyle(context),),
                           RawMaterialButton(
                             //elevation: 2.0,
                             // fillColor: Color(0xff2C9C0A),

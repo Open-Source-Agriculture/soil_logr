@@ -3,6 +3,7 @@ import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_form.dart';
 import 'dart:io';
 
+
 class GroundCoverResult extends StatefulWidget{
   GroundCoverModel model;
 
