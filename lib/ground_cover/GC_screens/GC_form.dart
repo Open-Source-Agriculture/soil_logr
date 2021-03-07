@@ -21,42 +21,23 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
   GroundCoverModel model = GroundCoverModel();
 
 
-  List listItem = [
-    "Grasses perennial ", "Grasses annual", "Forbs perennial", "Forbs annual", "Legumes ", "Native pasture "
-  ];
 
-  int att = 0;
+  Map<String, int> mySpecies = {
+    'Grasses perennial': 0,
+    'Grasses annual': 0,
+    'Forbs perennial': 0,
+    'Forbs annual': 0,
+    'Legumes' : 0,
+    'Native pasture' : 0,
+  };
+
 
   @override
   Widget build(BuildContext context) {
     final halfMediaWidth = MediaQuery.of(context).size.width / 2.0;
 
-    var txt2 = TextEditingController();
-    txt2.text = att.toString();
-    txt2.selection = TextSelection.fromPosition(TextPosition(offset: att.toString().length));
-
-    void incrementAttendance() {
-      setState(() {
-        att++;
-        print(att);
-        txt2.text = att.toString();
-      });
 
 
-    }
-
-    void deIncrementAttendance() {
-      setState(() {
-        if (att > 0){
-          att+=-1;
-        }else{
-          att = 0;
-        }
-        txt2.text = att.toString();
-        print(att);
-      });
-
-    }
 
 
     return Form(
@@ -103,84 +84,65 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
 
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: DropdownButton(
-                  hint: Text('Select Species: '),
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 30,
-                  isExpanded: true,
-                  underline: SizedBox(),
-                  value: model.speciesList,
-                  onChanged: (newValue) {
-                    setState(() {
-                      model.speciesList = newValue;
-                    });
-                  },
-                  items: listItem.map((valueItem) {
-                    return DropdownMenuItem(
-                      value: valueItem,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: mySpecies.length,
+              itemBuilder: (context, index) {
+                String speciesName = mySpecies.keys.toList()[index];
+                int speciesCount = mySpecies[speciesName];
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(speciesName),
+                      Row(
                         children: [
-                          Text(valueItem),
-                          Row(
-                            children: [
-                              RawMaterialButton(
-                                //elevation: 2.0,
-                                // fillColor: Color(0xff2C9C0A),
-                                // shape: CircleBorder(),
-                                child: Icon(Icons.remove),
-                                onPressed: (){
-                                  deIncrementAttendance();
-                                },
-                              ),
-                              Text('${att}'),
-                              RawMaterialButton(
-                                //elevation: 2.0,
-                                // fillColor: Color(0xff2C9C0A),
-                                // shape: CircleBorder(),
-                                child: Icon(Icons.add),
-                                onPressed: (){
-                                  incrementAttendance();
-                                },
-                              ),
-                            ],
+                          RawMaterialButton(
+                            //elevation: 2.0,
+                            // fillColor: Color(0xff2C9C0A),
+                            // shape: CircleBorder(),
+                            child: Icon(Icons.remove),
+                            onPressed: () {
+                              if (mySpecies[speciesName] > 0 ){
+                                  mySpecies[speciesName] =
+                                      mySpecies[speciesName] - 1;
+                                  setState(() {});
+                                }
+                              },
                           ),
+                          Text(speciesCount.toString()),
+                          RawMaterialButton(
+                            //elevation: 2.0,
+                            // fillColor: Color(0xff2C9C0A),
+                            // shape: CircleBorder(),
+                            child: Icon(Icons.add),
+                            onPressed: () {
+                              mySpecies[speciesName] = mySpecies[speciesName] + 1;
+                              setState(() {
 
+                              });
+                            },
+                          ),
                         ],
                       ),
-                    );
-                  }).toList(),
-                ),
-              ),
+
+                    ],
+                  ),
+                );
+              }),
             ),
-            // RaisedButton(onPressed: () {
-            //   showModalBottomSheet(
-            //     context: context,
-            //     builder: ((builder) => bottomSheet(context)),
-            //   );
-            // }),
-            // MyTextFormField(
-            //   hintText: 'Species',
-            //   validator: (String value) {
-            //     if (value.isEmpty) {
-            //       return 'Enter plant species observed';
-            //     }
-            //     return null;
-            //   },
-            //   onSaved: (String value) {
-            //     model.speciesList = value;
-            //   },
-            // ),
             imageProfile(context),
             RaisedButton(
               color: Colors.blueAccent,
               onPressed: () {
+                model.speciesMap = mySpecies;
+                model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
 
