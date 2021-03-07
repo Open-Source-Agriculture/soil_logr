@@ -40,7 +40,7 @@ class _SampleListState extends State<SampleList> {
       increment: 0,
     );
 
-    baseSite = iSite;
+    //baseSite = iSite;
 
     Future<void> loadData() async {
       bool alreadySite = await saveSite(iSite);
@@ -117,18 +117,22 @@ class _SampleListState extends State<SampleList> {
     }
 
     void _showAddSamplePanel() {
-      showModalBottomSheet(
+
+
+
+
+
+
+
+      showModalBottomSheet<dynamic>(
+          isScrollControlled: true,
           context: context,
           builder: (context) {
             return Padding(
-              padding: const EdgeInsets.all(17),
+              padding: const EdgeInsets.all(16.0),
               child: Wrap(
                 runSpacing: 17,
                 children: <Widget>[
-                  Text(
-                    'Soil Texture',
-                    style: headingTextStyle(context),
-                  ),
                   GridView.count(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -142,79 +146,117 @@ class _SampleListState extends State<SampleList> {
                             ))
                         .toList(),
                   ),
-                  Text(
-                    'Depth Range',
-                    style: headingTextStyle(context),
-                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Upper depth: ',
-                        style: bodyTextStyle(context),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints.tight(Size(
-                            (0.06 * displayHeight(context)),
-                            (0.035 * displayHeight(context)))),
-                        child: TextFormField(
-                          style: bodyTextStyle(context),
-                          maxLength: 3,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            border: InputBorder.none,
-                            filled: true,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Upper depth: ',
+                                style: bodyTextStyle(context),
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints.tight(Size(
+                                    (0.06 * displayHeight(context)),
+                                    (0.035 * displayHeight(context)))),
+                                child: TextFormField(
+                                  style: bodyTextStyle(context),
+                                  maxLength: 3,
+                                  decoration: InputDecoration(
+                                    counterText: '',
+                                    border: InputBorder.none,
+                                    filled: true,
+                                  ),
+                                  controller: txt2,
+                                  autovalidateMode: AutovalidateMode.always,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      depthUpper = int.parse(val);
+                                      print(depthUpper);
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          controller: txt2,
-                          autovalidateMode: AutovalidateMode.always,
-                          keyboardType: TextInputType.number,
-                          onChanged: (val) {
-                            setState(() {
-                              depthUpper = int.parse(val);
-                              print(depthUpper);
-                            });
-                          },
-                        ),
+                          Row(
+                            children: [
+                              Text(
+                                'Lower depth: ',
+                                style: bodyTextStyle(context),
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints.tight(Size(
+                                    (0.06 * displayHeight(context)),
+                                    (0.035 * displayHeight(context)))),
+                                child: TextFormField(
+                                  style: bodyTextStyle(context),
+                                  maxLength: 3,
+                                  decoration: InputDecoration(
+                                    counterText: '',
+                                    border: InputBorder.none,
+                                    filled: true,
+                                  ),
+                                  controller: txt3,
+                                  autovalidateMode: AutovalidateMode.always,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      depthLower = int.parse(val);
+                                      print(depthLower);
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'ID: ',
+                                style: bodyTextStyle(context),
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints.tight(Size(
+                                    (0.1 * displayHeight(context)),
+                                    (0.035 * displayHeight(context)))),
+                                child: TextFormField(
+                                  style: bodyTextStyle(context),
+                                  maxLength: 5,
+                                  decoration: InputDecoration(
+                                    counterText: '',
+                                    border: InputBorder.none,
+                                    filled: true,
+                                  ),
+                                  controller: txt4,
+                                  autovalidateMode: AutovalidateMode.always,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      baseSite.increment = int.parse(val);
+                                      print(baseSite.increment);
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
+                      SampleSummary(
+                        selectedTexture: selectedTexture,
+                        depthUpper: depthUpper,
+                        depthLower: depthLower,
+                        sampleID: baseSite.increment,
+                      )
                     ],
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Lower depth: ',
-                        style: bodyTextStyle(context),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints.tight(Size(
-                            (0.06 * displayHeight(context)),
-                            (0.035 * displayHeight(context)))),
-                        child: TextFormField(
-                          style: bodyTextStyle(context),
-                          maxLength: 3,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            border: InputBorder.none,
-                            filled: true,
-                          ),
-                          controller: txt3,
-                          autovalidateMode: AutovalidateMode.always,
-                          keyboardType: TextInputType.number,
-                          onChanged: (val) {
-                            setState(() {
-                              depthLower = int.parse(val);
-                              print(depthLower);
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Sample ID',
-                        style: headingTextStyle(context),
-                      ),
-                      RaisedButton(
+                  Center(
+                      child: RaisedButton(
                           child: Text("Save"),
                           onPressed: () {
                             Future<void> saveDataPushHome() async {
@@ -240,47 +282,7 @@ class _SampleListState extends State<SampleList> {
                             }
 
                             saveDataPushHome();
-                          })
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'ID: ',
-                        style: bodyTextStyle(context),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints.tight(Size(
-                            (0.1 * displayHeight(context)),
-                            (0.035 * displayHeight(context)))),
-                        child: TextFormField(
-                          style: bodyTextStyle(context),
-                          maxLength: 5,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            border: InputBorder.none,
-                            filled: true,
-                          ),
-                          controller: txt4,
-                          autovalidateMode: AutovalidateMode.always,
-                          keyboardType: TextInputType.number,
-                          onChanged: (val) {
-                            setState(() {
-                              baseSite.increment = int.parse(val);
-                              print(baseSite.increment);
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  Center(
-                      child: SampleSummary(
-                    selectedTexture: selectedTexture,
-                    depthUpper: depthUpper,
-                    depthLower: depthLower,
-                    sampleID: baseSite.increment,
-                  )),
+                          })),
                 ],
               ),
             );
