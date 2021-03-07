@@ -9,7 +9,6 @@ import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/models/sample.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:soil_mate/widgets/sample_summary_container.dart';
-import 'package:soil_mate/widgets/texture_button.dart';
 import 'dart:async';
 import 'credits.dart';
 import '../widgets/sample_list_tile.dart';
@@ -67,8 +66,6 @@ class _SampleListState extends State<SampleList> {
       loadData();
     }
 
-
-
     Future<Position> _determinePosition() async {
       bool serviceEnabled;
       LocationPermission permission;
@@ -97,9 +94,6 @@ class _SampleListState extends State<SampleList> {
     }
 
     void _showAddSamplePanel() {
-
-
-
       var txt2 = TextEditingController();
       txt2.text = depthUpper.toString();
       txt2.selection = TextSelection.fromPosition(
@@ -115,177 +109,192 @@ class _SampleListState extends State<SampleList> {
       txt4.selection = TextSelection.fromPosition(
           TextPosition(offset: baseSite.increment.toString().length));
 
-      Function setTexture(TextureClass tc) {
-        this.selectedTexture = tc;
-        setState(() {
-          this.selectedTexture = tc;
-        });
-      }
-
-
-
       showModalBottomSheet<dynamic>(
           isScrollControlled: true,
           context: context,
           builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Wrap(
-                runSpacing: 17,
-                children: <Widget>[
-                  GridView.count(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    childAspectRatio: (3 / 1),
-                    crossAxisCount: 3,
-                    children: AusClassification()
-                        .getTextureList()
-                        .map((texture) => TextureButton(
-                              textureClass: texture,
-                              setTextureFunction: setTexture,
-                            ))
-                        .toList(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Upper depth: ',
-                                style: bodyTextStyle(context),
-                              ),
-                              ConstrainedBox(
-                                constraints: BoxConstraints.tight(Size(
-                                    (0.06 * displayHeight(context)),
-                                    (0.035 * displayHeight(context)))),
-                                child: TextFormField(
-                                  style: bodyTextStyle(context),
-                                  maxLength: 3,
-                                  decoration: InputDecoration(
-                                    counterText: '',
-                                    border: InputBorder.none,
-                                    filled: true,
-                                  ),
-                                  controller: txt2,
-                                  autovalidateMode: AutovalidateMode.always,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (val) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState
+                    /*You can rename this!*/) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Wrap(
+                  runSpacing: 17,
+                  children: <Widget>[
+                    GridView.count(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      childAspectRatio: (3 / 1),
+                      crossAxisCount: 3,
+                      children: AusClassification()
+                          .getTextureList()
+                          .map((texture) => Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: FlatButton(
+                                  padding: EdgeInsets.all(0),
+                                  color: texture.getColor().withOpacity(0.5),
+                                  shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: texture.getColor(),
+                                          width: 2,
+                                          style: BorderStyle.solid),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  onPressed: () {
                                     setState(() {
-                                      depthUpper = int.parse(val);
-                                      print(depthUpper);
+                                      selectedTexture = texture;
+                                      print("setting state");
+                                      print(texture.name);
                                     });
                                   },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Lower depth: ',
-                                style: bodyTextStyle(context),
-                              ),
-                              ConstrainedBox(
-                                constraints: BoxConstraints.tight(Size(
-                                    (0.06 * displayHeight(context)),
-                                    (0.035 * displayHeight(context)))),
-                                child: TextFormField(
-                                  style: bodyTextStyle(context),
-                                  maxLength: 3,
-                                  decoration: InputDecoration(
-                                    counterText: '',
-                                    border: InputBorder.none,
-                                    filled: true,
+                                  child: Text(
+                                    texture.name,
+                                    style: textureButtonTextStyle(context),
                                   ),
-                                  controller: txt3,
-                                  autovalidateMode: AutovalidateMode.always,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      depthLower = int.parse(val);
-                                      print(depthLower);
-                                    });
-                                  },
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'ID: ',
-                                style: bodyTextStyle(context),
-                              ),
-                              ConstrainedBox(
-                                constraints: BoxConstraints.tight(Size(
-                                    (0.1 * displayHeight(context)),
-                                    (0.035 * displayHeight(context)))),
-                                child: TextFormField(
+                              ))
+                          .toList(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Upper depth: ',
                                   style: bodyTextStyle(context),
-                                  maxLength: 5,
-                                  decoration: InputDecoration(
-                                    counterText: '',
-                                    border: InputBorder.none,
-                                    filled: true,
-                                  ),
-                                  controller: txt4,
-                                  autovalidateMode: AutovalidateMode.always,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      baseSite.increment = int.parse(val);
-                                      print(baseSite.increment);
-                                    });
-                                  },
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SampleSummary(
-                        selectedTexture: selectedTexture,
-                        depthUpper: depthUpper,
-                        depthLower: depthLower,
-                        sampleID: baseSite.increment,
-                      )
-                    ],
-                  ),
-                  Center(
-                      child: RaisedButton(
-                          child: Text("Save"),
-                          onPressed: () {
-                            Future<void> saveDataPushHome() async {
-                              Position position = await _determinePosition();
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tight(Size(
+                                      (0.06 * displayHeight(context)),
+                                      (0.035 * displayHeight(context)))),
+                                  child: TextFormField(
+                                    style: bodyTextStyle(context),
+                                    maxLength: 3,
+                                    decoration: InputDecoration(
+                                      counterText: '',
+                                      border: InputBorder.none,
+                                      filled: true,
+                                    ),
+                                    controller: txt2,
+                                    autovalidateMode: AutovalidateMode.always,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        depthUpper = int.parse(val);
+                                        print(depthUpper);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Lower depth: ',
+                                  style: bodyTextStyle(context),
+                                ),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tight(Size(
+                                      (0.06 * displayHeight(context)),
+                                      (0.035 * displayHeight(context)))),
+                                  child: TextFormField(
+                                    style: bodyTextStyle(context),
+                                    maxLength: 3,
+                                    decoration: InputDecoration(
+                                      counterText: '',
+                                      border: InputBorder.none,
+                                      filled: true,
+                                    ),
+                                    controller: txt3,
+                                    autovalidateMode: AutovalidateMode.always,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        depthLower = int.parse(val);
+                                        print(depthLower);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'ID: ',
+                                  style: bodyTextStyle(context),
+                                ),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints.tight(Size(
+                                      (0.1 * displayHeight(context)),
+                                      (0.035 * displayHeight(context)))),
+                                  child: TextFormField(
+                                    style: bodyTextStyle(context),
+                                    maxLength: 5,
+                                    decoration: InputDecoration(
+                                      counterText: '',
+                                      border: InputBorder.none,
+                                      filled: true,
+                                    ),
+                                    controller: txt4,
+                                    autovalidateMode: AutovalidateMode.always,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        baseSite.increment = int.parse(val);
+                                        print(baseSite.increment);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SampleSummary(
+                          selectedTexture: this.selectedTexture,
+                          depthUpper: depthUpper,
+                          depthLower: depthLower,
+                          sampleID: baseSite.increment,
+                        )
+                      ],
+                    ),
+                    Center(
+                        child: RaisedButton(
+                            child: Text("Save"),
+                            onPressed: () {
+                              Future<void> saveDataPushHome() async {
+                                Position position = await _determinePosition();
 
-                              Sample s = Sample(
-                                lat: position.latitude,
-                                lon: position.longitude,
-                                textureClass: selectedTexture.name,
-                                depthShallow: depthUpper,
-                                depthDeep: depthLower,
-                                sand: selectedTexture.sand,
-                                silt: selectedTexture.silt,
-                                clay: selectedTexture.clay,
-                                id: baseSite.increment,
-                              );
-                              baseSite.addSample(s);
-                              baseSite.increment = baseSite.increment + 1;
+                                Sample s = Sample(
+                                  lat: position.latitude,
+                                  lon: position.longitude,
+                                  textureClass: selectedTexture.name,
+                                  depthShallow: depthUpper,
+                                  depthDeep: depthLower,
+                                  sand: selectedTexture.sand,
+                                  silt: selectedTexture.silt,
+                                  clay: selectedTexture.clay,
+                                  id: baseSite.increment,
+                                );
+                                baseSite.addSample(s);
+                                baseSite.increment = baseSite.increment + 1;
 
-                              overrideSite(baseSite);
-                              loadData();
-                              Navigator.pop(context);
-                            }
+                                overrideSite(baseSite);
+                                loadData();
+                                Navigator.pop(context);
+                              }
 
-                            saveDataPushHome();
-                          })),
-                ],
-              ),
-            );
+                              saveDataPushHome();
+                            })),
+                  ],
+                ),
+              );
+            });
           });
     }
 
