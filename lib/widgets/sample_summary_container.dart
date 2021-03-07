@@ -37,13 +37,13 @@ class SampleSummary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Sample Summary',
+            'Summary',
             style: headingTextStyle(context),
           ),
           Text(
             'Texture:  ' +
                 selectedTexture.name +
-                '\nDepth range:  ' +
+                '\nDepth:  ' +
                 depthUpper.toString() +
                 ' cm to ' +
                 depthLower.toString() +
