@@ -12,6 +12,10 @@ import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:soil_mate/widgets/sample_list_tile.dart';
 
+
+const String GC_LOGS = "gc_logs";
+
+
 class GroundCoverResult extends StatefulWidget   with NavigationStates{
   GroundCoverModel model;
 
@@ -23,11 +27,6 @@ class GroundCoverResult extends StatefulWidget   with NavigationStates{
 
 class _GroundCoverResultState extends State<GroundCoverResult> {
   List<GroundCoverModel> GroundCoverList = [];
-
-
-
-
-
 
   Map<String, int> mySpecies = {
     'Grasses Perennial': 0,
@@ -51,7 +50,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
     Future addGroundCoverLog() async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get("ground_cover");
-      Box GCbox = Hive.box("gc_logs");
+      Box GCbox = Hive.box(GC_LOGS);
       int newID = GCbox.length;
       Position pos = await determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
@@ -330,7 +329,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                 MaterialButton(
                   child: Text('Confirm'),
                   onPressed: () {
-                    Box groundCoverLog = Hive.box("gc_log");
+                    Box groundCoverLog = Hive.box(GC_LOGS);
                     groundCoverLog.clear();
                     Navigator.pop(context);
                   },
@@ -412,7 +411,7 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
     ];
 
     return FutureBuilder(
-        future: Hive.openBox('gc_logs'),
+        future: Hive.openBox(GC_LOGS),
         builder: (BuildContext context, AsyncSnapshot snapshot){
 
 
@@ -421,7 +420,7 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
               return Text(snapshot.error.toString());
             }else{
               return ValueListenableBuilder(
-                  valueListenable: Hive.box("gc_logs").listenable(),
+                  valueListenable: Hive.box(GC_LOGS).listenable(),
                   builder: (context, groundCoverLogBox, widget){
                     return ListView.builder(
                       itemCount: groundCoverLogBox.length,
