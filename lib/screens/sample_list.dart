@@ -407,9 +407,10 @@ class _TextureListState extends State<TextureList> {
 
 
                     return ListView.builder(
+                      reverse: true,
                       itemCount: textureLogBox.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final tLog = textureLogBox.getAt(index) as Log;
+                        final tLog = textureLogBox.getAt(textureLogBox.length - 1 - index) as Log;
                         Map quantityMap = {};
                         tLog.quantity.forEach((quant) {
                           quantityMap[quant.label] = quant.value;
