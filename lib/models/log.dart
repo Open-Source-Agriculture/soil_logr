@@ -24,9 +24,11 @@ class Quantity{
   @HiveField(1)
   final double value;
   @HiveField(2)
+  final TaxonomyTerm units;
+  @HiveField(3)
   final String label;
 
-  Quantity({this.measure, this.value, this.label});
+  Quantity({this.measure, this.value, this.units, this.label});
 
 }
 
