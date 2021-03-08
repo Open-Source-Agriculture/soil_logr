@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:soil_mate/models/geofield.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/texture_models.dart';
 import 'package:soil_mate/services/navigation_bloc.dart';

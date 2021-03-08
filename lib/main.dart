@@ -5,9 +5,7 @@ import 'package:soil_mate/screens/side_bar/sidebar_layout.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:soil_mate/services/taxonomy_terms.dart';
 
-import 'models/geofield.dart';
 import 'models/log.dart';
-import 'models/quantity.dart';
 import 'models/taxonomy_term.dart';
 
 

@@ -1,38 +1,36 @@
 import 'package:hive/hive.dart';
-import 'package:soil_mate/models/quantity.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
-import 'geofield.dart';
 
 
 part 'log.g.dart';
 
 
-//@HiveType(typeId: 1)
-//class GeoField{
-//  @HiveField(0)
-//  final double lat;
-//  @HiveField(1)
-//  final double lon;
-//
-//  GeoField({this.lat, this.lon});
-//
-//}
-//
-//
-//@HiveType(typeId: 2)
-//class Quantity{
-//  @HiveField(0)
-//  final String measure;
-//  @HiveField(1)
-//  final double value;
-//  @HiveField(2)
-//  final TaxonomyTerm units;
-//  @HiveField(3)
-//  final String label;
-//
-//  Quantity({this.measure, this.value, this.units, this.label});
-//
-//}
+@HiveType(typeId: 1)
+class GeoField{
+  @HiveField(0)
+  final double lat;
+  @HiveField(1)
+  final double lon;
+
+  GeoField({this.lat, this.lon});
+
+}
+
+
+@HiveType(typeId: 2)
+class Quantity{
+  @HiveField(0)
+  final String measure;
+  @HiveField(1)
+  final double value;
+  @HiveField(2)
+  final TaxonomyTerm units;
+  @HiveField(3)
+  final String label;
+
+  Quantity({this.measure, this.value, this.units, this.label});
+
+}
 
 @HiveType(typeId: 3)
 class Log{
