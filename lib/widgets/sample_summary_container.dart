@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soil_mate/models/site.dart';
 import 'package:soil_mate/models/texture_models.dart';
 import '../services/sizes_and_themes.dart';
 

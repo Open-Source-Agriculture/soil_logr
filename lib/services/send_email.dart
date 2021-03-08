@@ -1,7 +1,3 @@
-import 'package:soil_mate/models/common_keys.dart';
-import 'package:soil_mate/models/sample.dart';
-import 'package:soil_mate/models/site.dart';
-import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
@@ -67,27 +63,27 @@ Future<void> createEmailWithCSV(String csvContents) async {
   }
 
 
-void sendEmail(Site site){
-  print("make csv");
-  List<Sample> samples = site.samples;
-  List<List<String>> allSamplesLists = samples.map((s) {
-                    List<String> sampleList = [
-                      s.id.toString(),
-                      s.lat.toString(),
-                      s.lon.toString(),
-                      s.textureClass,
-                      s.depthShallow.toString(),
-                      s.depthDeep.toString(),
-                      s.sand.toString(),
-                      s.silt.toString(),
-                      s.clay.toString()
-                    ];
-                    print(sampleList);
-                    return sampleList;
-                  }).toList();
-  List<String> headers = [ID, LAT, LON, TEXTURECLASS, DEPTHSHALLOW, DEPTHDEEP, SAND, SILT, CLAY];
-  List<List<String>> headerAllSamplesLists = [headers] + allSamplesLists;
-  String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
-  createEmailWithCSV(csv);
-
-}
+//void sendEmail(Site site){
+//  print("make csv");
+//  List<Sample> samples = site.samples;
+//  List<List<String>> allSamplesLists = samples.map((s) {
+//                    List<String> sampleList = [
+//                      s.id.toString(),
+//                      s.lat.toString(),
+//                      s.lon.toString(),
+//                      s.textureClass,
+//                      s.depthShallow.toString(),
+//                      s.depthDeep.toString(),
+//                      s.sand.toString(),
+//                      s.silt.toString(),
+//                      s.clay.toString()
+//                    ];
+//                    print(sampleList);
+//                    return sampleList;
+//                  }).toList();
+//  List<String> headers = [ID, LAT, LON, TEXTURECLASS, DEPTHSHALLOW, DEPTHDEEP, SAND, SILT, CLAY];
+//  List<List<String>> headerAllSamplesLists = [headers] + allSamplesLists;
+//  String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
+//  createEmailWithCSV(csv);
+//
+//}

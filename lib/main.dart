@@ -5,6 +5,7 @@ import 'package:soil_mate/screens/side_bar/sidebar_layout.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:soil_mate/services/taxonomy_terms.dart';
 
+import 'models/log.dart';
 import 'models/taxonomy_term.dart';
 
 
@@ -13,6 +14,10 @@ void main() async {
   final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(TaxonomyTermAdapter());
+  Hive.registerAdapter(LogAdapter());
+  Hive.registerAdapter(QuantityAdapter());
+  Hive.registerAdapter(GeoFieldAdapter());
+
   runApp(MyApp());
 
 
@@ -52,12 +57,11 @@ class _MyAppState extends State<MyApp> {
 //          final taxonomyTermBox = Hive.box('taxonomy_term');
 //          taxonomyTermBox.clear();
 
-          injectTaxonomyTerms();
-
 
 
 
           if (snapshot.connectionState == ConnectionState.done){
+            injectTaxonomyTerms();
             if (snapshot.hasError){
               return Text(snapshot.error.toString());
             }else{
@@ -71,9 +75,10 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  @override
-  void dispose() {
-    Hive.close();
-    super.dispose();
-  }
+//  @override
+//  void dispose() {
+//    Hive.close();
+//    super.dispose();
+//  }
+
 }

@@ -4,6 +4,7 @@ import 'package:soil_mate/models/taxonomy_term.dart';
 
 part 'log.g.dart';
 
+
 @HiveType(typeId: 1)
 class GeoField{
   @HiveField(0)
@@ -12,7 +13,6 @@ class GeoField{
   final double lon;
 
   GeoField({this.lat, this.lon});
-
 
 }
 
@@ -34,8 +34,6 @@ class Quantity{
 
 @HiveType(typeId: 3)
 class Log{
-  @HiveField(0)
-  List<Quantity> quantity;
   @HiveField(1)
   int id;
   @HiveField(2)
@@ -43,20 +41,17 @@ class Log{
   @HiveField(3)
   String type; // "farm_soil_test"
   @HiveField(4)
-  String timestamp;
+  String timestamp;  // from taxonomies
   @HiveField(5)
-  List<TaxonomyTerm> log_category;  // from taxonomies
-  @HiveField(6)
   String notes;
+  @HiveField(6)
+  GeoField geofield;
   @HiveField(7)
-  GeoField geofield; // with keys lat lon
+  List<TaxonomyTerm> log_category;
+  @HiveField(8)
+  List<Quantity> quantity;// with keys lat lon
 
-//  int depthShallow;
-//  int depthDeep;
-//  // nearest %
-//  int sand;
-//  int silt;
-//  int clay;
+  Log({this.id, this.name, this.type, this.timestamp, this.notes, this.geofield, this.log_category, this.quantity});
 
 
 }
