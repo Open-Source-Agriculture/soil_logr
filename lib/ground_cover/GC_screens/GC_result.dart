@@ -4,10 +4,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_form.dart';
 import 'package:soil_mate/models/log.dart';
+import 'package:soil_mate/models/taxonomy_term.dart';
+import 'package:soil_mate/services/location_service.dart';
 import 'dart:io';
 
 import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
+import 'package:soil_mate/widgets/sample_list_tile.dart';
 
 class GroundCoverResult extends StatefulWidget   with NavigationStates{
   GroundCoverModel model;
@@ -27,25 +30,67 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
 
   Map<String, int> mySpecies = {
-    'Grasses perennial': 0,
-    'Grasses annual': 0,
-    'Forbs perennial': 0,
-    'Forbs annual': 0,
+    'Grasses Perennial': 0,
+    'Grasses Annual': 0,
+    'Forbs Perennial': 0,
+    'Forbs Annual': 0,
     'Legumes' : 0,
-    'Native pasture' : 0,
+    'Native Pasture' : 0,
   };
+
+
+  double coverPercentage = 0.0;
+  double weedsRatio  = 0.0;
+  double coverHeight = 0.0;
+
 
   @override
   Widget build(BuildContext context) {
 
+
+    Future addGroundCoverLog() async {
+      final taxonomyTermBox = Hive.box("taxonomy_term");
+      TaxonomyTerm taxonomyTerm = taxonomyTermBox.get("ground_cover");
+      Box GCbox = Hive.box("gc_logs");
+      int newID = GCbox.length;
+      Position pos = await determinePosition();
+      GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
+
+      TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
+      TaxonomyTerm cmUnit = TaxonomyTerm(tid: 18, name: "cm", description: "Center meters", parent: [], parents_all: []);
+      TaxonomyTerm countUnit = TaxonomyTerm(tid: 69, name: "count", description: "Number of items", parent: [], parents_all: []);
+
+      List<Quantity> selectedQuanties = [
+        // percentages
+        Quantity(measure: "value", value: coverPercentage, units: percentUnit, label: "Cover Percentage"),
+        Quantity(measure: "value", value: weedsRatio, units: percentUnit, label: "Weed Ratio"),
+        Quantity(measure: "value", value: coverHeight, units: cmUnit, label: "Cover Height"),
+        // Types
+        Quantity(measure: "count", value: mySpecies["Forbs Annual"].toDouble(), units: countUnit, label: "Forbs Annual"),
+        Quantity(measure: "count", value: mySpecies["Forbs Perennial"].toDouble(), units: countUnit, label: "Forbs Perennial"),
+        Quantity(measure: "count", value: mySpecies["Grasses Annual"].toDouble(), units: countUnit, label: "Grasses Annual"),
+        Quantity(measure: "count", value: mySpecies["Grasses Perennial"].toDouble(), units: countUnit, label: "Grasses Perennial"),
+        Quantity(measure: "count", value: mySpecies["Native Pasture"].toDouble(), units: countUnit, label: "Native Pasture"),
+        Quantity(measure: "count", value: mySpecies["Legumes"].toDouble(), units: countUnit, label: "Legumes"),
+        Quantity(measure: "count", value: mySpecies.values.reduce((v, e) => v+e).toDouble(), units: countUnit, label: "Total Species Diversity"),
+      ];
+
+
+      Log newGroundCoverLog = Log(
+          id: newID,
+          name: "",
+          type: "ground_cover_observation",
+          timestamp: DateTime.now().toString(),
+          notes: "",
+          geofield: geoField,
+          log_category: [taxonomyTerm],
+          quantity: selectedQuanties);
+      GCbox.put(newID, newGroundCoverLog);
+    }
+
+
     void _showGroundCoverPanel() {
       final _formKey = GlobalKey<FormState>();
-      GroundCoverModel model = GroundCoverModel();
-      double coverPercentage = 0.0;
-      double weedsRatio  = 0.0;
-      double coverHeight = 0.0;
-      int totalSpeciesCount = 0;
-
       showModalBottomSheet<dynamic>(
           isScrollControlled: true,
           context: context,
@@ -105,7 +150,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                         ),
                                       ),
                                       child: Slider.adaptive(
-                                        value: coverPercentage == null ? 0.0 : coverPercentage,
+                                        value: coverPercentage,
                                         onChanged: (newCoverPercentage) {
                                           setState(() => coverPercentage = newCoverPercentage);
                                         },
@@ -138,7 +183,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                         ),
                                       ),
                                       child: Slider.adaptive(
-                                        value: coverHeight== null ? 0.0 : coverHeight,
+                                        value: coverHeight,
                                         onChanged: (newCoverHeight) {
                                           setState(() => coverHeight = newCoverHeight);
                                         },
@@ -171,7 +216,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                         ),
                                       ),
                                       child: Slider.adaptive(
-                                        value: weedsRatio== null ? 0.0 : weedsRatio,
+                                        value: weedsRatio,
                                         onChanged: (newWeeds) {
                                           setState(() => weedsRatio = newWeeds);
                                         },
@@ -247,13 +292,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                 RaisedButton(
                                   color: Colors.blueAccent,
                                   onPressed: () {
-
-                                    Box box = Hive.box("gc_logs");
-                                    int newID = box.length;
-                                    print(newID);
-                                    GeoField geoField = GeoField(lat: 39, lon: 22);
-                                    Log newGroundCoverLog = Log(id: newID, name: "Kip", type: "cool", timestamp: "193278", notes: "Some notes", geofield: geoField, log_category: [], quantity: []);
-                                    box.put(newID, newGroundCoverLog);
+                                    addGroundCoverLog();
                                     Navigator.pop(context);
                                   },
                                   child: Text(
@@ -305,15 +344,10 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
       bottomNavigationBar: Row(
         children: [
           ElevatedButton(
-            child: Text('test'),
+            child: Text('Delete'),
             onPressed: () {
-              final groundCoverLog = Hive.box("gc_log");
-              List tKeys = groundCoverLog.keys.toList();
-              print("------------------------");
-              tKeys.forEach((element) {
-                final Log gcLog = groundCoverLog.get(element) as Log;
-                print(gcLog.name);
-              });
+              Box groundCoverLog = Hive.box("gc_log");
+              groundCoverLog.clear();
 
             }
           ),
@@ -341,8 +375,14 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
 
   @override
   Widget build(BuildContext context) {
-
-
+    List<String> ignoreSpecies = [
+      'Grasses Perennial',
+      'Grasses Annual',
+      'Forbs Perennial',
+      'Forbs Annual',
+      'Legumes',
+      'Native Pasture',
+    ];
 
     return FutureBuilder(
         future: Hive.openBox('gc_logs'),
@@ -361,16 +401,7 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
                       itemBuilder: (BuildContext context, int index) {
                         final gcLog = groundCoverLogBox.getAt(index) as Log;
 
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.lightGreenAccent.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ListTile(
-                            title: Text(gcLog.name),
-                            subtitle: Text(gcLog.id.toString()),
-                          ),
-                        );
+                        return SampleListTile(textureLog: gcLog, color: Colors.greenAccent, excludeList: ignoreSpecies,);
                       },
                     )
                     ;
