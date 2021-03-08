@@ -11,6 +11,13 @@ Color getColor(int sand, int silt, int clay) {
 
 class SampleListTile extends StatelessWidget {
   final Log textureLog;
+  double sand = 30.0;
+  double silt = 10.0;
+  double clay = 60.0;
+
+  double depthShallow = 0.0;
+  double depthDeep = 0.0;
+
 
 
   SampleListTile({
@@ -25,8 +32,8 @@ class SampleListTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-//          border: Border.all(color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay), width: 3.0),
-//          color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay).withOpacity(0.7),
+          border: Border.all(color: getColor(sand.toInt(), silt.toInt(), clay.toInt()), width: 3.0),
+          color: getColor(sand.toInt(), silt.toInt(), clay.toInt()).withOpacity(0.7),
         ),
         child: ListTile(
           onTap: () {
@@ -35,15 +42,15 @@ class SampleListTile extends StatelessWidget {
           // title: Text(locations[index].location),
           title: Text('ID: '+ textureLog.id.toString()
               + '    Texture: ' + textureLog.name
-//              + '\n' + textureLog.geofield.lat.toString() + ', '
-//              + textureLog.geofield.lat.toString()
+              + '\n' + textureLog.geofield.lat.toString() + ', '
+              + textureLog.geofield.lon.toString()
               ),
-//          subtitle: Text('Sand: ' + reverseBaseSamples[index].sand.toString()
-//              + ', Silt: ' + reverseBaseSamples[index].silt.toString()
-//              + ', Clay: ' +  reverseBaseSamples[index].clay.toString()
-//              + '\nDepth Upper: ' +  reverseBaseSamples[index].depthShallow.toString()
-//              + ', Depth Lower: '  + reverseBaseSamples[index].depthDeep.toString()
-//          ),
+          subtitle: Text('Sand: ' + sand.toString()
+              + ', Silt: ' + silt.toString()
+              + ', Clay: ' +  clay.toString()
+              + '\nDepth Upper: ' +  depthShallow.toString()
+              + ', Depth Lower: '  + depthDeep.toString()
+          ),
           /*leading: Text('1') CircleAvatar(
                       backgroundImage: AssetImage('assets/${locations[index].flag}'),
                     ),*/
