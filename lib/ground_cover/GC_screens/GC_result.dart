@@ -26,7 +26,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
 
     return Scaffold(
-      appBar: AppBar(title: Text('Successful')),
+      appBar: AppBar(title: Text('Ground Cover Result')),
       body: Column(
         children: [
           Expanded(child: GroundCoverTile()),
