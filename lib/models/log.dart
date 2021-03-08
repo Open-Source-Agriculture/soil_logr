@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:soil_mate/models/taxonomy_term.dart';
 
 
 part 'log.g.dart';
@@ -31,7 +32,6 @@ class Quantity{
 
 @HiveType(typeId: 3)
 class Log{
-
   @HiveField(0)
   List<Quantity> quantity;
   @HiveField(1)
@@ -43,7 +43,7 @@ class Log{
   @HiveField(4)
   String timestamp;
   @HiveField(5)
-  List<Map> log_category;  // from taxonomies
+  List<TaxonomyTerm> log_category;  // from taxonomies
   @HiveField(6)
   String notes;
   @HiveField(7)
