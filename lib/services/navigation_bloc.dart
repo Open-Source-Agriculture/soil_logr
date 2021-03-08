@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_form.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
+import 'package:soil_mate/screens/credits.dart';
 import 'package:soil_mate/screens/home.dart';
 import 'package:soil_mate/screens/sample_list.dart';
 
@@ -8,6 +9,7 @@ enum NavigationEvents {
   HomePageClickedEvent,
   TextureSurveyClickedEvent,
   GroundCoverSurveyClickedEvent,
+  CreditsClickedEvent,
 }
 
 abstract class NavigationStates {}
@@ -29,6 +31,9 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
         break;
       case NavigationEvents.GroundCoverSurveyClickedEvent:
         yield GroundCoverResult();
+        break;
+      case NavigationEvents.CreditsClickedEvent:
+        yield Credits();
         break;
     }
   }
