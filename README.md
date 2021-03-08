@@ -54,6 +54,12 @@ flutter pub get
 
 ### run the project
 
+Before running, make sure you generate the hive files:
+
+```bash
+flutter packages pub run build_runner build
+```
+
 Connect your device or emulator, then run:
 
 ```

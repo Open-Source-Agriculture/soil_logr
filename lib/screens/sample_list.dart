@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:soil_mate/models/log.dart';
+import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/models/texture_models.dart';
 import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/send_email.dart';
-import 'package:soil_mate/services/site_database.dart';
-import 'package:soil_mate/models/site.dart';
-import 'package:soil_mate/models/sample.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
+import 'package:soil_mate/widgets/sample_list_tile.dart';
 import 'package:soil_mate/widgets/sample_summary_container.dart';
 import 'dart:async';
 import 'credits.dart';
-import '../widgets/sample_list_tile.dart';
 
 class SampleList extends StatefulWidget with NavigationStates {
   @override
@@ -19,52 +20,16 @@ class SampleList extends StatefulWidget with NavigationStates {
 }
 
 class _SampleListState extends State<SampleList> {
-  List<Site> allSites = [];
+
   bool dataLoaded = false;
   String baseSiteKey = "BaseSite";
-  Site baseSite;
-  List<Sample> baseSamples = [];
-  List<Sample> reverseBaseSamples = [];
   TextureClass selectedTexture = AusClassification().getTextureList()[0];
   int depthUpper = 0;
   int depthLower = 10;
+  int increment = 0;
 
   @override
   Widget build(BuildContext context) {
-    //Add samples to sites
-    Site iSite = Site(
-      name: baseSiteKey,
-      classification: "aus",
-      rawSamples: [],
-      increment: 0,
-    );
-
-    //baseSite = iSite;
-
-    Future<void> loadData() async {
-      bool alreadySite = await saveSite(iSite);
-      if (alreadySite) {
-        print("Cant use this name; already exists");
-      }
-      this.allSites = await getSites();
-      print(this.allSites);
-      dataLoaded = true;
-      List<dynamic> baseSiteList =
-          allSites.where((s) => s.name == baseSiteKey).toList();
-      baseSite = baseSiteList[0];
-      baseSamples = baseSite.samples;
-      reverseBaseSamples = baseSamples.reversed.toList();
-      setState(() {});
-    }
-
-    if (!dataLoaded) {
-      loadData();
-    }
-
-    Future<void> deleteSamples() async {
-      overrideSite(iSite);
-      loadData();
-    }
 
     Future<Position> _determinePosition() async {
       bool serviceEnabled;
@@ -93,6 +58,38 @@ class _SampleListState extends State<SampleList> {
       return await Geolocator.getCurrentPosition();
     }
 
+    Future addTextureLog() async {
+      final taxonomyTermBox = Hive.box("taxonomy_term");
+      TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
+      Box box = Hive.box("texture_logs");
+      int newID = box.length;
+      Position pos = await _determinePosition();
+      GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
+
+      TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
+      TaxonomyTerm cmUnit = TaxonomyTerm(tid: 18, name: "cm", description: "Center meters", parent: [], parents_all: []);
+
+      List<Quantity> selectedQuanties = [
+        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: "sand"),
+        Quantity(measure: "value", value: selectedTexture.silt.toDouble(), units: percentUnit, label: "silt"),
+        Quantity(measure: "value", value: selectedTexture.clay.toDouble(), units: percentUnit, label: "clay"),
+        Quantity(measure: "value", value: depthUpper.toDouble(), units: cmUnit, label: "depthUpper"),
+        Quantity(measure: "value", value: depthLower.toDouble(), units: cmUnit, label: "depthLower"),
+      ];
+
+
+      Log newTextureLog = Log(
+          id: newID,
+          name: selectedTexture.name,
+          type: "texture_observation",
+          timestamp: DateTime.now().toString(),
+          notes: "",
+          geofield: geoField,
+          log_category: [taxonomyTerm],
+          quantity: selectedQuanties);
+      box.put(newID, newTextureLog);
+    }
+
     void _showAddSamplePanel() {
       var txt2 = TextEditingController();
       txt2.text = depthUpper.toString();
@@ -105,9 +102,10 @@ class _SampleListState extends State<SampleList> {
           TextPosition(offset: depthLower.toString().length));
 
       var txt4 = TextEditingController();
-      txt4.text = baseSite.increment.toString();
+      txt4.text = increment.toString();
       txt4.selection = TextSelection.fromPosition(
-          TextPosition(offset: baseSite.increment.toString().length));
+          TextPosition(offset: increment.toString().length));
+
 
       showModalBottomSheet<dynamic>(
           isScrollControlled: true,
@@ -245,8 +243,8 @@ class _SampleListState extends State<SampleList> {
                                     keyboardType: TextInputType.number,
                                     onChanged: (val) {
                                       setState(() {
-                                        baseSite.increment = int.parse(val);
-                                        print(baseSite.increment);
+                                        increment = int.parse(val);
+                                        print(increment);
                                       });
                                     },
                                   ),
@@ -259,7 +257,7 @@ class _SampleListState extends State<SampleList> {
                           selectedTexture: this.selectedTexture,
                           depthUpper: depthUpper,
                           depthLower: depthLower,
-                          sampleID: baseSite.increment,
+                          sampleID: increment,
                         )
                       ],
                     ),
@@ -267,29 +265,8 @@ class _SampleListState extends State<SampleList> {
                         child: RaisedButton(
                             child: Text("Save"),
                             onPressed: () {
-                              Future<void> saveDataPushHome() async {
-                                Position position = await _determinePosition();
-
-                                Sample s = Sample(
-                                  lat: position.latitude,
-                                  lon: position.longitude,
-                                  textureClass: selectedTexture.name,
-                                  depthShallow: depthUpper,
-                                  depthDeep: depthLower,
-                                  sand: selectedTexture.sand,
-                                  silt: selectedTexture.silt,
-                                  clay: selectedTexture.clay,
-                                  id: baseSite.increment,
-                                );
-                                baseSite.addSample(s);
-                                baseSite.increment = baseSite.increment + 1;
-
-                                overrideSite(baseSite);
-                                loadData();
-                                Navigator.pop(context);
-                              }
-
-                              saveDataPushHome();
+                              addTextureLog();
+                              Navigator.pop(context);
                             })),
                   ],
                 ),
@@ -315,8 +292,8 @@ class _SampleListState extends State<SampleList> {
                 MaterialButton(
                   child: Text('Confirm'),
                   onPressed: () {
-                    print(baseSamples);
-                    deleteSamples();
+                    Box box = Hive.box("texture_logs");
+                    box.clear();
                     Navigator.of(context).pop(SampleList());
                   },
                 ),
@@ -361,17 +338,7 @@ class _SampleListState extends State<SampleList> {
         elevation: 2.0,
         actions: <Widget>[],
       ),
-      body: ListView.builder(
-          reverse: true,
-          itemCount: reverseBaseSamples.length,
-          itemBuilder: (context, index) {
-            return SampleListTile(
-              baseSamples: baseSamples,
-              baseSite: baseSite,
-              reverseBaseSamples: reverseBaseSamples,
-              index: index,
-            );
-          }),
+      body: TextureList(),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -390,7 +357,7 @@ class _SampleListState extends State<SampleList> {
           FlatButton.icon(
             onPressed: () {
               print("Export Data");
-              sendEmail(baseSite);
+//              sendEmail(baseSite);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Credits()),
@@ -403,4 +370,71 @@ class _SampleListState extends State<SampleList> {
       ),
     ));
   }
+
+}
+
+
+
+
+class TextureList extends StatefulWidget {
+  @override
+  _TextureListState createState() => _TextureListState();
+}
+
+class _TextureListState extends State<TextureList> {
+
+
+  Color getColor(int sand, int silt, int clay) {
+    int R = (225*sand + 225*clay)~/100;
+    int G = (225*sand + 225*silt)~/100;
+    int B = (225*silt + 225*clay)~/100;
+    return Color.fromRGBO(R, G, B, 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: Hive.openBox('texture_logs'),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+
+          if ((snapshot.connectionState == ConnectionState.done)){
+            if (snapshot.hasError){
+              return Text(snapshot.error.toString());
+            }else{
+              return ValueListenableBuilder(
+                  valueListenable: Hive.box("texture_logs").listenable(),
+                  builder: (context, textureLogBox, widget){
+
+
+                    return ListView.builder(
+                      reverse: true,
+                      itemCount: textureLogBox.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final tLog = textureLogBox.getAt(textureLogBox.length - 1 - index) as Log;
+                        Map quantityMap = {};
+                        tLog.quantity.forEach((quant) {
+                          quantityMap[quant.label] = quant.value;
+                        });
+
+                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),);
+                      },
+                    )
+                    ;
+                  }
+
+              );
+            }
+          }else{
+            return Scaffold();
+          }
+    }
+    );
+  }
+
+//  @override
+//  void dispose() {
+//    Hive.close();
+//    super.dispose();
+//  }
+
 }
