@@ -282,67 +282,53 @@ class _SampleListState extends State<SampleList> {
 //    }
 
     return Container(
-        child: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Sample List",
-              style: TextStyle(
-                color: Colors.black,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Soil Texture Samples",
+                    style: headingTextStyle(context),
+                  ),
+                ],
               ),
+              backgroundColor: Colors.white,
+              elevation: 2.0,
+              actions: <Widget>[],
             ),
-            Container(
-              width: 50,
-              child: FlatButton(
-                child: Icon(Icons.more_vert),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Credits()),
-                  );
-                },
-              ),
-            )
-          ],
+            body: TextureList(),
+            bottomNavigationBar: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton.icon(
+                  onPressed: () => _showAddSamplePanel(),
+                  icon: Icon(Icons.add, color: Colors.black87),
+                  label: Text('Add', style: TextStyle(color: Colors.black87)),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    createAlertDialog(context);
+                  },
+                  icon: Icon(Icons.delete, color: Colors.black87,),
+                  label: Text('Delete All', style: TextStyle(color: Colors.black87),),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    print("Export Data");
+      //              sendEmail(baseSite);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Credits()),
+                    );
+                  },
+                  icon: Icon(Icons.import_export, color: Colors.black87),
+                  label: Text('Export Data', style: TextStyle(color: Colors.black87)),
+                ),
+              ],
         ),
-        backgroundColor: Colors.grey[300],
-        elevation: 2.0,
-        actions: <Widget>[],
-      ),
-      body: TextureList(),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FlatButton.icon(
-            onPressed: () => _showAddSamplePanel(),
-            icon: Icon(Icons.add),
-            label: Text('Add'),
-          ),
-          FlatButton.icon(
-            onPressed: () {
-              createAlertDialog(context);
-            },
-            icon: Icon(Icons.delete),
-            label: Text('Delete All'),
-          ),
-          FlatButton.icon(
-            onPressed: () {
-              print("Export Data");
-//              sendEmail(baseSite);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Credits()),
-              );
-            },
-            icon: Icon(Icons.import_export),
-            label: Text('Export Data'),
-          ),
-        ],
-      ),
     ));
   }
 
