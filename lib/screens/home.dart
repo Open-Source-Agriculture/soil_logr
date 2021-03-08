@@ -17,19 +17,19 @@ class Home extends StatelessWidget with NavigationStates {
             "HomePage",
             style: TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
           ),
-          RaisedButton(
-            child: Text("Test JSON"),
-              onPressed: (){
-              final taxonomyTermBox = Hive.box("taxonomy_term");
-              List tKeys = taxonomyTermBox.keys.toList();
-              print("------------------------");
-              tKeys.forEach((element) {
-                final TaxonomyTerm taxTerm = taxonomyTermBox.get(element) as TaxonomyTerm;
-                print(taxTerm.name);
-              });
-
-              }
-          )
+//          RaisedButton(
+//            child: Text("Test JSON"),
+//              onPressed: (){
+//              final taxonomyTermBox = Hive.box("taxonomy_term");
+//              List tKeys = taxonomyTermBox.keys.toList();
+//              print("------------------------");
+//              tKeys.forEach((element) {
+//                final TaxonomyTerm taxTerm = taxonomyTermBox.get(element) as TaxonomyTerm;
+//                print(taxTerm.name);
+//              });
+//
+//              }
+//          )
         ],
       ),
     );
