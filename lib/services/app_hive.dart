@@ -17,12 +17,12 @@ class AppBoxes {
   }
 
   Future<Object> load() async {
-    await Hive.initFlutter();
+//    await Hive.initFlutter();
 //    var dir = await getApplicationDocumentsDirectory();
 //    Hive.init(dir.path);
 
-    await Hive.openBox('siteBox');
-    siteBox = Hive.box('siteBox');
+//    await Hive.openBox('siteBox');
+//    siteBox = Hive.box('siteBox');
 //    siteBox.clear();
 
 

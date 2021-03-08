@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/screens/credits.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
@@ -18,8 +20,13 @@ class Home extends StatelessWidget with NavigationStates {
           RaisedButton(
             child: Text("Test JSON"),
               onPressed: (){
-
-                loadTaxonomyMap("aus_classification");
+              final taxonomyTermBox = Hive.box("taxonomy_term");
+              List tKeys = taxonomyTermBox.keys.toList();
+              print("------------------------");
+              tKeys.forEach((element) {
+                final TaxonomyTerm taxTerm = taxonomyTermBox.get(element) as TaxonomyTerm;
+                print(taxTerm.name);
+              });
 
               }
           )
