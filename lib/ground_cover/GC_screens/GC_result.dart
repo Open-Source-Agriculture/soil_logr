@@ -341,7 +341,15 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
 
     return Scaffold(
-      appBar: AppBar(title: Text('Ground Cover Result')),
+      appBar: AppBar(title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            "Ground Cover Samples",
+            style: headingTextStyle(context),
+          ),
+        ],
+      ),),
       body: Column(
         children: [
           Expanded(child: GroundCoverTile()),
@@ -369,19 +377,31 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
         ],
       ),
       bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ElevatedButton(
-            child: Text('Delete'),
+          TextButton.icon(
+            onPressed: () => _showGroundCoverPanel(),
+            icon: Icon(Icons.add, color: Colors.black87),
+            label: Text('Add', style: TextStyle(color: Colors.black87)),
+          ),
+          TextButton.icon(
             onPressed: () {
               _createDeleteGroundCoverDialog(context);
-
-            }
+            },
+            icon: Icon(Icons.delete, color: Colors.black87,),
+            label: Text('Delete All', style: TextStyle(color: Colors.black87),),
           ),
-          ElevatedButton(
-            child: Text('Add Sample'),
-              onPressed: () {
-                _showGroundCoverPanel();
-              }
+          TextButton.icon(
+            onPressed: () {
+//               print("Export Data");
+// //              sendEmail(baseSite);
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (context) => Credits()),
+//               );
+            },
+            icon: Icon(Icons.import_export, color: Colors.black87),
+            label: Text('Export Data', style: TextStyle(color: Colors.black87)),
           ),
         ],
       ),
