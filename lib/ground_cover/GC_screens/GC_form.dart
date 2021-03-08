@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soil_mate/services/navigation_bloc.dart';
-import 'package:validators/validators.dart' as validator;
 import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
