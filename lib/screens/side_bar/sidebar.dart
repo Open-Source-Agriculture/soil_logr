@@ -109,25 +109,33 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                         indent: 32,
                         endIndent: 32,
                       ),
+                      ListTile(
+                        title: Text('Credits'),
+                        leading: Icon(Icons.home),
+                        onTap: () {
+                          onIconPressed();
+                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.CreditsClickedEvent);
+                        },
+                      ),
                     ],
                   ),
                 ),
               ),
               Align(
-                alignment: Alignment(0, -0.86),
+                alignment: Alignment(0, -0.84),
                 child: GestureDetector(
                   onTap: () {
                     onIconPressed();
                   },
                   child: Container(
-                    width: 22,
+                    width: 20,
                     height: 20,
                     alignment: Alignment.centerLeft,
                     child: AnimatedIcon(
                       progress: _animationController.view,
                       icon: AnimatedIcons.menu_close,
-                      color: Colors.grey[500],
-                      size: 25,
+                      color: Colors.black,
+                      size: 30,
                     ),
                   ),
                 ),
