@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/texture_models.dart';
 
 Color getColor(int sand, int silt, int clay) {
@@ -9,14 +10,12 @@ Color getColor(int sand, int silt, int clay) {
 }
 
 class SampleListTile extends StatelessWidget {
-  final baseSite;
-  final baseSamples;
-  final reverseBaseSamples;
-  final int index;
+  final Log textureLog;
+
 
   SampleListTile({
     Key /*?*/ key,
-  this.baseSamples, this.baseSite, this.index, this.reverseBaseSamples,
+  @required this.textureLog,
   }) : super(key: key) {}
 
   @override
@@ -26,24 +25,25 @@ class SampleListTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay), width: 3.0),
-          color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay).withOpacity(0.7),
+//          border: Border.all(color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay), width: 3.0),
+//          color: getColor(reverseBaseSamples[index].sand, reverseBaseSamples[index].silt, reverseBaseSamples[index].clay).withOpacity(0.7),
         ),
         child: ListTile(
           onTap: () {
             print("Nothing");
           },
           // title: Text(locations[index].location),
-          title: Text('ID: '+ reverseBaseSamples[index].id.toString()
-              + '    Texture: ' + reverseBaseSamples[index].textureClass
-              + '\n' + reverseBaseSamples[index].lat.toString() + ', '
-              + reverseBaseSamples[index].lon.toString()),
-          subtitle: Text('Sand: ' + reverseBaseSamples[index].sand.toString()
-              + ', Silt: ' + reverseBaseSamples[index].silt.toString()
-              + ', Clay: ' +  reverseBaseSamples[index].clay.toString()
-              + '\nDepth Upper: ' +  reverseBaseSamples[index].depthShallow.toString()
-              + ', Depth Lower: '  + reverseBaseSamples[index].depthDeep.toString()
-          ),
+          title: Text('ID: '+ textureLog.id.toString()
+              + '    Texture: ' + textureLog.name
+//              + '\n' + textureLog.geofield.lat.toString() + ', '
+//              + textureLog.geofield.lat.toString()
+              ),
+//          subtitle: Text('Sand: ' + reverseBaseSamples[index].sand.toString()
+//              + ', Silt: ' + reverseBaseSamples[index].silt.toString()
+//              + ', Clay: ' +  reverseBaseSamples[index].clay.toString()
+//              + '\nDepth Upper: ' +  reverseBaseSamples[index].depthShallow.toString()
+//              + ', Depth Lower: '  + reverseBaseSamples[index].depthDeep.toString()
+//          ),
           /*leading: Text('1') CircleAvatar(
                       backgroundImage: AssetImage('assets/${locations[index].flag}'),
                     ),*/
