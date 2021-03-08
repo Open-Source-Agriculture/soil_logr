@@ -1,7 +1,9 @@
+import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:soil_mate/models/log.dart';
 
 
 Future<String> get _localPath async {
@@ -22,8 +24,6 @@ Future<String> writeCSV(String csvString) async {
   file.writeAsString(csvString);
   return file.path;
 }
-
-
 
 
 
@@ -63,27 +63,33 @@ Future<void> createEmailWithCSV(String csvContents) async {
   }
 
 
-//void sendEmail(Site site){
-//  print("make csv");
-//  List<Sample> samples = site.samples;
-//  List<List<String>> allSamplesLists = samples.map((s) {
-//                    List<String> sampleList = [
-//                      s.id.toString(),
-//                      s.lat.toString(),
-//                      s.lon.toString(),
-//                      s.textureClass,
-//                      s.depthShallow.toString(),
-//                      s.depthDeep.toString(),
-//                      s.sand.toString(),
-//                      s.silt.toString(),
-//                      s.clay.toString()
-//                    ];
-//                    print(sampleList);
-//                    return sampleList;
-//                  }).toList();
+void sendEmail(List<Log> logs){
+  print("make csv");
+
+  List<List<String>> allSamplesLists = [];
+
+  logs.forEach((l) {
+    Map<String, dynamic> logMap = l.toMap();
+    List<String> row = [
+      l.id.toString(),
+      l.geofield.lat.toString(),
+      l.geofield.lon.toString(),
+      l.log_category[0].name,
+
+    ];
+
+    l.quantity.forEach((q) {
+      row.add(q.value.toString());
+    });
+
+    allSamplesLists.add(row);
+
+  });
+
+
 //  List<String> headers = [ID, LAT, LON, TEXTURECLASS, DEPTHSHALLOW, DEPTHDEEP, SAND, SILT, CLAY];
-//  List<List<String>> headerAllSamplesLists = [headers] + allSamplesLists;
-//  String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
-//  createEmailWithCSV(csv);
-//
-//}
+  List<List<String>> headerAllSamplesLists = allSamplesLists;
+  String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
+  createEmailWithCSV(csv);
+
+}
