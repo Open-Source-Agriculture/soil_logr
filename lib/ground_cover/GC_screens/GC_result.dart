@@ -313,6 +313,34 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           });
     }
 
+    _createDeleteGroundCoverDialog(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Delete all samples'),
+              content: Text('Are you sure you want to delete?'),
+              actions: [
+                MaterialButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                MaterialButton(
+                  child: Text('Confirm'),
+                  onPressed: () {
+                    Box groundCoverLog = Hive.box("gc_log");
+                    groundCoverLog.clear();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+
     return Scaffold(
       appBar: AppBar(title: Text('Ground Cover Result')),
       body: Column(
@@ -346,8 +374,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           ElevatedButton(
             child: Text('Delete'),
             onPressed: () {
-              Box groundCoverLog = Hive.box("gc_log");
-              groundCoverLog.clear();
+              _createDeleteGroundCoverDialog(context);
 
             }
           ),
