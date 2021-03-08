@@ -66,30 +66,40 @@ Future<void> createEmailWithCSV(String csvContents) async {
 void sendEmail(List<Log> logs){
   print("make csv");
 
-  List<List<String>> allSamplesLists = [];
+  if (logs.isNotEmpty){
+    List<List<String>> allSamplesLists = [];
 
-  logs.forEach((l) {
-    Map<String, dynamic> logMap = l.toMap();
-    List<String> row = [
-      l.id.toString(),
-      l.geofield.lat.toString(),
-      l.geofield.lon.toString(),
-      l.log_category[0].name,
+    List<String> headers = ["id", "Latitude", "Longitude", "Category"];
 
-    ];
+    Log firstLog = logs[0];
 
-    l.quantity.forEach((q) {
-      row.add(q.value.toString());
+    firstLog.quantity.forEach((q) {
+      headers.add(q.label);
     });
 
-    allSamplesLists.add(row);
 
-  });
+    logs.forEach((l) {
+      List<String> row = [
+        l.id.toString(),
+        l.geofield.lat.toString(),
+        l.geofield.lon.toString(),
+        l.log_category[0].name,
+
+      ];
+
+      l.quantity.forEach((q) {
+        row.add(q.value.toString());
+        print(q.label);
+      });
+
+      allSamplesLists.add(row);
+
+    });
 
 
-//  List<String> headers = [ID, LAT, LON, TEXTURECLASS, DEPTHSHALLOW, DEPTHDEEP, SAND, SILT, CLAY];
-  List<List<String>> headerAllSamplesLists = allSamplesLists;
-  String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
-  createEmailWithCSV(csv);
+    List<List<String>> headerAllSamplesLists = [headers] + allSamplesLists;
+    String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
+    createEmailWithCSV(csv);
+  }
 
 }
