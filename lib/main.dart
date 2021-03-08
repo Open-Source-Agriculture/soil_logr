@@ -47,8 +47,14 @@ class _MyAppState extends State<MyApp> {
           }
 
           Future injectTaxonomyTerms() async {
-            Map terms = await loadTaxonomyMap("soil_sample");
-            terms.forEach((key, value) {
+            Map ausTerms = await loadTaxonomyMap("aus_classification");
+            ausTerms.forEach((key, value) {
+              TaxonomyTerm taxTerm = TaxonomyTerm(tid: int.parse(value["tid"]), name: value["name"], description: value["description"], parent: value["parent"], parents_all: value["parents_all"]);
+              injectTaxonomyTerm(key, taxTerm);
+            });
+
+            Map gcTerms = await loadTaxonomyMap("ground_cover");
+            gcTerms.forEach((key, value) {
               TaxonomyTerm taxTerm = TaxonomyTerm(tid: int.parse(value["tid"]), name: value["name"], description: value["description"], parent: value["parent"], parents_all: value["parents_all"]);
               injectTaxonomyTerm(key, taxTerm);
             });
