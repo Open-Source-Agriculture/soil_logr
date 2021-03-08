@@ -59,13 +59,13 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
           top: 0,
           bottom: 0,
           left: isSideBarOpenedAsync.data ? 0 : -screenWidth,
-          right: isSideBarOpenedAsync.data ? 0 : screenWidth - 45,
+          right: isSideBarOpenedAsync.data ? 0 : screenWidth - 25,
           child: Row(
             children: <Widget>[
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color:  Colors.white,
+                  color:  Colors.white.withOpacity(0.7),
                   child: Column(
                     children: <Widget>[
                       SizedBox(
@@ -114,24 +114,20 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                 ),
               ),
               Align(
-                alignment: Alignment(0, -0.90),
+                alignment: Alignment(0, -0.86),
                 child: GestureDetector(
                   onTap: () {
                     onIconPressed();
                   },
-                  child: ClipPath(
-                    clipper: CustomMenuClipper(),
-                    child: Container(
-                      width: 35,
-                      height: 50,
-                      color: Colors.white,
-                      alignment: Alignment.centerLeft,
-                      child: AnimatedIcon(
-                        progress: _animationController.view,
-                        icon: AnimatedIcons.menu_close,
-                        color: Colors.grey,
-                        size: 25,
-                      ),
+                  child: Container(
+                    width: 22,
+                    height: 20,
+                    alignment: Alignment.centerLeft,
+                    child: AnimatedIcon(
+                      progress: _animationController.view,
+                      icon: AnimatedIcons.menu_close,
+                      color: Colors.grey[500],
+                      size: 25,
                     ),
                   ),
                 ),
