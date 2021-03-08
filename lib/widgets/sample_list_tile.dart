@@ -4,6 +4,7 @@ import 'package:soil_mate/models/log.dart';
 class SampleListTile extends StatelessWidget {
   final Log textureLog;
   final Color color;
+  final List<String> excludeList;
 
 
 
@@ -12,6 +13,7 @@ class SampleListTile extends StatelessWidget {
     Key /*?*/ key,
     @required this.textureLog,
     @required this.color,
+    @required this.excludeList,
   }) : super(key: key) {}
 
   @override
@@ -20,7 +22,10 @@ class SampleListTile extends StatelessWidget {
 
     String quantityString = "";
     textureLog.quantity.forEach((q) {
-      quantityString = quantityString + "${q.label}: ${q.value}\n";
+      if (!excludeList.contains(q.label)){
+        quantityString = quantityString + "${q.label}: ${q.value}\n";
+      }
+      
 
     });
 
@@ -39,7 +44,7 @@ class SampleListTile extends StatelessWidget {
           },
           // title: Text(locations[index].location),
           title: Text('ID: '+ textureLog.id.toString()
-              + '    Texture: ' + textureLog.name
+               + '    ' +textureLog.name
               + '\n' + textureLog.geofield.lat.toString() + ', '
               + textureLog.geofield.lon.toString()
               ),
