@@ -357,7 +357,13 @@ class _SampleListState extends State<SampleList> {
           FlatButton.icon(
             onPressed: () {
               print("Export Data");
-//              sendEmail(baseSite);
+              Box logBox = Hive.box("texture_logs");
+              List logKeys = logBox.keys.toList();
+              List<Log> logList = [];
+              logKeys.forEach((k) {
+                logList.add(logBox.get(k) as Log);
+              });
+              sendEmail(logList);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Credits()),
