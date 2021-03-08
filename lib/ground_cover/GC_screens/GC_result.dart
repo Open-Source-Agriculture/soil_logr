@@ -7,6 +7,7 @@ import 'package:soil_mate/models/log.dart';
 import 'dart:io';
 
 import 'package:soil_mate/services/navigation_bloc.dart';
+import 'package:soil_mate/services/sizes_and_themes.dart';
 
 class GroundCoverResult extends StatefulWidget   with NavigationStates{
   GroundCoverModel model;
@@ -20,10 +21,258 @@ class GroundCoverResult extends StatefulWidget   with NavigationStates{
 class _GroundCoverResultState extends State<GroundCoverResult> {
   List<GroundCoverModel> GroundCoverList = [];
 
+
+
+
+
+
+  Map<String, int> mySpecies = {
+    'Grasses perennial': 0,
+    'Grasses annual': 0,
+    'Forbs perennial': 0,
+    'Forbs annual': 0,
+    'Legumes' : 0,
+    'Native pasture' : 0,
+  };
+
   @override
   Widget build(BuildContext context) {
 
+    void _showGroundCoverPanel() {
+      final _formKey = GlobalKey<FormState>();
+      GroundCoverModel model = GroundCoverModel();
+      double coverPercentage = 0.0;
+      double weedsRatio  = 0.0;
+      double coverHeight = 0.0;
+      int totalSpeciesCount = 0;
 
+      showModalBottomSheet<dynamic>(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  sliderColor(value) {
+                    if (value < 30) {
+                      return Colors.green[200];
+                    } if (value < 70) {
+                      return Colors.green[400];
+                    }
+                    else {
+                      return Colors.green[700];
+                    }
+                  }
+
+
+                  return Scaffold(
+                    body: Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20,30,10,10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: displayHeight(context)*0.08,),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                color: Colors.grey[200],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10, top: 8),
+                                    child: Text(
+                                      'Percentage of Ground Cover',
+                                      style: bodyTextStyle(context),
+                                    ),
+                                  ),
+                                  Container(
+                                    //margin: EdgeInsets.symmetric(horizontal: 10),
+                                    color: Colors.white,
+                                    child: SliderTheme(
+                                      data: SliderTheme.of(context).copyWith(
+                                        trackShape: RoundedRectSliderTrackShape(),
+                                        trackHeight: 4.0,
+                                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                        overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                        tickMarkShape: RoundSliderTickMarkShape(),
+                                        valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                                        valueIndicatorTextStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      child: Slider.adaptive(
+                                        value: coverPercentage == null ? 0.0 : coverPercentage,
+                                        onChanged: (newCoverPercentage) {
+                                          setState(() => coverPercentage = newCoverPercentage);
+                                        },
+                                        label: '${coverPercentage.round()} %',
+                                        divisions: 20,
+                                        min: 0,
+                                        max: 100,
+                                        activeColor: sliderColor(coverPercentage),
+                                        inactiveColor: sliderColor(coverPercentage),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10, top: 8),
+                                    child: Text('Height of Cover', style: bodyTextStyle(context),),
+                                  ),
+                                  Container(
+                                    //margin: EdgeInsets.symmetric(horizontal: 10),
+                                    color: Colors.white,
+                                    child: SliderTheme(
+                                      data: SliderTheme.of(context).copyWith(
+                                        trackShape: RoundedRectSliderTrackShape(),
+                                        trackHeight: 4.0,
+                                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                        overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                        tickMarkShape: RoundSliderTickMarkShape(),
+                                        valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                                        valueIndicatorTextStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      child: Slider.adaptive(
+                                        value: coverHeight== null ? 0.0 : coverHeight,
+                                        onChanged: (newCoverHeight) {
+                                          setState(() => coverHeight = newCoverHeight);
+                                        },
+                                        label: '${coverHeight.round()} cm',
+                                        min: 0,
+                                        max: 100,
+                                        divisions: 20,
+                                        activeColor: sliderColor(coverHeight),
+                                        inactiveColor: sliderColor(coverHeight),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10, top: 8),
+                                    child: Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
+                                  ),
+                                  Container(
+                                    //margin: EdgeInsets.symmetric(horizontal: 10),
+                                    color: Colors.white,
+                                    child: SliderTheme(
+                                      data: SliderTheme.of(context).copyWith(
+                                        trackShape: RoundedRectSliderTrackShape(),
+                                        trackHeight: 4.0,
+                                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                                        overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                        tickMarkShape: RoundSliderTickMarkShape(),
+                                        valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                                        valueIndicatorTextStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      child: Slider.adaptive(
+                                        value: weedsRatio== null ? 0.0 : weedsRatio,
+                                        onChanged: (newWeeds) {
+                                          setState(() => weedsRatio = newWeeds);
+                                        },
+                                        label: '${weedsRatio.round()} %',
+                                        min: 0,
+                                        max: 100,
+                                        divisions: 20,
+                                        activeColor: sliderColor(weedsRatio),
+                                        inactiveColor: sliderColor(weedsRatio),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: mySpecies.length,
+                                itemBuilder: (context, index) {
+                                  String speciesName = mySpecies.keys.toList()[index];
+                                  int speciesCount = mySpecies[speciesName];
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      //color: Colors.grey[200],
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(speciesName, style: bodyTextStyle(context),),
+                                        Row(
+                                          children: [
+                                            RawMaterialButton(
+                                              //elevation: 2.0,
+                                              // fillColor: Color(0xff2C9C0A),
+                                              // shape: CircleBorder(),
+                                              child: Icon(Icons.remove),
+                                              onPressed: () {
+                                                if (mySpecies[speciesName] > 0 ){
+                                                  mySpecies[speciesName] =
+                                                      mySpecies[speciesName] - 1;
+                                                  setState(() {});
+                                                }
+                                              },
+                                            ),
+                                            Text(speciesCount.toString(), style: bodyTextStyle(context),),
+                                            RawMaterialButton(
+                                              //elevation: 2.0,
+                                              // fillColor: Color(0xff2C9C0A),
+                                              // shape: CircleBorder(),
+                                              child: Icon(Icons.add),
+                                              onPressed: () {
+                                                mySpecies[speciesName] = mySpecies[speciesName] + 1;
+                                                setState(() {
+
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
+                                  );
+                                }),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //imageProfile(context),
+                                RaisedButton(
+                                  color: Colors.blueAccent,
+                                  onPressed: () {
+
+                                    Box box = Hive.box("gc_logs");
+                                    int newID = box.length;
+                                    print(newID);
+                                    GeoField geoField = GeoField(lat: 39, lon: 22);
+                                    Log newGroundCoverLog = Log(id: newID, name: "Kip", type: "cool", timestamp: "193278", notes: "Some notes", geofield: geoField, log_category: [], quantity: []);
+                                    box.put(newID, newGroundCoverLog);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          });
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text('Ground Cover Result')),
@@ -71,37 +320,11 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           ElevatedButton(
             child: Text('Add Sample'),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GroundCoverForm()));
+                _showGroundCoverPanel();
               }
           ),
         ],
       ),
-    );
-  }
-  Widget _buildListView() {
-    return FutureBuilder(
-        future: Hive.openBox("gc_log"),
-        builder: (context, snapshot) {
-          return ValueListenableBuilder(
-            valueListenable: Hive.box("gc_log").listenable(),
-            builder: (context, groundCoverLog, _) {
-              return ListView.builder(
-                itemCount: groundCoverLog.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final gcLog = groundCoverLog.getAt(index) as Log;
-
-                  return ListTile(
-                    title: Text(gcLog.name),
-                    subtitle: Text(gcLog.id.toString()),
-                  );
-                },
-              );
-            },
-          );
-        }
     );
   }
 }
@@ -127,31 +350,26 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
 
 
           if (snapshot.connectionState == ConnectionState.done){
-            final Box groundCoverLogBox = Hive.box("gc_logs");
-            List gcKeys = groundCoverLogBox.keys.toList();
             if (snapshot.hasError){
-              return Column(
-                children: [
-                  Container(
-                    height: 200,
-                    width: 100,
-                    color: Colors.lightGreenAccent,
-                  ),
-                  Text(snapshot.error.toString()),
-                ],
-              );
+              return Text(snapshot.error.toString());
             }else{
               return ValueListenableBuilder(
-                  valueListenable: groundCoverLogBox.listenable(),
-                  builder: (context, box, widget){
+                  valueListenable: Hive.box("gc_logs").listenable(),
+                  builder: (context, groundCoverLogBox, widget){
                     return ListView.builder(
-                      itemCount: gcKeys.length,
+                      itemCount: groundCoverLogBox.length,
                       itemBuilder: (BuildContext context, int index) {
                         final gcLog = groundCoverLogBox.getAt(index) as Log;
 
-                        return ListTile(
-                          title: Text(gcLog.name),
-                          subtitle: Text(gcLog.id.toString()),
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.lightGreenAccent.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: ListTile(
+                            title: Text(gcLog.name),
+                            subtitle: Text(gcLog.id.toString()),
+                          ),
                         );
                       },
                     )
