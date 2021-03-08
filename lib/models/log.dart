@@ -14,6 +14,14 @@ class GeoField{
 
   GeoField({this.lat, this.lon});
 
+
+  Map<String, double> toMap(){
+    return({
+      "lat": lat,
+      "lon": lon,
+    });
+  }
+
 }
 
 
@@ -30,6 +38,14 @@ class Quantity{
 
   Quantity({this.measure, this.value, this.units, this.label});
 
+  Map<String, dynamic> toMap(){
+    return({
+      "measure": measure,
+      "value": value,
+      "units": units.toMap(),
+      "label": label
+    });
+  }
 }
 
 @HiveType(typeId: 3)
@@ -52,6 +68,20 @@ class Log{
   List<Quantity> quantity;// with keys lat lon
 
   Log({this.id, this.name, this.type, this.timestamp, this.notes, this.geofield, this.log_category, this.quantity});
+
+
+  Map<String, dynamic> toMap(){
+    return({
+      "id": id,
+      "name": name,
+      "type": type,
+      "timestamp": timestamp,
+      "notes": notes,
+      "geofield": geofield.toMap(),
+      "log_category": log_category.map((t) => t.toMap()),
+      "quantity": quantity.map((e) => e.toMap()),
+    });
+  }
 
 
 }
