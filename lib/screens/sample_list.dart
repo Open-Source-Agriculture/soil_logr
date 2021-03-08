@@ -60,9 +60,6 @@ class _SampleListState extends State<SampleList> {
 
     Future addTextureLog() async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
-      taxonomyTermBox.keys.toList().forEach((element) {
-        print(element);
-      });
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
       int newID = box.length;
@@ -73,9 +70,9 @@ class _SampleListState extends State<SampleList> {
       TaxonomyTerm cmUnit = TaxonomyTerm(tid: 18, name: "cm", description: "Center meters", parent: [], parents_all: []);
 
       List<Quantity> selectedQuanties = [
-        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: selectedTexture.name),
-        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: selectedTexture.name),
-        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: selectedTexture.name),
+        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: "sand"),
+        Quantity(measure: "value", value: selectedTexture.silt.toDouble(), units: percentUnit, label: "silt"),
+        Quantity(measure: "value", value: selectedTexture.clay.toDouble(), units: percentUnit, label: "clay"),
         Quantity(measure: "value", value: depthUpper.toDouble(), units: cmUnit, label: "depthUpper"),
         Quantity(measure: "value", value: depthLower.toDouble(), units: cmUnit, label: "depthLower"),
       ];
@@ -386,6 +383,14 @@ class TextureList extends StatefulWidget {
 
 class _TextureListState extends State<TextureList> {
 
+
+  Color getColor(int sand, int silt, int clay) {
+    int R = (225*sand + 225*clay)~/100;
+    int G = (225*sand + 225*silt)~/100;
+    int B = (225*silt + 225*clay)~/100;
+    return Color.fromRGBO(R, G, B, 1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -399,12 +404,18 @@ class _TextureListState extends State<TextureList> {
               return ValueListenableBuilder(
                   valueListenable: Hive.box("texture_logs").listenable(),
                   builder: (context, textureLogBox, widget){
+
+
                     return ListView.builder(
                       itemCount: textureLogBox.length,
                       itemBuilder: (BuildContext context, int index) {
                         final tLog = textureLogBox.getAt(index) as Log;
+                        Map quantityMap = {};
+                        tLog.quantity.forEach((quant) {
+                          quantityMap[quant.label] = quant.value;
+                        });
 
-                        return SampleListTile(textureLog: tLog,);
+                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),);
                       },
                     )
                     ;
