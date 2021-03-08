@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 //import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
 import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
+import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -239,24 +241,32 @@ class _GroundCoverFormState extends State<GroundCoverForm> {
                     RaisedButton(
                       color: Colors.blueAccent,
                       onPressed: () {
-                        print(mySpecies.length);
-                        model.coverPercentage = coverPercentage;
-                        model.coverHeight = coverHeight;
-                        model.weedsRatio = weedsRatio;
-                        model.lat = 32.0;
-                        model.lon = 32.0;
 
+                        Box box = Hive.box("gc_logs");
+                        int newID = box.length;
+                        print(newID);
+                        GeoField geoField = GeoField(lat: 39, lon: 22);
+                        Log newGroundCoverLog = Log(id: newID, name: "Kip", type: "cool", timestamp: "193278", notes: "Some notes", geofield: geoField, log_category: [], quantity: []);
+                        box.put(newID, newGroundCoverLog);
+                        Navigator.pop(context);
 
-                        model.speciesMap = mySpecies;
-                        model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
+                        // print(mySpecies.length);
+                        // model.coverPercentage = coverPercentage;
+                        // model.coverHeight = coverHeight;
+                        // model.weedsRatio = weedsRatio;
+                        // model.lat = 32.0;
+                        // model.lon = 32.0;
+                        //
+                        //
+                        // model.speciesMap = mySpecies;
+                        // model.totalSpeciesCount = mySpecies.values.toList().reduce((value, element) => value+element);
+                        // if (_formKey.currentState.validate()) {
+                        //   _formKey.currentState.save();
 
                           Navigator.pop(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => GroundCoverResult(model: this.model)));
-                        }
                       },
                       child: Text(
                         'Submit',
