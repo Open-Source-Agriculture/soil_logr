@@ -26,4 +26,15 @@ class TaxonomyTerm {
 
   TaxonomyTerm({this.tid, this.name, this.description, this.parent, this.parents_all});
 
+
+  Map<String, dynamic> toMap(){
+    return({
+      "tid": tid,
+      "name": name,
+      "description": description,
+      "parent": parent,
+      "parents_all": parents_all
+    });
+  }
+
 }

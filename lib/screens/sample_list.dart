@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:soil_mate/services/location_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soil_mate/models/log.dart';
@@ -31,14 +31,39 @@ class _SampleListState extends State<SampleList> {
   @override
   Widget build(BuildContext context) {
 
+    Future<Position> _determinePosition() async {
+      bool serviceEnabled;
+      LocationPermission permission;
 
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled.');
+      }
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error(
+            'Location permissions are permantly denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission != LocationPermission.whileInUse &&
+            permission != LocationPermission.always) {
+          return Future.error(
+              'Location permissions are denied (actual value: $permission).');
+        }
+      }
+
+      return await Geolocator.getCurrentPosition();
+    }
 
     Future addTextureLog() async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
       int newID = box.length;
-      Position pos = await determinePosition();
+      Position pos = await _determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
@@ -282,53 +307,73 @@ class _SampleListState extends State<SampleList> {
 //    }
 
     return Container(
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Soil Texture Samples",
-                    style: headingTextStyle(context),
-                  ),
-                ],
+        child: Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Sample List",
+              style: TextStyle(
+                color: Colors.black,
               ),
-              backgroundColor: Colors.white,
-              elevation: 2.0,
-              actions: <Widget>[],
             ),
-            body: TextureList(),
-            bottomNavigationBar: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton.icon(
-                  onPressed: () => _showAddSamplePanel(),
-                  icon: Icon(Icons.add, color: Colors.black87),
-                  label: Text('Add', style: TextStyle(color: Colors.black87)),
-                ),
-                TextButton.icon(
-                  onPressed: () {
-                    createAlertDialog(context);
-                  },
-                  icon: Icon(Icons.delete, color: Colors.black87,),
-                  label: Text('Delete All', style: TextStyle(color: Colors.black87),),
-                ),
-                TextButton.icon(
-                  onPressed: () {
-                    print("Export Data");
-      //              sendEmail(baseSite);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Credits()),
-                    );
-                  },
-                  icon: Icon(Icons.import_export, color: Colors.black87),
-                  label: Text('Export Data', style: TextStyle(color: Colors.black87)),
-                ),
-              ],
+            Container(
+              width: 50,
+              child: FlatButton(
+                child: Icon(Icons.more_vert),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Credits()),
+                  );
+                },
+              ),
+            )
+          ],
         ),
+        backgroundColor: Colors.grey[300],
+        elevation: 2.0,
+        actions: <Widget>[],
+      ),
+      body: TextureList(),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FlatButton.icon(
+            onPressed: () => _showAddSamplePanel(),
+            icon: Icon(Icons.add),
+            label: Text('Add'),
+          ),
+          FlatButton.icon(
+            onPressed: () {
+              createAlertDialog(context);
+            },
+            icon: Icon(Icons.delete),
+            label: Text('Delete All'),
+          ),
+          FlatButton.icon(
+            onPressed: () {
+              print("Export Data");
+              Box logBox = Hive.box("texture_logs");
+              List logKeys = logBox.keys.toList();
+              List<Log> logList = [];
+              logKeys.forEach((k) {
+                logList.add(logBox.get(k) as Log);
+              });
+              sendEmail(logList);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Credits()),
+              );
+            },
+            icon: Icon(Icons.import_export),
+            label: Text('Export Data'),
+          ),
+        ],
+      ),
     ));
   }
 
@@ -377,7 +422,7 @@ class _TextureListState extends State<TextureList> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),excludeList: ["sand", "silt", "clay"],);
+                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),);
                       },
                     )
                     ;
