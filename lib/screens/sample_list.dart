@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:soil_mate/services/location_service.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soil_mate/models/log.dart';
@@ -31,39 +31,14 @@ class _SampleListState extends State<SampleList> {
   @override
   Widget build(BuildContext context) {
 
-    Future<Position> _determinePosition() async {
-      bool serviceEnabled;
-      LocationPermission permission;
 
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
-      }
-
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error(
-            'Location permissions are permantly denied, we cannot request permissions.');
-      }
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission != LocationPermission.whileInUse &&
-            permission != LocationPermission.always) {
-          return Future.error(
-              'Location permissions are denied (actual value: $permission).');
-        }
-      }
-
-      return await Geolocator.getCurrentPosition();
-    }
 
     Future addTextureLog() async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
       int newID = box.length;
-      Position pos = await _determinePosition();
+      Position pos = await determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
@@ -416,7 +391,7 @@ class _TextureListState extends State<TextureList> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),);
+                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),excludeList: ["sand", "silt", "clay"],);
                       },
                     )
                     ;
