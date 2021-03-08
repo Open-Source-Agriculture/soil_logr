@@ -422,7 +422,7 @@ class _TextureListState extends State<TextureList> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),);
+                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()), excludeList: ["sand", "silt", "clay"],);
                       },
                     )
                     ;
