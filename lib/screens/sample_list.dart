@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soil_mate/models/log.dart';
+import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/models/texture_models.dart';
 import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/send_email.dart';
@@ -55,6 +56,41 @@ class _SampleListState extends State<SampleList> {
       }
 
       return await Geolocator.getCurrentPosition();
+    }
+
+    Future addTextureLog() async {
+      final taxonomyTermBox = Hive.box("taxonomy_term");
+      taxonomyTermBox.keys.toList().forEach((element) {
+        print(element);
+      });
+      TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
+      Box box = Hive.box("texture_logs");
+      int newID = box.length;
+      Position pos = await _determinePosition();
+      GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
+
+      TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
+      TaxonomyTerm cmUnit = TaxonomyTerm(tid: 18, name: "cm", description: "Center meters", parent: [], parents_all: []);
+
+      List<Quantity> selectedQuanties = [
+        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: selectedTexture.name),
+        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: selectedTexture.name),
+        Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: selectedTexture.name),
+        Quantity(measure: "value", value: depthUpper.toDouble(), units: cmUnit, label: "depthUpper"),
+        Quantity(measure: "value", value: depthLower.toDouble(), units: cmUnit, label: "depthLower"),
+      ];
+
+
+      Log newTextureLog = Log(
+          id: newID,
+          name: selectedTexture.name,
+          type: "texture_observation",
+          timestamp: DateTime.now().toString(),
+          notes: "",
+          geofield: geoField,
+          log_category: [taxonomyTerm],
+          quantity: selectedQuanties);
+      box.put(newID, newTextureLog);
     }
 
     void _showAddSamplePanel() {
@@ -232,12 +268,7 @@ class _SampleListState extends State<SampleList> {
                         child: RaisedButton(
                             child: Text("Save"),
                             onPressed: () {
-                              Box box = Hive.box("texture_logs");
-                              int newID = box.length;
-                              print(newID);
-                              GeoField geoField = GeoField(lat: 39, lon: 22);
-                              Log newTextureLog = Log(id: newID, name: "Kip", type: "cool", timestamp: "193278", notes: "Some notes", geofield: geoField, log_category: [], quantity: []);
-                              box.put(newID, newTextureLog);
+                              addTextureLog();
                               Navigator.pop(context);
                             })),
                   ],
