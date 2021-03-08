@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:soil_mate/services/navigation_bloc.dart';
+import 'package:soil_mate/services/sizes_and_themes.dart';
 
 class SideBar extends StatefulWidget {
   @override
@@ -128,15 +129,10 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                     onIconPressed();
                   },
                   child: Container(
+                    color: Colors.pink,
                     width: 20,
-                    height: 20,
+                    height: displayHeight(context),
                     alignment: Alignment.centerLeft,
-                    child: AnimatedIcon(
-                      progress: _animationController.view,
-                      icon: AnimatedIcons.menu_close,
-                      color: Colors.black,
-                      size: 30,
-                    ),
                   ),
                 ),
               ),
