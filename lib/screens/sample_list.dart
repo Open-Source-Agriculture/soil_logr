@@ -6,7 +6,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/models/texture_models.dart';
-import 'package:soil_mate/services/navigation_bloc.dart';
 import 'package:soil_mate/services/send_email.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:soil_mate/widgets/sample_list_tile.dart';
@@ -14,7 +13,7 @@ import 'package:soil_mate/widgets/sample_summary_container.dart';
 import 'dart:async';
 import 'credits.dart';
 
-class SampleList extends StatefulWidget with NavigationStates {
+class SampleList extends StatefulWidget{
   @override
   _SampleListState createState() => _SampleListState();
 }
