@@ -432,11 +432,14 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
     int lowG = 52;
     int lowB = 64;
     int highR = 20;
-    int highG = 129;
+    int highG = 230;
     int highB = 3;
-    int R = lowR + ((highR.toDouble() - lowR.toDouble())~/(100.0 - groundCoverPercentage.toDouble())).toInt();
-    int G = lowG + ((highG.toDouble() - lowG.toDouble())~/(100.0 - groundCoverPercentage.toDouble())).toInt();
-    int B = lowB + ((highB.toDouble() - lowB.toDouble())~/(100.0 - groundCoverPercentage.toDouble())).toInt();
+
+    double mag = (groundCoverPercentage.toDouble())/100.0;
+
+    int R = lowR + ((highR.toDouble() - lowR.toDouble())*mag).toInt();
+    int G = lowG + ((highG.toDouble() - lowG.toDouble())*mag).toInt();
+    int B = lowB + ((highB.toDouble() - lowB.toDouble())*mag).toInt();
     return Color.fromRGBO(R, G, B, 1);
   }
 
