@@ -32,8 +32,8 @@ Future<void> createEmailWithCSV(String csvContents) async {
   print(path);
 
   final MailOptions mailOptions = MailOptions(
-    body: 'See attached the texture samples',
-    subject: 'Texture samples',
+    body: 'See attached the samples',
+    subject: 'Soil Mate samples',
 //    recipients: ['example@example.com'],
 //    isHTML: true,
 //    bccRecipients: ['other@example.com'],
