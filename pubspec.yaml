@@ -79,6 +79,9 @@ flutter:
     - assets/website_logo.png
     - assets/farmOS/taxonomy_term.json
     - assets/placeholder.png
+    - assets/grass.jpeg
+    - assets/soil.jpeg
+    - assets/soil_mate_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
