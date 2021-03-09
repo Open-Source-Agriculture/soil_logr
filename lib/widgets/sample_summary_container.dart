@@ -36,10 +36,6 @@ class SampleSummary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Summary',
-            style: headingTextStyle(context),
-          ),
-          Text(
             'Texture:  ' +
                 selectedTexture.name +
                 '\nDepth:  ' +
