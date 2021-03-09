@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/models/texture_models.dart';
+import 'package:soil_mate/screens/side_bar/drawer.dart';
 import 'package:soil_mate/services/send_email.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:soil_mate/widgets/sample_list_tile.dart';
@@ -72,8 +73,8 @@ class _SampleListState extends State<SampleList> {
         Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: "sand"),
         Quantity(measure: "value", value: selectedTexture.silt.toDouble(), units: percentUnit, label: "silt"),
         Quantity(measure: "value", value: selectedTexture.clay.toDouble(), units: percentUnit, label: "clay"),
-        Quantity(measure: "value", value: depthUpper.toDouble(), units: cmUnit, label: "depthUpper"),
-        Quantity(measure: "value", value: depthLower.toDouble(), units: cmUnit, label: "depthLower"),
+        Quantity(measure: "value", value: depthUpper.toDouble(), units: cmUnit, label: "Upper Depth"),
+        Quantity(measure: "value", value: depthLower.toDouble(), units: cmUnit, label: "Lower Depth"),
       ];
 
 
@@ -260,13 +261,22 @@ class _SampleListState extends State<SampleList> {
                         )
                       ],
                     ),
-                    Center(
-                        child: RaisedButton(
-                            child: Text("Save"),
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueAccent, // background
+                              onPrimary: Colors.white, // foreground
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                              minimumSize: Size(150,50),
+                              elevation: 10.0,
+
+                            ),
+                            child: Text("Add", style: TextStyle(fontSize: 30),),
                             onPressed: () {
                               addTextureLog();
                               Navigator.pop(context);
-                            })),
+                            }))
                   ],
                 ),
               );
@@ -307,73 +317,57 @@ class _SampleListState extends State<SampleList> {
 
     return Container(
         child: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Sample List",
-              style: TextStyle(
-                color: Colors.black,
+          backgroundColor: Colors.white,
+          drawer: Drawer(
+            child: CustomDraw(),
+          ),
+          appBar: AppBar(title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                "Soil Texture Samples",
+                style: headingTextStyle(context),
               ),
-            ),
-            Container(
-              width: 50,
-              child: FlatButton(
-                child: Icon(Icons.more_vert),
+            ],
+          ),),
+
+          body: TextureList(),
+          bottomNavigationBar: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton.icon(
+                onPressed: () => _showAddSamplePanel(),
+                icon: Icon(Icons.add, color: Colors.black87,),
+                label: Text('Add', style: TextStyle(color: Colors.black87)),
+              ),
+              TextButton.icon(
                 onPressed: () {
+                  createAlertDialog(context);
+                },
+                icon: Icon(Icons.delete, color: Colors.black87,),
+                label: Text('Delete All', style: TextStyle(color: Colors.black87)),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  print("Export Data");
+                  Box logBox = Hive.box("texture_logs");
+                  List logKeys = logBox.keys.toList();
+                  List<Log> logList = [];
+                  logKeys.forEach((k) {
+                    logList.add(logBox.get(k) as Log);
+                  });
+                  sendEmail(logList);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Credits()),
                   );
                 },
+                icon: Icon(Icons.import_export, color: Colors.black87,),
+                label: Text('Export Data', style: TextStyle(color: Colors.black87)),
               ),
-            )
-          ],
-        ),
-        backgroundColor: Colors.grey[300],
-        elevation: 2.0,
-        actions: <Widget>[],
-      ),
-      body: TextureList(),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FlatButton.icon(
-            onPressed: () => _showAddSamplePanel(),
-            icon: Icon(Icons.add),
-            label: Text('Add'),
+            ],
           ),
-          FlatButton.icon(
-            onPressed: () {
-              createAlertDialog(context);
-            },
-            icon: Icon(Icons.delete),
-            label: Text('Delete All'),
-          ),
-          FlatButton.icon(
-            onPressed: () {
-              print("Export Data");
-              Box logBox = Hive.box("texture_logs");
-              List logKeys = logBox.keys.toList();
-              List<Log> logList = [];
-              logKeys.forEach((k) {
-                logList.add(logBox.get(k) as Log);
-              });
-              sendEmail(logList);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Credits()),
-              );
-            },
-            icon: Icon(Icons.import_export),
-            label: Text('Export Data'),
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 
 }
