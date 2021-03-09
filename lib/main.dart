@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
+import 'package:soil_mate/screens/credits.dart';
+import 'package:soil_mate/screens/home.dart';
 import 'package:soil_mate/screens/sample_list.dart';
-import 'package:soil_mate/screens/side_bar/sidebar_layout.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:soil_mate/services/taxonomy_terms.dart';
 
@@ -71,13 +73,19 @@ class _MyAppState extends State<MyApp> {
             if (snapshot.hasError){
               return Text(snapshot.error.toString());
             }else{
-              return SideBarLayout();
+              return Home();//SideBarLayout();
             }
           }else{
             return Scaffold();
           }
         },
       ),
+      initialRoute: '/',
+      routes: {
+        '/ground_cover_survey': (context) => GroundCoverResult(),
+        '/credits': (context) => Credits(),
+        '/texture_survey': (context) => SampleList(),
+      },
     );
   }
 
