@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
+import 'package:soil_mate/models/GC_model.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/screens/credits.dart';

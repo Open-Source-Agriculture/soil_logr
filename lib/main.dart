@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
+import 'package:soil_mate/screens/GC_result.dart';
 import 'package:soil_mate/screens/credits.dart';
 import 'package:soil_mate/screens/home.dart';
 import 'package:soil_mate/screens/sample_list.dart';
