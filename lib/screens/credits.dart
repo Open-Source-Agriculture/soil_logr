@@ -15,7 +15,7 @@ class _CreditsState extends State<Credits> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(child: CustomDraw(),),
+      drawer: SizedBox(width: displayWidth(context)*0.66, child: Drawer(child: CustomDraw(),)),
       backgroundColor: Colors.white,
       appBar:  AppBar(
         title: Text(

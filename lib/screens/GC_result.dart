@@ -336,8 +336,11 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
 
     return Scaffold(
-      drawer: Drawer(
-        child: CustomDraw(),
+      drawer: SizedBox(
+        width: displayWidth(context)*0.66,
+        child: Drawer(
+          child: CustomDraw(),
+        ),
       ),
       appBar: AppBar(title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
