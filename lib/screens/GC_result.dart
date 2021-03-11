@@ -140,14 +140,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       trackShape: RoundedRectSliderTrackShape(),
                                       trackHeight: 4.0,
                                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
                                       tickMarkShape: RoundSliderTickMarkShape(),
                                       valueIndicatorShape: PaddleSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Slider.adaptive(
+                                    child: Slider(
                                       value: coverPercentage,
                                       onChanged: (newCoverPercentage) {
                                         setState(() => coverPercentage = newCoverPercentage);
@@ -173,14 +173,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       trackShape: RoundedRectSliderTrackShape(),
                                       trackHeight: 4.0,
                                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
                                       tickMarkShape: RoundSliderTickMarkShape(),
                                       valueIndicatorShape: PaddleSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Slider.adaptive(
+                                    child: Slider(
                                       value: coverHeight,
                                       onChanged: (newCoverHeight) {
                                         setState(() => coverHeight = newCoverHeight);
@@ -206,14 +206,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       trackShape: RoundedRectSliderTrackShape(),
                                       trackHeight: 4.0,
                                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
                                       tickMarkShape: RoundSliderTickMarkShape(),
                                       valueIndicatorShape: PaddleSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Slider.adaptive(
+                                    child: Slider(
                                       value: weedsRatio,
                                       onChanged: (newWeeds) {
                                         setState(() => weedsRatio = newWeeds);
