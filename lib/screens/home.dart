@@ -17,8 +17,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-         child: CustomDraw(),
+      drawer: SizedBox(
+        width: displayWidth(context)*0.66,
+        child: Drawer(
+           child: CustomDraw(),
+        ),
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -65,7 +68,7 @@ class _HomeState extends State<Home> {
                 ),
                 CircleAvatar(
                   backgroundImage: AssetImage('assets/soil_mate_logo.png'),
-                  radius: 80,
+                  radius: displayWidth(context)*0.1,
                 ),
                 Column(
                   children: [

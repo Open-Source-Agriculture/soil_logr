@@ -30,6 +30,7 @@ class CustomDraw extends StatelessWidget {
             title: Text('Texture Survey', style: headingTextStyle(context),),
             leading: CircleAvatar(
               backgroundImage: AssetImage('assets/soil.jpeg'),
+              radius: displayWidth(context)*0.07,
             ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/texture_survey');
@@ -46,6 +47,7 @@ class CustomDraw extends StatelessWidget {
             title: Text('Ground Cover Survey', style: headingTextStyle(context)),
             leading: CircleAvatar(
               backgroundImage: AssetImage('assets/grass.jpeg'),
+              radius: displayWidth(context)*0.07,
             ),
             onTap: () {
               //onIconPressed();
@@ -66,6 +68,7 @@ class CustomDraw extends StatelessWidget {
             leading: CircleAvatar(
               backgroundImage: AssetImage('assets/website_logo.png'),
               backgroundColor: Colors.white,
+              radius: displayWidth(context)*0.07,
             ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/credits');

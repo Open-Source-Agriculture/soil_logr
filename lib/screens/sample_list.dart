@@ -314,8 +314,11 @@ class _SampleListState extends State<SampleList> {
     return Container(
         child: Scaffold(
           backgroundColor: Colors.white,
-          drawer: Drawer(
-            child: CustomDraw(),
+          drawer: SizedBox(
+            width: displayWidth(context)*0.66,
+            child: Drawer(
+              child: CustomDraw(),
+            ),
           ),
           appBar: AppBar(title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
