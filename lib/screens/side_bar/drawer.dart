@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soil_mate/ground_cover/GC_screens/GC_result.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 
 class CustomDraw extends StatelessWidget {

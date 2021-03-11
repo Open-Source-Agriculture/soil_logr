@@ -106,6 +106,16 @@ class _SampleListState extends State<SampleList> {
       txt4.selection = TextSelection.fromPosition(
           TextPosition(offset: increment.toString().length));
 
+      _customTextFieldDecoration(){
+        return InputDecoration(
+          contentPadding: EdgeInsets.all(3),
+          isDense: true,
+          counterText: '',
+          border: InputBorder.none,
+          filled: true,
+        );
+      }
+
 
       showModalBottomSheet<dynamic>(
           isScrollControlled: true,
@@ -164,18 +174,14 @@ class _SampleListState extends State<SampleList> {
                                   'Upper depth: ',
                                   style: bodyTextStyle(context),
                                 ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tight(Size(
-                                      (0.06 * displayHeight(context)),
-                                      (0.035 * displayHeight(context)))),
+                                Container(
+                                  width: displayWidth(context)*0.12,
+                                  height: displayWidth(context)*0.06,
                                   child: TextFormField(
                                     style: bodyTextStyle(context),
                                     maxLength: 3,
-                                    decoration: InputDecoration(
-                                      counterText: '',
-                                      border: InputBorder.none,
-                                      filled: true,
-                                    ),
+
+                                    decoration: _customTextFieldDecoration(),
                                     controller: txt2,
                                     autovalidateMode: AutovalidateMode.always,
                                     keyboardType: TextInputType.number,
@@ -195,18 +201,13 @@ class _SampleListState extends State<SampleList> {
                                   'Lower depth: ',
                                   style: bodyTextStyle(context),
                                 ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tight(Size(
-                                      (0.06 * displayHeight(context)),
-                                      (0.035 * displayHeight(context)))),
+                                Container(
+                                  width: displayWidth(context)*0.12,
+                                  height: displayWidth(context)*0.06,
                                   child: TextFormField(
                                     style: bodyTextStyle(context),
                                     maxLength: 3,
-                                    decoration: InputDecoration(
-                                      counterText: '',
-                                      border: InputBorder.none,
-                                      filled: true,
-                                    ),
+                                    decoration: _customTextFieldDecoration(),
                                     controller: txt3,
                                     autovalidateMode: AutovalidateMode.always,
                                     keyboardType: TextInputType.number,
@@ -226,18 +227,13 @@ class _SampleListState extends State<SampleList> {
                                   'ID: ',
                                   style: bodyTextStyle(context),
                                 ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tight(Size(
-                                      (0.1 * displayHeight(context)),
-                                      (0.035 * displayHeight(context)))),
+                                Container(
+                                  width: displayWidth(context)*0.18,
+                                  height: displayWidth(context)*0.06,
                                   child: TextFormField(
                                     style: bodyTextStyle(context),
                                     maxLength: 5,
-                                    decoration: InputDecoration(
-                                      counterText: '',
-                                      border: InputBorder.none,
-                                      filled: true,
-                                    ),
+                                    decoration: _customTextFieldDecoration(),
                                     controller: txt4,
                                     autovalidateMode: AutovalidateMode.always,
                                     keyboardType: TextInputType.number,

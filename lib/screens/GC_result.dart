@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:soil_mate/ground_cover/GC_models/GC_model.dart';
+import 'package:soil_mate/models/GC_model.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/screens/credits.dart';
@@ -140,14 +140,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       trackShape: RoundedRectSliderTrackShape(),
                                       trackHeight: 4.0,
                                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
                                       tickMarkShape: RoundSliderTickMarkShape(),
                                       valueIndicatorShape: PaddleSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Slider.adaptive(
+                                    child: Slider(
                                       value: coverPercentage,
                                       onChanged: (newCoverPercentage) {
                                         setState(() => coverPercentage = newCoverPercentage);
@@ -173,14 +173,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       trackShape: RoundedRectSliderTrackShape(),
                                       trackHeight: 4.0,
                                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
                                       tickMarkShape: RoundSliderTickMarkShape(),
                                       valueIndicatorShape: PaddleSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Slider.adaptive(
+                                    child: Slider(
                                       value: coverHeight,
                                       onChanged: (newCoverHeight) {
                                         setState(() => coverHeight = newCoverHeight);
@@ -206,14 +206,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       trackShape: RoundedRectSliderTrackShape(),
                                       trackHeight: 4.0,
                                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+                                      overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
                                       tickMarkShape: RoundSliderTickMarkShape(),
                                       valueIndicatorShape: PaddleSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    child: Slider.adaptive(
+                                    child: Slider(
                                       value: weedsRatio,
                                       onChanged: (newWeeds) {
                                         setState(() => weedsRatio = newWeeds);

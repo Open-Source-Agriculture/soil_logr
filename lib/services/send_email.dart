@@ -99,6 +99,7 @@ void sendEmail(List<Log> logs){
 
     List<List<String>> headerAllSamplesLists = [headers] + allSamplesLists;
     String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
+    csv = csv.replaceAll("\r\n", "\n").replaceAll("\r", "\n").replaceAll("\n\n", "\n");
     createEmailWithCSV(csv);
   }
 
