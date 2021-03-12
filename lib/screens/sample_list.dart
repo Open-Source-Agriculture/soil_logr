@@ -124,157 +124,165 @@ class _SampleListState extends State<SampleList> {
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState
                     /*You can rename this!*/) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Wrap(
-                  runSpacing: 17,
-                  children: <Widget>[
-                    GridView.count(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      childAspectRatio: (3 / 1),
-                      crossAxisCount: 3,
-                      children: AusClassification()
-                          .getTextureList()
-                          .map((texture) => Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: FlatButton(
-                                  padding: EdgeInsets.all(0),
-                                  color: texture.getColor().withOpacity(0.5),
-                                  shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: texture.getColor(),
-                                          width: 2,
-                                          style: BorderStyle.solid),
-                                      borderRadius: BorderRadius.circular(15)),
+              return CustomScrollView(
+                shrinkWrap: true,
+                slivers: <Widget>[
+                  SliverPadding(
+                    padding: const EdgeInsets.all(16.0),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        <Widget>[
+                          GridView.count(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            childAspectRatio: (3 / 1),
+                            crossAxisCount: 3,
+                            children: AusClassification()
+                                .getTextureList()
+                                .map((texture) => Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: FlatButton(
+                                        padding: EdgeInsets.all(0),
+                                        color: texture.getColor().withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: texture.getColor(),
+                                                width: 2,
+                                                style: BorderStyle.solid),
+                                            borderRadius: BorderRadius.circular(15)),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedTexture = texture;
+                                            print("setting state");
+                                            print(texture.name);
+                                          });
+                                        },
+                                        child: Text(
+                                          texture.name,
+                                          style: textureButtonTextStyle(context),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                          SizedBox(height: displayHeight(context)*0.01,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Upper depth: ',
+                                        style: bodyTextStyle(context),
+                                      ),
+                                      Container(
+                                        width: displayWidth(context)*0.12,
+                                        height: displayWidth(context)*0.06,
+                                        child: TextFormField(
+                                          style: bodyTextStyle(context),
+                                          maxLength: 3,
+
+                                          decoration: _customTextFieldDecoration(),
+                                          controller: txt2,
+                                          autovalidateMode: AutovalidateMode.always,
+                                          keyboardType: TextInputType.number,
+                                          onChanged: (val) {
+                                            setState(() {
+                                              depthUpper = int.parse(val);
+                                              print(depthUpper);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Lower depth: ',
+                                        style: bodyTextStyle(context),
+                                      ),
+                                      Container(
+                                        width: displayWidth(context)*0.12,
+                                        height: displayWidth(context)*0.06,
+                                        child: TextFormField(
+                                          style: bodyTextStyle(context),
+                                          maxLength: 3,
+                                          decoration: _customTextFieldDecoration(),
+                                          controller: txt3,
+                                          autovalidateMode: AutovalidateMode.always,
+                                          keyboardType: TextInputType.number,
+                                          onChanged: (val) {
+                                            setState(() {
+                                              depthLower = int.parse(val);
+                                              print(depthLower);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'ID: ',
+                                        style: bodyTextStyle(context),
+                                      ),
+                                      Container(
+                                        width: displayWidth(context)*0.18,
+                                        height: displayWidth(context)*0.06,
+                                        child: TextFormField(
+                                          style: bodyTextStyle(context),
+                                          maxLength: 5,
+                                          decoration: _customTextFieldDecoration(),
+                                          controller: txt4,
+                                          autovalidateMode: AutovalidateMode.always,
+                                          keyboardType: TextInputType.number,
+                                          onChanged: (val) {
+                                            setState(() {
+                                              increment = int.parse(val);
+                                              print(increment);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SampleSummary(
+                                selectedTexture: this.selectedTexture,
+                                depthUpper: depthUpper,
+                                depthLower: depthLower,
+                                sampleID: increment,
+                              )
+                            ],
+                          ),
+                          SizedBox(height: displayHeight(context)*0.01,),
+                          Align(
+                              alignment: Alignment.bottomRight,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.blueAccent, // background
+                                    onPrimary: Colors.white, // foreground
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                    minimumSize: Size(150,50),
+                                    elevation: 10.0,
+
+                                  ),
+                                  child: Text("Add", style: TextStyle(fontSize: 30),),
                                   onPressed: () {
-                                    setState(() {
-                                      selectedTexture = texture;
-                                      print("setting state");
-                                      print(texture.name);
-                                    });
-                                  },
-                                  child: Text(
-                                    texture.name,
-                                    style: textureButtonTextStyle(context),
-                                  ),
-                                ),
-                              ))
-                          .toList(),
+                                    addTextureLog();
+                                    Navigator.pop(context);
+                                  }))
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Upper depth: ',
-                                  style: bodyTextStyle(context),
-                                ),
-                                Container(
-                                  width: displayWidth(context)*0.12,
-                                  height: displayWidth(context)*0.06,
-                                  child: TextFormField(
-                                    style: bodyTextStyle(context),
-                                    maxLength: 3,
-
-                                    decoration: _customTextFieldDecoration(),
-                                    controller: txt2,
-                                    autovalidateMode: AutovalidateMode.always,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        depthUpper = int.parse(val);
-                                        print(depthUpper);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Lower depth: ',
-                                  style: bodyTextStyle(context),
-                                ),
-                                Container(
-                                  width: displayWidth(context)*0.12,
-                                  height: displayWidth(context)*0.06,
-                                  child: TextFormField(
-                                    style: bodyTextStyle(context),
-                                    maxLength: 3,
-                                    decoration: _customTextFieldDecoration(),
-                                    controller: txt3,
-                                    autovalidateMode: AutovalidateMode.always,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        depthLower = int.parse(val);
-                                        print(depthLower);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'ID: ',
-                                  style: bodyTextStyle(context),
-                                ),
-                                Container(
-                                  width: displayWidth(context)*0.18,
-                                  height: displayWidth(context)*0.06,
-                                  child: TextFormField(
-                                    style: bodyTextStyle(context),
-                                    maxLength: 5,
-                                    decoration: _customTextFieldDecoration(),
-                                    controller: txt4,
-                                    autovalidateMode: AutovalidateMode.always,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        increment = int.parse(val);
-                                        print(increment);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SampleSummary(
-                          selectedTexture: this.selectedTexture,
-                          depthUpper: depthUpper,
-                          depthLower: depthLower,
-                          sampleID: increment,
-                        )
-                      ],
-                    ),
-                    Align(
-                        alignment: Alignment.bottomRight,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blueAccent, // background
-                              onPrimary: Colors.white, // foreground
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                              minimumSize: Size(150,50),
-                              elevation: 10.0,
-
-                            ),
-                            child: Text("Add", style: TextStyle(fontSize: 30),),
-                            onPressed: () {
-                              addTextureLog();
-                              Navigator.pop(context);
-                            }))
-                  ],
-                ),
+                  ),
+                ],
               );
             });
           });
