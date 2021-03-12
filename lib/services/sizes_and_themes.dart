@@ -106,6 +106,7 @@ textureButtonTextStyle(context) {
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w300,
     fontSize: displayWidth(context) * 0.03,
+    color: Colors.black87
   );
 }
 
