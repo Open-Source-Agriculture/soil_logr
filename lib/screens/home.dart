@@ -62,9 +62,16 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                     SizedBox(height: displayHeight(context)*0.04,),
-                  CircleAvatar(
-                    backgroundImage: AssetImage('assets/soil_mate_logo.png'),
-                    radius: displayWidth(context)*0.1,
+                    CircleAvatar(
+                      radius: displayWidth(context)*0.15,
+                      child: ClipOval(
+                        child: Image.asset(
+                        'assets/soil_mate_logo.png',
+                        fit: BoxFit.fill,
+                    ),
+                      ),
+
+                    //radius: displayWidth(context)*0.1,
                   ),
                     SizedBox(height: displayHeight(context)*0.04,),
                   Column(
