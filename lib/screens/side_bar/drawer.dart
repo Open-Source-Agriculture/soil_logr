@@ -65,6 +65,32 @@ class CustomDraw extends StatelessWidget {
                   indent: 32,
                   endIndent: 32,
                 ),
+              ListTile(
+                title: Text('Request New Survey', style: headingTextStyle(context)),
+                leading: Container(
+                    height: displayWidth(context)*0.14,
+                    width: displayWidth(context)*0.14,
+                    decoration: BoxDecoration(
+                      color: Colors.blue[100],
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.lightBlueAccent, width: 1),
+                    ),
+                    child: Icon(Icons.format_align_center_sharp)),
+                onTap: () async {
+                  if (await canLaunch("https://docs.google.com/forms/d/e/1FAIpQLSdsIMoc4GhQQOpGeLxAaQaFQ6IJ7Eodqqd58tGHHJWSOupFvg/viewform")) {
+                    await launch("https://docs.google.com/forms/d/e/1FAIpQLSdsIMoc4GhQQOpGeLxAaQaFQ6IJ7Eodqqd58tGHHJWSOupFvg/viewform");
+                  } else {
+                    throw 'Could not launch ${"https://docs.google.com/forms/d/e/1FAIpQLSdsIMoc4GhQQOpGeLxAaQaFQ6IJ7Eodqqd58tGHHJWSOupFvg/viewform"}';
+                  }
+                },
+              ),
+              Divider(
+                height: 64,
+                thickness: 0.5,
+                color: Colors.grey.withOpacity(0.3),
+                indent: 32,
+                endIndent: 32,
+              ),
                 ListTile(
                   title: Text('Credits', style: headingTextStyle(context)),
                   leading: CircleAvatar(
@@ -83,32 +109,6 @@ class CustomDraw extends StatelessWidget {
                   indent: 32,
                   endIndent: 32,
                 ),
-              ListTile(
-                title: Text('Request New Survey', style: headingTextStyle(context)),
-                leading: Container(
-                  height: displayWidth(context)*0.14,
-                  width: displayWidth(context)*0.14,
-                  decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.lightBlueAccent, width: 1),
-                  ),
-                    child: Icon(Icons.format_align_center_sharp)),
-                onTap: () async {
-                  if (await canLaunch("https://docs.google.com/forms/d/e/1FAIpQLSdsIMoc4GhQQOpGeLxAaQaFQ6IJ7Eodqqd58tGHHJWSOupFvg/viewform")) {
-                    await launch("https://docs.google.com/forms/d/e/1FAIpQLSdsIMoc4GhQQOpGeLxAaQaFQ6IJ7Eodqqd58tGHHJWSOupFvg/viewform");
-                  } else {
-                    throw 'Could not launch ${"https://docs.google.com/forms/d/e/1FAIpQLSdsIMoc4GhQQOpGeLxAaQaFQ6IJ7Eodqqd58tGHHJWSOupFvg/viewform"}';
-                  }
-                },
-              ),
-              Divider(
-                height: 64,
-                thickness: 0.5,
-                color: Colors.grey.withOpacity(0.3),
-                indent: 32,
-                endIndent: 32,
-              ),
               ],
             ),
           ),
