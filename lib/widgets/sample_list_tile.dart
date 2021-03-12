@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:soil_mate/models/log.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class SampleListTile extends StatelessWidget {
   final Log textureLog;
   final Color color;
   final List<String> excludeList;
-
-
-
 
   SampleListTile({
     Key /*?*/ key,
@@ -25,10 +23,7 @@ class SampleListTile extends StatelessWidget {
       if (!excludeList.contains(q.label)){
         quantityString = quantityString + "${q.label}: ${q.value}\n";
       }
-      
-
     });
-
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
@@ -38,20 +33,24 @@ class SampleListTile extends StatelessWidget {
           border: Border.all(color: color, width: 3.0),
           color: color.withOpacity(0.7),
         ),
-        child: ListTile(
-          onTap: () {
-            print("Nothing");
-          },
-          // title: Text(locations[index].location),
-          title: Text('ID: '+ textureLog.id.toString()
-               + '    ' +textureLog.name
-              + '\n' + textureLog.geofield.lat.toString() + ', '
-              + textureLog.geofield.lon.toString()
-              ),
-          subtitle: Text(quantityString),
-          /*leading: Text('1') CircleAvatar(
-                      backgroundImage: AssetImage('assets/${locations[index].flag}'),
-                    ),*/
+        child: Slidable(
+          actionPane: SlidableScrollActionPane(),
+          actions: [
+            IconSlideAction(
+              caption: 'Cancel',
+              color: Colors.grey[300],
+              icon: Icons.cancel_outlined,
+              onTap: (){},
+            ),
+          ],
+          child: ListTile(
+            title: Text('ID: '+ textureLog.id.toString()
+                 + '    ' +textureLog.name
+                + '\n' + textureLog.geofield.lat.toString() + ', '
+                + textureLog.geofield.lon.toString()
+                ),
+            subtitle: Text(quantityString),
+          ),
         ),
       ),
     );
