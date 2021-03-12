@@ -321,7 +321,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
     return Scaffold(
       drawer: SizedBox(
-        width: displayWidth(context)*0.66,
+        width: displayWidth(context)*0.7,
         child: Drawer(
           child: CustomDraw(),
         ),

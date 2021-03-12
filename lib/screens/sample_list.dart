@@ -325,7 +325,7 @@ class _SampleListState extends State<SampleList> {
         child: Scaffold(
           backgroundColor: Colors.white,
           drawer: SizedBox(
-            width: displayWidth(context)*0.66,
+            width: displayWidth(context)*0.7,
             child: Drawer(
               child: CustomDraw(),
             ),
