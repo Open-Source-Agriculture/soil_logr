@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -58,11 +60,11 @@ class _SampleListState extends State<SampleList> {
       return await Geolocator.getCurrentPosition();
     }
 
-    Future addTextureLog() async {
+    Future addTextureLog(int newID) async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
-      int newID = box.length;
+
       Position pos = await _determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
@@ -277,7 +279,15 @@ class _SampleListState extends State<SampleList> {
                                   ),
                                   child: Text("Add", style: TextStyle(fontSize: 30),),
                                   onPressed: () {
-                                    addTextureLog();
+                                    Box box = Hive.box("texture_logs");
+
+                                    int newID = 0;
+                                    if (!box.isEmpty){
+                                      List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
+                                      newID = keyList.reduce(max) +1;
+                                    }
+
+                                    addTextureLog(newID);
                                     Navigator.pop(context);
                                   }))
                         ],
@@ -419,7 +429,12 @@ class _TextureListState extends State<TextureList> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()), excludeList: ["sand", "silt", "clay"],);
+                        return SampleListTile(
+                          sampleLog: tLog, color: getColor(quantityMap["sand"].toInt(),
+                            quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),
+                          excludeList: ["sand", "silt", "clay"],
+                          boxname: "texture_logs",
+                        );
                       },
                     )
                     ;

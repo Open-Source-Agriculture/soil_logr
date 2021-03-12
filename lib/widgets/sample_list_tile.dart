@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class SampleListTile extends StatelessWidget {
-  final Log textureLog;
+  final Log sampleLog;
   final Color color;
   final List<String> excludeList;
 
+  final String boxname;
+
   SampleListTile({
     Key /*?*/ key,
-    @required this.textureLog,
+    @required this.sampleLog,
     @required this.color,
     @required this.excludeList,
+    @required this.boxname,
   }) : super(key: key) {}
 
   @override
@@ -19,7 +23,7 @@ class SampleListTile extends StatelessWidget {
 
 
     String quantityString = "";
-    textureLog.quantity.forEach((q) {
+    sampleLog.quantity.forEach((q) {
       if (!excludeList.contains(q.label)){
         quantityString = quantityString + "${q.label}: ${q.value}\n";
       }
@@ -35,7 +39,19 @@ class SampleListTile extends StatelessWidget {
         ),
         child: Slidable(
           actionPane: SlidableScrollActionPane(),
+          actionExtentRatio: 1/2,
           actions: [
+            IconSlideAction(
+              caption: 'Delete',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: () {
+                Box box = Hive.box(boxname);
+                print(box.keys);
+                box.delete(sampleLog.id);
+                print(box.keys);
+              },
+            ),
             IconSlideAction(
               caption: 'Cancel',
               color: Colors.grey[300],
@@ -44,10 +60,10 @@ class SampleListTile extends StatelessWidget {
             ),
           ],
           child: ListTile(
-            title: Text('ID: '+ textureLog.id.toString()
-                 + '    ' +textureLog.name
-                + '\n' + textureLog.geofield.lat.toString() + ', '
-                + textureLog.geofield.lon.toString()
+            title: Text('ID: '+ sampleLog.id.toString()
+                 + '    ' +sampleLog.name
+                + '\n' + sampleLog.geofield.lat.toString() + ', '
+                + sampleLog.geofield.lon.toString()
                 ),
             subtitle: Text(quantityString),
           ),

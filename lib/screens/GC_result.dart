@@ -434,7 +434,7 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: gcLog, color: _getColor(quantityMap["Cover Percentage"].toInt()), excludeList: ignoreSpecies,);
+                        return SampleListTile(sampleLog: gcLog, color: _getColor(quantityMap["Cover Percentage"].toInt()), excludeList: ignoreSpecies,);
                       },
                     )
                     ;
