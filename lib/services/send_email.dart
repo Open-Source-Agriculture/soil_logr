@@ -15,7 +15,7 @@ Future<String> get _localPath async {
 
 Future<File> get _localFile async {
   final path = await _localPath;
-  return File('$path/Soil_Mate_' + DateTime.now().toIso8601String() + '.csv');
+  return File('$path/Soil_LogR_' + DateTime.now().toIso8601String() + '.csv');
 }
 
 
@@ -33,7 +33,7 @@ Future<void> createEmailWithCSV(String csvContents) async {
 
   final MailOptions mailOptions = MailOptions(
     body: 'See attached the samples',
-    subject: 'Soil Mate samples',
+    subject: 'Soil LogR samples',
 //    recipients: ['example@example.com'],
 //    isHTML: true,
 //    bccRecipients: ['other@example.com'],
