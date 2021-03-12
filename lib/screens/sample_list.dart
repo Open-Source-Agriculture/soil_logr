@@ -148,95 +148,101 @@ class _SampleListState extends State<SampleList> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Upper depth: ',
-                                        style: bodyTextStyle(context),
-                                      ),
-                                      Container(
-                                        width: displayWidth(context)*0.12,
-                                        height: displayWidth(context)*0.06,
-                                        child: TextFormField(
+                              Expanded(
+                                flex:1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Upper depth: ',
                                           style: bodyTextStyle(context),
-                                          maxLength: 3,
+                                        ),
+                                        Container(
+                                          width: displayWidth(context)*0.12,
+                                          height: displayWidth(context)*0.06,
+                                          child: TextFormField(
+                                            style: bodyTextStyle(context),
+                                            maxLength: 3,
 
-                                          decoration: _customTextFieldDecoration(),
-                                          controller: txt2,
-                                          autovalidateMode: AutovalidateMode.always,
-                                          keyboardType: TextInputType.number,
-                                          onChanged: (val) {
-                                            setState(() {
-                                              depthUpper = int.parse(val);
-                                              print(depthUpper);
-                                            });
-                                          },
+                                            decoration: _customTextFieldDecoration(),
+                                            controller: txt2,
+                                            autovalidateMode: AutovalidateMode.always,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                depthUpper = int.parse(val);
+                                                print(depthUpper);
+                                              });
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Lower depth: ',
-                                        style: bodyTextStyle(context),
-                                      ),
-                                      Container(
-                                        width: displayWidth(context)*0.12,
-                                        height: displayWidth(context)*0.06,
-                                        child: TextFormField(
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Lower depth: ',
                                           style: bodyTextStyle(context),
-                                          maxLength: 3,
-                                          decoration: _customTextFieldDecoration(),
-                                          controller: txt3,
-                                          autovalidateMode: AutovalidateMode.always,
-                                          keyboardType: TextInputType.number,
-                                          onChanged: (val) {
-                                            setState(() {
-                                              depthLower = int.parse(val);
-                                              print(depthLower);
-                                            });
-                                          },
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'ID: ',
-                                        style: bodyTextStyle(context),
-                                      ),
-                                      Container(
-                                        width: displayWidth(context)*0.18,
-                                        height: displayWidth(context)*0.06,
-                                        child: TextFormField(
+                                        Container(
+                                          width: displayWidth(context)*0.12,
+                                          height: displayWidth(context)*0.06,
+                                          child: TextFormField(
+                                            style: bodyTextStyle(context),
+                                            maxLength: 3,
+                                            decoration: _customTextFieldDecoration(),
+                                            controller: txt3,
+                                            autovalidateMode: AutovalidateMode.always,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                depthLower = int.parse(val);
+                                                print(depthLower);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'ID: ',
                                           style: bodyTextStyle(context),
-                                          maxLength: 5,
-                                          decoration: _customTextFieldDecoration(),
-                                          controller: txt4,
-                                          autovalidateMode: AutovalidateMode.always,
-                                          keyboardType: TextInputType.number,
-                                          onChanged: (val) {
-                                            setState(() {
-                                              increment = int.parse(val == ''? increment.toString(): val);
-                                              print(increment);
-                                            });
-                                          },
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        Container(
+                                          width: displayWidth(context)*0.18,
+                                          height: displayWidth(context)*0.06,
+                                          child: TextFormField(
+                                            style: bodyTextStyle(context),
+                                            maxLength: 5,
+                                            decoration: _customTextFieldDecoration(),
+                                            controller: txt4,
+                                            autovalidateMode: AutovalidateMode.always,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                increment = int.parse(val == ''? increment.toString(): val);
+                                                print(increment);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SampleSummary(
-                                selectedTexture: this.selectedTexture,
-                                depthUpper: depthUpper,
-                                depthLower: depthLower,
-                                sampleID: increment,
+                              Expanded(
+                                flex: 1,
+                                child: SampleSummary(
+                                  selectedTexture: this.selectedTexture,
+                                  depthUpper: depthUpper,
+                                  depthLower: depthLower,
+                                  sampleID: increment,
+                                ),
                               )
                             ],
                           ),
