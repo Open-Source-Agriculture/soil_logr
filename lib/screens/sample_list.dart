@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,6 +9,7 @@ import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/models/texture_models.dart';
 import 'package:soil_mate/screens/side_bar/drawer.dart';
+import 'package:soil_mate/services/location_service.dart';
 import 'package:soil_mate/services/send_email.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
 import 'package:soil_mate/widgets/sample_list_tile.dart';
@@ -31,39 +34,12 @@ class _SampleListState extends State<SampleList> {
   @override
   Widget build(BuildContext context) {
 
-    Future<Position> _determinePosition() async {
-      bool serviceEnabled;
-      LocationPermission permission;
-
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
-      }
-
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error(
-            'Location permissions are permantly denied, we cannot request permissions.');
-      }
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission != LocationPermission.whileInUse &&
-            permission != LocationPermission.always) {
-          return Future.error(
-              'Location permissions are denied (actual value: $permission).');
-        }
-      }
-
-      return await Geolocator.getCurrentPosition();
-    }
-
     Future addTextureLog() async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
-      int newID = box.length;
-      Position pos = await _determinePosition();
+
+      Position pos = await determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
@@ -79,7 +55,7 @@ class _SampleListState extends State<SampleList> {
 
 
       Log newTextureLog = Log(
-          id: newID,
+          id: increment,
           name: selectedTexture.name,
           type: "texture_observation",
           timestamp: DateTime.now().toString(),
@@ -87,7 +63,8 @@ class _SampleListState extends State<SampleList> {
           geofield: geoField,
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
-      box.put(newID, newTextureLog);
+      box.put(increment, newTextureLog);
+      increment = increment +1;
     }
 
     void _showAddSamplePanel() {
@@ -124,157 +101,173 @@ class _SampleListState extends State<SampleList> {
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState
                     /*You can rename this!*/) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Wrap(
-                  runSpacing: 17,
-                  children: <Widget>[
-                    GridView.count(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      childAspectRatio: (3 / 1),
-                      crossAxisCount: 3,
-                      children: AusClassification()
-                          .getTextureList()
-                          .map((texture) => Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: FlatButton(
-                                  padding: EdgeInsets.all(0),
-                                  color: texture.getColor().withOpacity(0.5),
-                                  shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: texture.getColor(),
-                                          width: 2,
-                                          style: BorderStyle.solid),
-                                      borderRadius: BorderRadius.circular(15)),
+              return CustomScrollView(
+                shrinkWrap: true,
+                slivers: <Widget>[
+                  SliverPadding(
+                    padding: const EdgeInsets.all(16.0),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        <Widget>[
+                          GridView.count(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            childAspectRatio: (3 / 1),
+                            crossAxisCount: 3,
+                            children: AusClassification()
+                                .getTextureList()
+                                .map((texture) => Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.all(0) ,
+                                          backgroundColor: texture.getColor().withOpacity(0.5),
+                                          shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                  color: texture.getColor(),
+                                                  width: 2,
+                                                  style: BorderStyle.solid),
+                                              borderRadius: BorderRadius.circular(15)),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedTexture = texture;
+                                            print("setting state");
+                                            print(texture.name);
+                                          });
+                                        },
+                                        child: Text(
+                                          texture.name,
+                                          style: textureButtonTextStyle(context),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                          SizedBox(height: displayHeight(context)*0.01,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex:1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Upper depth: ',
+                                          style: bodyTextStyle(context),
+                                        ),
+                                        Container(
+                                          width: displayWidth(context)*0.12,
+                                          height: displayWidth(context)*0.06,
+                                          child: TextFormField(
+                                            style: bodyTextStyle(context),
+                                            maxLength: 3,
+
+                                            decoration: _customTextFieldDecoration(),
+                                            controller: txt2,
+                                            autovalidateMode: AutovalidateMode.always,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                depthUpper = int.parse(val);
+                                                print(depthUpper);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Lower depth: ',
+                                          style: bodyTextStyle(context),
+                                        ),
+                                        Container(
+                                          width: displayWidth(context)*0.12,
+                                          height: displayWidth(context)*0.06,
+                                          child: TextFormField(
+                                            style: bodyTextStyle(context),
+                                            maxLength: 3,
+                                            decoration: _customTextFieldDecoration(),
+                                            controller: txt3,
+                                            autovalidateMode: AutovalidateMode.always,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                depthLower = int.parse(val);
+                                                print(depthLower);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'ID: ',
+                                          style: bodyTextStyle(context),
+                                        ),
+                                        Container(
+                                          width: displayWidth(context)*0.18,
+                                          height: displayWidth(context)*0.06,
+                                          child: TextFormField(
+                                            style: bodyTextStyle(context),
+                                            maxLength: 5,
+                                            decoration: _customTextFieldDecoration(),
+                                            controller: txt4,
+                                            autovalidateMode: AutovalidateMode.always,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                increment = int.parse(val == ''? increment.toString(): val);
+                                                print(increment);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: SampleSummary(
+                                  selectedTexture: this.selectedTexture,
+                                  depthUpper: depthUpper,
+                                  depthLower: depthLower,
+                                  sampleID: increment,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: displayHeight(context)*0.01,),
+                          Align(
+                              alignment: Alignment.bottomRight,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.blueAccent, // background
+                                    onPrimary: Colors.white, // foreground
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                    minimumSize: Size(150,50),
+                                    elevation: 10.0,
+
+                                  ),
+                                  child: Text("Add", style: TextStyle(fontSize: 30),),
                                   onPressed: () {
-                                    setState(() {
-                                      selectedTexture = texture;
-                                      print("setting state");
-                                      print(texture.name);
-                                    });
-                                  },
-                                  child: Text(
-                                    texture.name,
-                                    style: textureButtonTextStyle(context),
-                                  ),
-                                ),
-                              ))
-                          .toList(),
+                                    addTextureLog();
+                                    Navigator.pop(context);
+                                  }))
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Upper depth: ',
-                                  style: bodyTextStyle(context),
-                                ),
-                                Container(
-                                  width: displayWidth(context)*0.12,
-                                  height: displayWidth(context)*0.06,
-                                  child: TextFormField(
-                                    style: bodyTextStyle(context),
-                                    maxLength: 3,
-
-                                    decoration: _customTextFieldDecoration(),
-                                    controller: txt2,
-                                    autovalidateMode: AutovalidateMode.always,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        depthUpper = int.parse(val);
-                                        print(depthUpper);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Lower depth: ',
-                                  style: bodyTextStyle(context),
-                                ),
-                                Container(
-                                  width: displayWidth(context)*0.12,
-                                  height: displayWidth(context)*0.06,
-                                  child: TextFormField(
-                                    style: bodyTextStyle(context),
-                                    maxLength: 3,
-                                    decoration: _customTextFieldDecoration(),
-                                    controller: txt3,
-                                    autovalidateMode: AutovalidateMode.always,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        depthLower = int.parse(val);
-                                        print(depthLower);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'ID: ',
-                                  style: bodyTextStyle(context),
-                                ),
-                                Container(
-                                  width: displayWidth(context)*0.18,
-                                  height: displayWidth(context)*0.06,
-                                  child: TextFormField(
-                                    style: bodyTextStyle(context),
-                                    maxLength: 5,
-                                    decoration: _customTextFieldDecoration(),
-                                    controller: txt4,
-                                    autovalidateMode: AutovalidateMode.always,
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        increment = int.parse(val);
-                                        print(increment);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SampleSummary(
-                          selectedTexture: this.selectedTexture,
-                          depthUpper: depthUpper,
-                          depthLower: depthLower,
-                          sampleID: increment,
-                        )
-                      ],
-                    ),
-                    Align(
-                        alignment: Alignment.bottomRight,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blueAccent, // background
-                              onPrimary: Colors.white, // foreground
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                              minimumSize: Size(150,50),
-                              elevation: 10.0,
-
-                            ),
-                            child: Text("Add", style: TextStyle(fontSize: 30),),
-                            onPressed: () {
-                              addTextureLog();
-                              Navigator.pop(context);
-                            }))
-                  ],
-                ),
+                  ),
+                ],
               );
             });
           });
@@ -315,19 +308,14 @@ class _SampleListState extends State<SampleList> {
         child: Scaffold(
           backgroundColor: Colors.white,
           drawer: SizedBox(
-            width: displayWidth(context)*0.66,
+            width: displayWidth(context)*0.7,
             child: Drawer(
               child: CustomDraw(),
             ),
           ),
-          appBar: AppBar(title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "Soil Texture Samples",
-                style: headingTextStyle(context),
-              ),
-            ],
+          appBar: AppBar(title: Text(
+            "Soil Texture Samples",
+            style: headingTextStyle(context),
           ),),
 
           body: TextureList(),
@@ -335,7 +323,17 @@ class _SampleListState extends State<SampleList> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton.icon(
-                onPressed: () => _showAddSamplePanel(),
+                onPressed: () {
+
+                  Box box = Hive.box("texture_logs");
+
+                  if (!box.isEmpty){
+                  List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
+                  increment = keyList.reduce(max) +1;
+
+                  }
+                  _showAddSamplePanel();
+                },
                 icon: Icon(Icons.add, color: Colors.black87,),
                 label: Text('Add', style: TextStyle(color: Colors.black87)),
               ),
@@ -414,7 +412,12 @@ class _TextureListState extends State<TextureList> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: tLog, color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()), excludeList: ["sand", "silt", "clay"],);
+                        return SampleListTile(
+                          sampleLog: tLog, color: getColor(quantityMap["sand"].toInt(),
+                            quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),
+                          excludeList: ["sand", "silt", "clay"],
+                          boxname: "texture_logs",
+                        );
                       },
                     )
                     ;

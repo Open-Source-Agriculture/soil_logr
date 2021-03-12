@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,13 +35,13 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
     'Forbs Perennial': 0,
     'Forbs Annual': 0,
     'Legumes' : 0,
-    'Native Pasture' : 0,
   };
 
 
   double coverPercentage = 0.0;
   double weedsRatio  = 0.0;
   double coverHeight = 0.0;
+  int increment = 0;
 
 
   @override
@@ -51,7 +53,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
       // TaxonomyTerm taxonomyTerm = taxonomyTermBox.get("ground_cover");
       TaxonomyTerm taxonomyTerm = TaxonomyTerm(tid: 57, name: "ground_cover", description: "", parent: [], parents_all: []);
       Box GCbox = Hive.box(GC_LOGS);
-      int newID = GCbox.length;
+
       Position pos = await determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
@@ -69,14 +71,13 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
         Quantity(measure: "count", value: mySpecies["Forbs Perennial"].toDouble(), units: countUnit, label: "Forbs Perennial"),
         Quantity(measure: "count", value: mySpecies["Grasses Annual"].toDouble(), units: countUnit, label: "Grasses Annual"),
         Quantity(measure: "count", value: mySpecies["Grasses Perennial"].toDouble(), units: countUnit, label: "Grasses Perennial"),
-        Quantity(measure: "count", value: mySpecies["Native Pasture"].toDouble(), units: countUnit, label: "Native Pasture"),
         Quantity(measure: "count", value: mySpecies["Legumes"].toDouble(), units: countUnit, label: "Legumes"),
         Quantity(measure: "count", value: mySpecies.values.reduce((v, e) => v+e).toDouble(), units: countUnit, label: "Total Species Diversity"),
       ];
 
 
       Log newGroundCoverLog = Log(
-          id: newID,
+          id: increment,
           name: "",
           type: "ground_cover_observation",
           timestamp: DateTime.now().toString(),
@@ -84,7 +85,8 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           geofield: geoField,
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
-      GCbox.put(newID, newGroundCoverLog);
+      GCbox.put(increment, newGroundCoverLog);
+      increment = increment +1;
     }
 
 
@@ -110,21 +112,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
                   return Form(
                     key: _formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20,30,10,10),
-                      child: Wrap(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: displayHeight(context)*0.08,),
-                          Container(
-                            decoration: BoxDecoration(
-                              //border: Border.all(color: Colors.grey),
-                              color: Colors.grey[200],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                    child: CustomScrollView(
+                      shrinkWrap: true,
+                      slivers: <Widget>[
+                        SliverPadding(
+                          padding: const EdgeInsets.all(20.0),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate(
+                              <Widget>[
                                 Padding(
                                   padding: EdgeInsets.only(left: 10, top: 8),
                                   child: Text(
@@ -133,7 +128,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   ),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -166,7 +160,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   child: Text('Height of Cover', style: bodyTextStyle(context),),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -199,7 +192,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   child: Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -227,81 +219,73 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                     ),
                                   ),
                                 ),
+                                ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: mySpecies.length,
+                                    itemBuilder: (context, index) {
+                                      String speciesName = mySpecies.keys.toList()[index];
+                                      int speciesCount = mySpecies[speciesName];
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(speciesName, style: bodyTextStyle(context),),
+                                            Row(
+                                              children: [
+                                                RawMaterialButton(
+                                                  child: Icon(Icons.remove),
+                                                  onPressed: () {
+                                                    if (mySpecies[speciesName] > 0 ){
+                                                      mySpecies[speciesName] =
+                                                          mySpecies[speciesName] - 1;
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                ),
+                                                Text(speciesCount.toString(), style: bodyTextStyle(context),),
+                                                RawMaterialButton(
+                                                  child: Icon(Icons.add),
+                                                  onPressed: () {
+                                                    mySpecies[speciesName] = mySpecies[speciesName] + 1;
+                                                    setState(() {
+
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent, // background
+                                          onPrimary: Colors.white, // foreground
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                          minimumSize: Size(150,50),
+                                          elevation: 10.0,
+
+                                        ),
+                                        child: Text("Add", style: TextStyle(fontSize: 30),),
+                                        onPressed: () {
+                                          addGroundCoverLog();
+                                          Navigator.pop(context);
+                                        }
+                                    )
+                                )
                               ],
                             ),
                           ),
-
-
-                          ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: mySpecies.length,
-                              itemBuilder: (context, index) {
-                                String speciesName = mySpecies.keys.toList()[index];
-                                int speciesCount = mySpecies[speciesName];
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    //border: Border.all(color: Colors.grey),
-                                    //color: Colors.grey[200],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(speciesName, style: bodyTextStyle(context),),
-                                      Row(
-                                        children: [
-                                          RawMaterialButton(
-                                            //elevation: 2.0,
-                                            // fillColor: Color(0xff2C9C0A),
-                                            // shape: CircleBorder(),
-                                            child: Icon(Icons.remove),
-                                            onPressed: () {
-                                              if (mySpecies[speciesName] > 0 ){
-                                                mySpecies[speciesName] =
-                                                    mySpecies[speciesName] - 1;
-                                                setState(() {});
-                                              }
-                                            },
-                                          ),
-                                          Text(speciesCount.toString(), style: bodyTextStyle(context),),
-                                          RawMaterialButton(
-                                            //elevation: 2.0,
-                                            // fillColor: Color(0xff2C9C0A),
-                                            // shape: CircleBorder(),
-                                            child: Icon(Icons.add),
-                                            onPressed: () {
-                                              mySpecies[speciesName] = mySpecies[speciesName] + 1;
-                                              setState(() {
-
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-
-                                    ],
-                                  ),
-                                );
-                              }),
-                          Align(
-                              alignment: Alignment.bottomRight,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blueAccent, // background
-                                    onPrimary: Colors.white, // foreground
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                                    minimumSize: Size(150,50),
-                                    elevation: 10.0,
-
-                                  ),
-                                  child: Text("Add", style: TextStyle(fontSize: 30),),
-                                  onPressed: () {
-                                    addGroundCoverLog();
-                                    Navigator.pop(context);
-                                  }))
-                        ],
-                      ),
-                    ),
+                        ),
+                      ],
+                    )
                   );
                 });
           });
@@ -337,51 +321,33 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
     return Scaffold(
       drawer: SizedBox(
-        width: displayWidth(context)*0.66,
+        width: displayWidth(context)*0.7,
         child: Drawer(
           child: CustomDraw(),
         ),
       ),
-      appBar: AppBar(title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "Ground Cover Samples",
-            style: headingTextStyle(context),
-          ),
-        ],
+      appBar: AppBar(title: Text(
+        "Ground Cover Samples",
+        style: headingTextStyle(context),
       ),),
       body: Column(
         children: [
           Expanded(child: GroundCoverTile()),
-          // ListView.builder(
-          //
-          //   itemCount: 1, //GroundCoverList.length,
-          //   itemBuilder: (context, index){
-          //   return Card(
-          //     child: ListTile(
-          //       // leading: CircleAvatar(
-          //       //   radius: 80,
-          //       //   backgroundImage: widget.model.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(widget.model.imageFile.path)),
-          //       // ),
-          //         title: Text('Species: ' + widget.model.totalSpeciesCount.toString()),
-          //       subtitle: Text(
-          //           'Cover %: ${widget.model.coverPercentage} ' +
-          //               'Cover Height: ${widget.model.coverHeight}' +
-          //               'Weeds Ratio: ${widget.model.weedsRatio}' +
-          //           '\n Lat: ${widget.model.lat} Lon: ${widget.model.lon}'
-          //       ),
-          //     ),
-          //   );
-          //   }
-          // ),
         ],
       ),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           TextButton.icon(
-            onPressed: () => _showGroundCoverPanel(),
+            onPressed: () {
+              Box box = Hive.box(GC_LOGS);
+              if (!box.isEmpty){
+                List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
+                increment = keyList.reduce(max) +1;
+
+              }
+              _showGroundCoverPanel();
+            },
             icon: Icon(Icons.add, color: Colors.black87),
             label: Text('Add', style: TextStyle(color: Colors.black87)),
           ),
@@ -431,12 +397,12 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
     if (groundCoverPercentage < 0){
       groundCoverPercentage = 0;
     }
-    int lowR = 196;
-    int lowG = 52;
-    int lowB = 64;
-    int highR = 20;
-    int highG = 230;
-    int highB = 3;
+    int lowR = 186;
+    int lowG = 148;
+    int lowB = 110;
+    int highR = 2;
+    int highG = 81;
+    int highB = 34;
 
     double mag = (groundCoverPercentage.toDouble())/100.0;
 
@@ -455,7 +421,6 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
       'Forbs Perennial',
       'Forbs Annual',
       'Legumes',
-      'Native Pasture',
     ];
 
     return FutureBuilder(
@@ -481,7 +446,12 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(textureLog: gcLog, color: _getColor(quantityMap["Cover Percentage"].toInt()), excludeList: ignoreSpecies,);
+                        return SampleListTile(
+                          sampleLog: gcLog,
+                          color: _getColor(quantityMap["Cover Percentage"].toInt()),
+                          excludeList: ignoreSpecies,
+                          boxname: GC_LOGS,
+                        );
                       },
                     )
                     ;
