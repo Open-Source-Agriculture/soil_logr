@@ -126,7 +126,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   ),
                                 ),
                                 Container(
-//margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
