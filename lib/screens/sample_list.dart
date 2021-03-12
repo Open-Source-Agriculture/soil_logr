@@ -141,15 +141,17 @@ class _SampleListState extends State<SampleList> {
                                 .getTextureList()
                                 .map((texture) => Padding(
                                       padding: const EdgeInsets.all(2.0),
-                                      child: FlatButton(
-                                        padding: EdgeInsets.all(0),
-                                        color: texture.getColor().withOpacity(0.5),
-                                        shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: texture.getColor(),
-                                                width: 2,
-                                                style: BorderStyle.solid),
-                                            borderRadius: BorderRadius.circular(15)),
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.all(0) ,
+                                          backgroundColor: texture.getColor().withOpacity(0.5),
+                                          shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                  color: texture.getColor(),
+                                                  width: 2,
+                                                  style: BorderStyle.solid),
+                                              borderRadius: BorderRadius.circular(15)),
+                                        ),
                                         onPressed: () {
                                           setState(() {
                                             selectedTexture = texture;
