@@ -31,23 +31,17 @@ class SampleSummary extends StatelessWidget {
           width: 2,
         ),
       ),
-      child: Wrap(
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            'Texture:  ' +
-                selectedTexture.name +
-                '\nDepth:  ' +
-                depthUpper.toString() +
-                ' cm to ' +
-                depthLower.toString() +
-                ' cm' +
-                '\nSample ID:  ' +
-                sampleID.toString(),
-            style: bodyTextStyle(context),
-          ),
-        ],
+      child: Text(
+        'Texture:  ' +
+            selectedTexture.name +
+            '\nDepth:  ' +
+            depthUpper.toString() +
+            ' cm to ' +
+            depthLower.toString() +
+            ' cm' +
+            '\nSample ID:  ' +
+            sampleID.toString(),
+        style: bodyTextStyle(context),
       ),
     );
   }
