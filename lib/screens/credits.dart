@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soil_mate/screens/side_bar/drawer.dart';
 import '../widgets/credits_links_tile.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 
 class Credits extends StatefulWidget{
