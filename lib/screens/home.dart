@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
               children: [
                 Column(
                   children: [
-                    Text('Welcome to the ' + ' \n Soil Mate App!',
+                    Text('Welcome to the ' + ' \n Soil LogR App!',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w600,
@@ -72,8 +72,8 @@ class _HomeState extends State<Home> {
                 ),
                 Column(
                   children: [
-                    Text('What is Soil Mate?', style: headingTextStyle(context),),
-                    Text('The Soil Mate App is a tool to aid on site ', style: bodyTextStyle(context),),
+                    Text('What is Soil LogR?', style: headingTextStyle(context),),
+                    Text('The Soil LogR App is a tool to aid on site ', style: bodyTextStyle(context),),
                     Text('surveys by ' +
                         'automatically capturing ', style: bodyTextStyle(context),),
                     Text('location data', style: bodyTextStyle(context),),

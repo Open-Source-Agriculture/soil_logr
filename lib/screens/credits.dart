@@ -34,7 +34,7 @@ class _CreditsState extends State<Credits> {
               delegate: SliverChildListDelegate(
                 <Widget>[
                   Text(
-                    'Thank you for using Soil Mate!',
+                    'Thank you for using Soil LogR!',
                     style: headingTextStyle(context),
                   ),
                   SizedBox(height: displayHeight(context) * 0.05,),
