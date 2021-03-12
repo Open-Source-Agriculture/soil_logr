@@ -25,32 +25,29 @@ class SampleListTile extends StatelessWidget {
       }
     });
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: color, width: 3.0),
-          color: color.withOpacity(0.7),
-        ),
-        child: Slidable(
-          actionPane: SlidableScrollActionPane(),
-          actions: [
-            IconSlideAction(
-              caption: 'Cancel',
-              color: Colors.grey[300],
-              icon: Icons.cancel_outlined,
-              onTap: (){},
-            ),
-          ],
-          child: ListTile(
-            title: Text('ID: '+ textureLog.id.toString()
-                 + '    ' +textureLog.name
-                + '\n' + textureLog.geofield.lat.toString() + ', '
-                + textureLog.geofield.lon.toString()
-                ),
-            subtitle: Text(quantityString),
+    return Container(
+      decoration: BoxDecoration(
+        //borderRadius: BorderRadius.circular(15),
+        //border: Border.all(color: color, width: 3.0),
+        color: color.withOpacity(0.4),
+      ),
+      child: Slidable(
+        actionPane: SlidableScrollActionPane(),
+        actions: [
+          IconSlideAction(
+            caption: 'Cancel',
+            color: Colors.grey[300],
+            icon: Icons.cancel_outlined,
+            onTap: (){},
           ),
+        ],
+        child: ListTile(
+          title: Text('ID: '+ textureLog.id.toString()
+               + '    ' +textureLog.name
+              + '\n' + textureLog.geofield.lat.toString() + ', '
+              + textureLog.geofield.lon.toString()
+              ),
+          subtitle: Text(quantityString),
         ),
       ),
     );
