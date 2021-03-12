@@ -1,12 +1,7 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/screens/side_bar/drawer.dart';
-import 'package:soil_mate/screens/credits.dart';
 import 'package:soil_mate/services/sizes_and_themes.dart';
-import 'package:soil_mate/services/taxonomy_terms.dart';
 
 class Home extends StatefulWidget {
   @override
