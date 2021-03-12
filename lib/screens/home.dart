@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SizedBox(
-        width: displayWidth(context)*0.66,
+        width: displayWidth(context)*0.7,
         child: Drawer(
            child: CustomDraw(),
         ),
@@ -21,16 +21,9 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         //automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            // IconButton(icon: Icon(Icons.menu), onPressed: (){
-            //   CustomDraw();
-            // }),
-            Text(
-              "Home",
-              style: headingTextStyle(context),
-            ),
-          ],
+        title: Text(
+          "Home",
+          style: headingTextStyle(context),
         ),
         backgroundColor: Colors.white,
         elevation: 2.0,

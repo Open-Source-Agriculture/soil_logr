@@ -330,14 +330,9 @@ class _SampleListState extends State<SampleList> {
               child: CustomDraw(),
             ),
           ),
-          appBar: AppBar(title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "Soil Texture Samples",
-                style: headingTextStyle(context),
-              ),
-            ],
+          appBar: AppBar(title: Text(
+            "Soil Texture Samples",
+            style: headingTextStyle(context),
           ),),
 
           body: TextureList(),

@@ -322,14 +322,9 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           child: CustomDraw(),
         ),
       ),
-      appBar: AppBar(title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "Ground Cover Samples",
-            style: headingTextStyle(context),
-          ),
-        ],
+      appBar: AppBar(title: Text(
+        "Ground Cover Samples",
+        style: headingTextStyle(context),
       ),),
       body: Column(
         children: [
