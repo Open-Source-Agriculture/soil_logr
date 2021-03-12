@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -51,7 +53,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
       // TaxonomyTerm taxonomyTerm = taxonomyTermBox.get("ground_cover");
       TaxonomyTerm taxonomyTerm = TaxonomyTerm(tid: 57, name: "ground_cover", description: "", parent: [], parents_all: []);
       Box GCbox = Hive.box(GC_LOGS);
-      int newID = GCbox.length;
+
       Position pos = await determinePosition();
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
@@ -75,7 +77,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
 
       Log newGroundCoverLog = Log(
-          id: newID,
+          id: increment,
           name: "",
           type: "ground_cover_observation",
           timestamp: DateTime.now().toString(),
@@ -83,7 +85,8 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           geofield: geoField,
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
-      GCbox.put(newID, newGroundCoverLog);
+      GCbox.put(increment, newGroundCoverLog);
+      increment = increment +1;
     }
 
 
@@ -336,7 +339,15 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           TextButton.icon(
-            onPressed: () => _showGroundCoverPanel(),
+            onPressed: () {
+              Box box = Hive.box(GC_LOGS);
+              if (!box.isEmpty){
+                List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
+                increment = keyList.reduce(max) +1;
+
+              }
+              _showGroundCoverPanel();
+            },
             icon: Icon(Icons.add, color: Colors.black87),
             label: Text('Add', style: TextStyle(color: Colors.black87)),
           ),
