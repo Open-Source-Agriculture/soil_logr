@@ -110,21 +110,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
                   return Form(
                     key: _formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20,30,10,10),
-                      child: Wrap(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: displayHeight(context)*0.08,),
-                          Container(
-                            decoration: BoxDecoration(
-                              //border: Border.all(color: Colors.grey),
-                              color: Colors.grey[200],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                    child: CustomScrollView(
+                      shrinkWrap: true,
+                      slivers: <Widget>[
+                        SliverPadding(
+                          padding: const EdgeInsets.all(20.0),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate(
+                              <Widget>[
                                 Padding(
                                   padding: EdgeInsets.only(left: 10, top: 8),
                                   child: Text(
@@ -133,7 +126,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   ),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.symmetric(horizontal: 10),
+//margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -166,7 +159,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   child: Text('Height of Cover', style: bodyTextStyle(context),),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.symmetric(horizontal: 10),
+//margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -199,7 +192,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   child: Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
                                 ),
                                 Container(
-                                  //margin: EdgeInsets.symmetric(horizontal: 10),
+//margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -227,81 +220,73 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                     ),
                                   ),
                                 ),
+                                ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: mySpecies.length,
+                                    itemBuilder: (context, index) {
+                                      String speciesName = mySpecies.keys.toList()[index];
+                                      int speciesCount = mySpecies[speciesName];
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(speciesName, style: bodyTextStyle(context),),
+                                            Row(
+                                              children: [
+                                                RawMaterialButton(
+                                                  child: Icon(Icons.remove),
+                                                  onPressed: () {
+                                                    if (mySpecies[speciesName] > 0 ){
+                                                      mySpecies[speciesName] =
+                                                          mySpecies[speciesName] - 1;
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                ),
+                                                Text(speciesCount.toString(), style: bodyTextStyle(context),),
+                                                RawMaterialButton(
+                                                  child: Icon(Icons.add),
+                                                  onPressed: () {
+                                                    mySpecies[speciesName] = mySpecies[speciesName] + 1;
+                                                    setState(() {
+
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent, // background
+                                          onPrimary: Colors.white, // foreground
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                          minimumSize: Size(150,50),
+                                          elevation: 10.0,
+
+                                        ),
+                                        child: Text("Add", style: TextStyle(fontSize: 30),),
+                                        onPressed: () {
+                                          addGroundCoverLog();
+                                          Navigator.pop(context);
+                                        }
+                                    )
+                                )
                               ],
                             ),
                           ),
-
-
-                          ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: mySpecies.length,
-                              itemBuilder: (context, index) {
-                                String speciesName = mySpecies.keys.toList()[index];
-                                int speciesCount = mySpecies[speciesName];
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    //border: Border.all(color: Colors.grey),
-                                    //color: Colors.grey[200],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(speciesName, style: bodyTextStyle(context),),
-                                      Row(
-                                        children: [
-                                          RawMaterialButton(
-                                            //elevation: 2.0,
-                                            // fillColor: Color(0xff2C9C0A),
-                                            // shape: CircleBorder(),
-                                            child: Icon(Icons.remove),
-                                            onPressed: () {
-                                              if (mySpecies[speciesName] > 0 ){
-                                                mySpecies[speciesName] =
-                                                    mySpecies[speciesName] - 1;
-                                                setState(() {});
-                                              }
-                                            },
-                                          ),
-                                          Text(speciesCount.toString(), style: bodyTextStyle(context),),
-                                          RawMaterialButton(
-                                            //elevation: 2.0,
-                                            // fillColor: Color(0xff2C9C0A),
-                                            // shape: CircleBorder(),
-                                            child: Icon(Icons.add),
-                                            onPressed: () {
-                                              mySpecies[speciesName] = mySpecies[speciesName] + 1;
-                                              setState(() {
-
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-
-                                    ],
-                                  ),
-                                );
-                              }),
-                          Align(
-                              alignment: Alignment.bottomRight,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blueAccent, // background
-                                    onPrimary: Colors.white, // foreground
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                                    minimumSize: Size(150,50),
-                                    elevation: 10.0,
-
-                                  ),
-                                  child: Text("Add", style: TextStyle(fontSize: 30),),
-                                  onPressed: () {
-                                    addGroundCoverLog();
-                                    Navigator.pop(context);
-                                  }))
-                        ],
-                      ),
-                    ),
+                        ),
+                      ],
+                    )
                   );
                 });
           });

@@ -25,51 +25,57 @@ class _CreditsState extends State<Credits> {
         backgroundColor: Colors.white,
         elevation: 2.0,
     ),
-      body: Padding(
-        padding: const EdgeInsets.all(17.0),
-        child: Container(
-          height: displayHeight(context),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                  'Thank you for using Soil Mate!',
-                style: headingTextStyle(context),
-              ),
-              Text('To keep the development of the app free and open-source, please consider supporting us.',
-              style: bodyTextStyle(context),
-              ),
-              LinksTile(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: (displayWidth(context)*0.5),
-                    child: Text(
-                      'This app was developed by Open Source Agriculture. We are siblings who are passionate about agriculture and open-source.',
-                      style: bodyTextStyle(context),
-                    ),
+      body: CustomScrollView(
+        shrinkWrap: false,
+        slivers: <Widget>[
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 30),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                <Widget>[
+                  Text(
+                    'Thank you for using Soil Mate!',
+                    style: headingTextStyle(context),
                   ),
-                  Container(
-                    width: (displayWidth(context)*0.3),
-                    height: (displayWidth(context)*0.3),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
+                  SizedBox(height: displayHeight(context) * 0.05,),
+                  Text('To keep the development of the app free and open-source, please consider supporting us.',
+                    style: bodyTextStyle(context),
+                  ),
+                  SizedBox(height: displayHeight(context) * 0.05,),
+                  LinksTile(),
+                  SizedBox(height: displayHeight(context) * 0.05,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: (displayWidth(context)*0.5),
+                        child: Text(
+                          'This app was developed by Open Source Agriculture. We are siblings who are passionate about agriculture and open-source.',
+                          style: bodyTextStyle(context),
+                        ),
                       ),
-                    ),
-                    child: Image(
-                        image: AssetImage('assets/credits_selfie.jpg'),
-                        fit: BoxFit.fill
-                    ),
+                      Container(
+                        width: (displayWidth(context)*0.3),
+                        height: (displayWidth(context)*0.3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        child: Image(
+                            image: AssetImage('assets/credits_selfie.jpg'),
+                            fit: BoxFit.fill
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        ],
+      )
     );
   }
 }
