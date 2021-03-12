@@ -33,7 +33,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
     'Forbs Perennial': 0,
     'Forbs Annual': 0,
     'Legumes' : 0,
-    'Native Pasture' : 0,
   };
 
 
@@ -69,7 +68,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
         Quantity(measure: "count", value: mySpecies["Forbs Perennial"].toDouble(), units: countUnit, label: "Forbs Perennial"),
         Quantity(measure: "count", value: mySpecies["Grasses Annual"].toDouble(), units: countUnit, label: "Grasses Annual"),
         Quantity(measure: "count", value: mySpecies["Grasses Perennial"].toDouble(), units: countUnit, label: "Grasses Perennial"),
-        Quantity(measure: "count", value: mySpecies["Native Pasture"].toDouble(), units: countUnit, label: "Native Pasture"),
         Quantity(measure: "count", value: mySpecies["Legumes"].toDouble(), units: countUnit, label: "Legumes"),
         Quantity(measure: "count", value: mySpecies.values.reduce((v, e) => v+e).toDouble(), units: countUnit, label: "Total Species Diversity"),
       ];
@@ -158,7 +156,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   child: Text('Height of Cover', style: bodyTextStyle(context),),
                                 ),
                                 Container(
-//margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -191,7 +188,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                   child: Text('Percentage of Weeds from total vegetation', style: bodyTextStyle(context),),
                                 ),
                                 Container(
-//margin: EdgeInsets.symmetric(horizontal: 10),
                                   color: Colors.white,
                                   child: SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
@@ -338,27 +334,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
       body: Column(
         children: [
           Expanded(child: GroundCoverTile()),
-          // ListView.builder(
-          //
-          //   itemCount: 1, //GroundCoverList.length,
-          //   itemBuilder: (context, index){
-          //   return Card(
-          //     child: ListTile(
-          //       // leading: CircleAvatar(
-          //       //   radius: 80,
-          //       //   backgroundImage: widget.model.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(widget.model.imageFile.path)),
-          //       // ),
-          //         title: Text('Species: ' + widget.model.totalSpeciesCount.toString()),
-          //       subtitle: Text(
-          //           'Cover %: ${widget.model.coverPercentage} ' +
-          //               'Cover Height: ${widget.model.coverHeight}' +
-          //               'Weeds Ratio: ${widget.model.weedsRatio}' +
-          //           '\n Lat: ${widget.model.lat} Lon: ${widget.model.lon}'
-          //       ),
-          //     ),
-          //   );
-          //   }
-          // ),
         ],
       ),
       bottomNavigationBar: Row(
@@ -439,7 +414,6 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
       'Forbs Perennial',
       'Forbs Annual',
       'Legumes',
-      'Native Pasture',
     ];
 
     return FutureBuilder(
