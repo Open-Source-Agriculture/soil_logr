@@ -397,12 +397,12 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
     if (groundCoverPercentage < 0){
       groundCoverPercentage = 0;
     }
-    int lowR = 196;
-    int lowG = 52;
-    int lowB = 64;
-    int highR = 20;
-    int highG = 230;
-    int highB = 3;
+    int lowR = 186;
+    int lowG = 148;
+    int lowB = 110;
+    int highR = 2;
+    int highG = 81;
+    int highB = 34;
 
     double mag = (groundCoverPercentage.toDouble())/100.0;
 
