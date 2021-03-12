@@ -39,6 +39,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
   double coverPercentage = 0.0;
   double weedsRatio  = 0.0;
   double coverHeight = 0.0;
+  int increment = 0;
 
 
   @override
@@ -434,7 +435,12 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
                           quantityMap[quant.label] = quant.value;
                         });
 
-                        return SampleListTile(sampleLog: gcLog, color: _getColor(quantityMap["Cover Percentage"].toInt()), excludeList: ignoreSpecies,);
+                        return SampleListTile(
+                          sampleLog: gcLog,
+                          color: _getColor(quantityMap["Cover Percentage"].toInt()),
+                          excludeList: ignoreSpecies,
+                          boxname: GC_LOGS,
+                        );
                       },
                     )
                     ;

@@ -60,7 +60,7 @@ class _SampleListState extends State<SampleList> {
       return await Geolocator.getCurrentPosition();
     }
 
-    Future addTextureLog(int newID) async {
+    Future addTextureLog() async {
       final taxonomyTermBox = Hive.box("taxonomy_term");
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
@@ -81,7 +81,7 @@ class _SampleListState extends State<SampleList> {
 
 
       Log newTextureLog = Log(
-          id: newID,
+          id: increment,
           name: selectedTexture.name,
           type: "texture_observation",
           timestamp: DateTime.now().toString(),
@@ -89,7 +89,8 @@ class _SampleListState extends State<SampleList> {
           geofield: geoField,
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
-      box.put(newID, newTextureLog);
+      box.put(increment, newTextureLog);
+      increment = increment +1;
     }
 
     void _showAddSamplePanel() {
@@ -247,7 +248,7 @@ class _SampleListState extends State<SampleList> {
                                           keyboardType: TextInputType.number,
                                           onChanged: (val) {
                                             setState(() {
-                                              increment = int.parse(val);
+                                              increment = int.parse(val == ''? increment.toString(): val);
                                               print(increment);
                                             });
                                           },
@@ -279,15 +280,7 @@ class _SampleListState extends State<SampleList> {
                                   ),
                                   child: Text("Add", style: TextStyle(fontSize: 30),),
                                   onPressed: () {
-                                    Box box = Hive.box("texture_logs");
-
-                                    int newID = 0;
-                                    if (!box.isEmpty){
-                                      List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
-                                      newID = keyList.reduce(max) +1;
-                                    }
-
-                                    addTextureLog(newID);
+                                    addTextureLog();
                                     Navigator.pop(context);
                                   }))
                         ],
@@ -350,7 +343,17 @@ class _SampleListState extends State<SampleList> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton.icon(
-                onPressed: () => _showAddSamplePanel(),
+                onPressed: () {
+
+                  Box box = Hive.box("texture_logs");
+
+                  if (!box.isEmpty){
+                  List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
+                  increment = keyList.reduce(max) +1;
+
+                  }
+                  _showAddSamplePanel();
+                },
                 icon: Icon(Icons.add, color: Colors.black87,),
                 label: Text('Add', style: TextStyle(color: Colors.black87)),
               ),
