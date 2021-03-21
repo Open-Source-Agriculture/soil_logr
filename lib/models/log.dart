@@ -82,6 +82,7 @@ class Log{
       "timestamp": timestamp,
       "notes": notes,
       "geofield": geofield.toMap(),
+      "imageFile": imageFile,
       "log_category": log_category.map((t) => t.toMap()),
       "quantity": quantity.map((e) => e.toMap()),
     });
