@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 
 
@@ -66,8 +67,11 @@ class Log{
   List<TaxonomyTerm> log_category;
   @HiveField(8)
   List<Quantity> quantity;// with keys lat lon
+  @HiveField(9)
+  PickedFile imageFile;
 
-  Log({this.id, this.name, this.type, this.timestamp, this.notes, this.geofield, this.log_category, this.quantity});
+
+  Log({this.id, this.name, this.type, this.timestamp, this.notes, this.geofield, this.log_category, this.quantity, this.imageFile});
 
 
   Map<String, dynamic> toMap(){
