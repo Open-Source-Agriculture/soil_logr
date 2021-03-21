@@ -64,7 +64,7 @@ class SampleListTile extends StatelessWidget {
           child: ListTile(
             trailing: CircleAvatar(
               radius: 80,
-              backgroundImage: FileImage(File(sampleLog.imageFile.path)),
+              backgroundImage: sampleLog.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(sampleLog.imageFile.path)),
             ),
             title: Text('ID: '+ sampleLog.id.toString()
                  + '    ' +sampleLog.name
