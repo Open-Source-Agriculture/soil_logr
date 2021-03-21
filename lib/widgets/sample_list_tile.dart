@@ -66,7 +66,8 @@ class SampleListTile extends StatelessWidget {
               radius: 80,
               backgroundImage: sampleLog.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(sampleLog.imageFile.path)),
             ),
-            title: Text('ID: '+ sampleLog.id.toString()
+            title: Text(
+                'ID: '+ sampleLog.id.toString()
                  + '    ' +sampleLog.name
                 + '\n' + sampleLog.geofield.lat.toString() + ', '
                 + sampleLog.geofield.lon.toString()

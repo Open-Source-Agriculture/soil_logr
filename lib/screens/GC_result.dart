@@ -87,6 +87,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           timestamp: DateTime.now().toString(),
           notes: "",
           geofield: geoField,
+          imageFile: imageFile,
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
       GCbox.put(increment, newGroundCoverLog);
