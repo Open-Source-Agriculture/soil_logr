@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:soil_mate/models/GC_model.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
@@ -42,6 +44,8 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
   double weedsRatio  = 0.0;
   double coverHeight = 0.0;
   int increment = 0;
+  PickedFile imageFile = PickedFile("assets/placeholder.png");
+  final ImagePicker _picker = ImagePicker();
 
 
   @override
@@ -262,23 +266,49 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                         ),
                                       );
                                     }),
-                                Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors.blueAccent, // background
-                                          onPrimary: Colors.white, // foreground
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                                          minimumSize: Size(150,50),
-                                          elevation: 10.0,
-
+                                Row(
+                                  children: [
+                                    Stack(
+                                        children: <Widget>[
+                                        CircleAvatar(
+                                          radius: 27,
+                                          backgroundImage: imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(imageFile.path)),
                                         ),
-                                        child: Text("Add", style: TextStyle(fontSize: 30),),
-                                        onPressed: () {
-                                          addGroundCoverLog();
-                                          Navigator.pop(context);
-                                        }
-                                    )
+                                        IconButton(
+                                          onPressed: ()
+                                            async{
+                                              final pickedFile = await _picker.getImage(
+                                                source: ImageSource.camera,
+                                              );
+                                              setState(() {
+                                                imageFile = pickedFile;
+                                              });
+                                            },
+                                          icon: Icon(Icons.camera_alt),
+                                          iconSize: 40,
+                                          color: Colors.pink,
+                                        ),
+                                      ],
+                                    ),
+                                    Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.blueAccent, // background
+                                              onPrimary: Colors.white, // foreground
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                              minimumSize: Size(150,50),
+                                              elevation: 10.0,
+
+                                            ),
+                                            child: Text("Add", style: TextStyle(fontSize: 30),),
+                                            onPressed: () {
+                                              addGroundCoverLog();
+                                              Navigator.pop(context);
+                                            }
+                                        )
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
