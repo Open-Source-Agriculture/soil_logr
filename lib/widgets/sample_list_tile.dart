@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:soil_mate/models/log.dart';
@@ -60,6 +62,10 @@ class SampleListTile extends StatelessWidget {
             ),
           ],
           child: ListTile(
+            trailing: CircleAvatar(
+              radius: 80,
+              backgroundImage: FileImage(File(sampleLog.imageFile.path)),
+            ),
             title: Text('ID: '+ sampleLog.id.toString()
                  + '    ' +sampleLog.name
                 + '\n' + sampleLog.geofield.lat.toString() + ', '
