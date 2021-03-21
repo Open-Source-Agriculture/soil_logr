@@ -1,7 +1,7 @@
-# Soil Mate
+# Soil LogR
 ## *Helper app designed to assist the collection of soil data.*
 
-The soil mate app provides a simple and convenient way to collect soil data at sample locations in the field. The Soil Mate app is targeted across multiple industries, including agriculture, environmental science, geology, and mining. The current version of the app collects soil texture data.
+The Soil LogR app (previously) provides a simple and convenient way to collect soil data at sample locations in the field. The Soil Mate app is targeted across multiple industries, including agriculture, environmental science, geology, and mining. The current version of the app collects soil texture data.
 
 <img src="assets/sm_screenshots.png" alt="drawing" width="400"/>
 
