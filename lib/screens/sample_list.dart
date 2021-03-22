@@ -331,6 +331,8 @@ class _SampleListState extends State<SampleList> {
                   List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
                   increment = keyList.reduce(max) +1;
 
+                  } else {
+                    increment = 0;
                   }
                   _showAddSamplePanel();
                 },

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:soil_mate/models/GC_model.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
@@ -286,8 +287,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                               final pickedFile = await _picker.getImage(
                                                 source: ImageSource.camera,
                                               );
+                                              File file = File(pickedFile.path);
+                                              Directory dir = await getApplicationDocumentsDirectory();
+                                              File newFile = await file.copy("${dir.path}" +"/image$increment.jpg");
+                                              print(newFile.path);
+                                              file.delete();
                                               setState(() {
-                                                imageFile = pickedFile;
+                                                PickedFile newPickedFile = PickedFile(newFile.path);
+                                                imageFile = newPickedFile;
                                               });
                                             },
                                           icon: Icon(Icons.camera_alt),
@@ -396,6 +403,8 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                 List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
                 increment = keyList.reduce(max) +1;
 
+              } else {
+                increment = 0;
               }
               _showGroundCoverPanel();
             },
