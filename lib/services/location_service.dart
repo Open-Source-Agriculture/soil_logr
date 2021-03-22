@@ -6,7 +6,10 @@ Future<Position> determinePosition() async {
   LocationPermission permission;
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+
   if (!serviceEnabled) {
+    Geolocator.openLocationSettings();
     return Future.error('Location services are disabled.');
   }
 
@@ -24,6 +27,13 @@ Future<Position> determinePosition() async {
           'Location permissions are denied (actual value: $permission).');
     }
   }
+  try {
+    Position position = await Geolocator.getCurrentPosition();
+    return position;
+  } on Exception catch (_){
+    Position position = await Geolocator.getCurrentPosition(forceAndroidLocationManager: true);
+    return position;
 
-  return await Geolocator.getCurrentPosition();
+  }
+
 }
