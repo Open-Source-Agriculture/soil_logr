@@ -274,6 +274,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                       );
                                     }),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Stack(
                                         children: <Widget>[
