@@ -27,7 +27,7 @@ Future<String> writeCSV(String csvString) async {
 
 
 
-Future<void> createEmailWithCSV(String csvContents) async {
+Future<void> createEmailWithCSV(String csvContents, List<String> images) async {
   String path = await writeCSV(csvContents);
   print(path);
 
@@ -38,7 +38,7 @@ Future<void> createEmailWithCSV(String csvContents) async {
 //    isHTML: true,
 //    bccRecipients: ['other@example.com'],
 //    ccRecipients: ['third@example.com'],
-    attachments: [path, ],
+    attachments: [path] + images,
   );
 
   final MailerResponse response = await FlutterMailer.send(mailOptions);
@@ -69,7 +69,7 @@ void sendEmail(List<Log> logs){
   if (logs.isNotEmpty){
     List<List<String>> allSamplesLists = [];
 
-    List<String> headers = ["id", "Latitude", "Longitude", "Category"];
+    List<String> headers = ["id", "Latitude", "Longitude", "Category", "Image"];
 
     Log firstLog = logs[0];
 
@@ -77,6 +77,7 @@ void sendEmail(List<Log> logs){
       headers.add(q.label);
     });
 
+    List<String> attachImages = [];
 
     logs.forEach((l) {
       List<String> row = [
@@ -84,8 +85,11 @@ void sendEmail(List<Log> logs){
         l.geofield.lat.toString(),
         l.geofield.lon.toString(),
         l.log_category[0].name,
-
+        l.images[0].split("/").last
       ];
+
+      attachImages.add(l.images[0]);
+
 
       l.quantity.forEach((q) {
         row.add(q.value.toString());
@@ -100,7 +104,7 @@ void sendEmail(List<Log> logs){
     List<List<String>> headerAllSamplesLists = [headers] + allSamplesLists;
     String csv = const ListToCsvConverter().convert(headerAllSamplesLists);
     csv = csv.replaceAll("\r\n", "\n").replaceAll("\r", "\n").replaceAll("\n\n", "\n");
-    createEmailWithCSV(csv);
+    createEmailWithCSV(csv, attachImages);
   }
 
 }

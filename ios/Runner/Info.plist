@@ -28,6 +28,10 @@
 	<string>This app needs access to background location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to the devices location to geo-locate the soil samples.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to the devices storage to store collected sample images.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs access to the devices camera to capture sample images.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:soil_mate/models/GC_model.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
@@ -42,6 +45,8 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
   double weedsRatio  = 0.0;
   double coverHeight = 0.0;
   int increment = 0;
+  PickedFile imageFile = PickedFile("assets/placeholder.png");
+  final ImagePicker _picker = ImagePicker();
 
 
   @override
@@ -83,11 +88,17 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           timestamp: DateTime.now().toString(),
           notes: "",
           geofield: geoField,
+          images: [imageFile.path],
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
       GCbox.put(increment, newGroundCoverLog);
       increment = increment +1;
+
+      imageFile = PickedFile("assets/placeholder.png");
+
+
     }
+
 
 
     void _showGroundCoverPanel() {
@@ -262,23 +273,56 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                         ),
                                       );
                                     }),
-                                Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors.blueAccent, // background
-                                          onPrimary: Colors.white, // foreground
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                                          minimumSize: Size(150,50),
-                                          elevation: 10.0,
-
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Stack(
+                                        children: <Widget>[
+                                        CircleAvatar(
+                                          radius: 27,
+                                          backgroundImage: imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(imageFile.path)),
                                         ),
-                                        child: Text("Add", style: TextStyle(fontSize: 30),),
-                                        onPressed: () {
-                                          addGroundCoverLog();
-                                          Navigator.pop(context);
-                                        }
-                                    )
+                                        IconButton(
+                                          onPressed: ()
+                                            async{
+                                              final pickedFile = await _picker.getImage(
+                                                source: ImageSource.camera,
+                                              );
+                                              File file = File(pickedFile.path);
+                                              Directory dir = await getApplicationDocumentsDirectory();
+                                              File newFile = await file.copy("${dir.path}" +"/ground_cover_image${increment}_${DateTime.now().toIso8601String()}.jpg");
+                                              print(newFile.path);
+                                              file.delete();
+                                              setState(() {
+                                                PickedFile newPickedFile = PickedFile(newFile.path);
+                                                imageFile = newPickedFile;
+                                              });
+                                            },
+                                          icon: Icon(Icons.camera_alt),
+                                          iconSize: 40,
+                                          color: Colors.pink,
+                                        ),
+                                      ],
+                                    ),
+                                    Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.blueAccent, // background
+                                              onPrimary: Colors.white, // foreground
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                              minimumSize: Size(150,50),
+                                              elevation: 10.0,
+
+                                            ),
+                                            child: Text("Add", style: TextStyle(fontSize: 30),),
+                                            onPressed: () {
+                                              addGroundCoverLog();
+                                              Navigator.pop(context);
+                                            }
+                                        )
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -309,6 +353,21 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                   child: Text('Confirm'),
                   onPressed: () {
                     Box groundCoverLog = Hive.box(GC_LOGS);
+
+                    List _logKeys = groundCoverLog.keys.toList();
+                    _logKeys.forEach((k) {
+                      Log log = groundCoverLog.get(k) as Log;
+                      log.images.forEach((img) {
+                        File imgFile = File(img);
+                        print(imgFile.path);
+                        if (imgFile.path != PLACEHOLDER_IMG){
+
+                          imgFile.delete();
+                        }
+                      });
+                    });
+
+
                     groundCoverLog.clear();
                     Navigator.pop(context);
                   },
@@ -345,6 +404,8 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                 List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
                 increment = keyList.reduce(max) +1;
 
+              } else {
+                increment = 0;
               }
               _showGroundCoverPanel();
             },

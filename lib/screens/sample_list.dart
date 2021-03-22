@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:soil_mate/models/taxonomy_term.dart';
 import 'package:soil_mate/models/texture_models.dart';
@@ -16,6 +18,7 @@ import 'package:soil_mate/widgets/sample_list_tile.dart';
 import 'package:soil_mate/widgets/sample_summary_container.dart';
 import 'dart:async';
 import 'credits.dart';
+import 'dart:io';
 
 class SampleList extends StatefulWidget{
   @override
@@ -30,6 +33,8 @@ class _SampleListState extends State<SampleList> {
   int depthUpper = 0;
   int depthLower = 10;
   int increment = 0;
+  PickedFile imageFile = PickedFile("assets/placeholder.png");
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +64,15 @@ class _SampleListState extends State<SampleList> {
           name: selectedTexture.name,
           type: "texture_observation",
           timestamp: DateTime.now().toString(),
+          images: [imageFile.path],
           notes: "",
           geofield: geoField,
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
       box.put(increment, newTextureLog);
       increment = increment +1;
+
+      imageFile = PickedFile("assets/placeholder.png");
     }
 
     void _showAddSamplePanel() {
@@ -247,22 +255,55 @@ class _SampleListState extends State<SampleList> {
                             ],
                           ),
                           SizedBox(height: displayHeight(context)*0.01,),
-                          Align(
-                              alignment: Alignment.bottomRight,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blueAccent, // background
-                                    onPrimary: Colors.white, // foreground
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                                    minimumSize: Size(150,50),
-                                    elevation: 10.0,
-
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Stack(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 27,
+                                    backgroundImage: imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(imageFile.path)),
                                   ),
-                                  child: Text("Add", style: TextStyle(fontSize: 30),),
-                                  onPressed: () {
-                                    addTextureLog();
-                                    Navigator.pop(context);
-                                  }))
+                                  IconButton(
+                                    onPressed: ()
+                                    async{
+                                      final pickedFile = await _picker.getImage(
+                                        source: ImageSource.camera,
+                                      );
+                                      File file = File(pickedFile.path);
+                                      Directory dir = await getApplicationDocumentsDirectory();
+                                      File newFile = await file.copy("${dir.path}" +"/texture_image${increment}_${DateTime.now().toIso8601String()}.jpg");
+                                      print(newFile.path);
+                                      file.delete();
+                                      setState(() {
+                                        PickedFile newPickedFile = PickedFile(newFile.path);
+                                        imageFile = newPickedFile;
+                                      });
+                                    },
+                                    icon: Icon(Icons.camera_alt),
+                                    iconSize: 40,
+                                    color: Colors.pink,
+                                  ),
+                                ],
+                              ),
+                              Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.blueAccent, // background
+                                        onPrimary: Colors.white, // foreground
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                                        minimumSize: Size(150,50),
+                                        elevation: 10.0,
+
+                                      ),
+                                      child: Text("Add", style: TextStyle(fontSize: 30),),
+                                      onPressed: () {
+                                        addTextureLog();
+                                        Navigator.pop(context);
+                                      })),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -331,6 +372,8 @@ class _SampleListState extends State<SampleList> {
                   List<int> keyList = box.keys.toList().map((e) => int.parse(e.toString())).toList();
                   increment = keyList.reduce(max) +1;
 
+                  } else {
+                    increment = 0;
                   }
                   _showAddSamplePanel();
                 },
@@ -413,8 +456,8 @@ class _TextureListState extends State<TextureList> {
                         });
 
                         return SampleListTile(
-                          sampleLog: tLog, color: getColor(quantityMap["sand"].toInt(),
-                            quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),
+                          sampleLog: tLog,
+                          color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),
                           excludeList: ["sand", "silt", "clay"],
                           boxname: "texture_logs",
                         );
