@@ -68,10 +68,10 @@ class Log{
   @HiveField(8)
   List<Quantity> quantity;// with keys lat lon
   @HiveField(9)
-  PickedFile imageFile;
+  List<String> images;
 
 
-  Log({this.id, this.name, this.type, this.timestamp, this.notes, this.geofield, this.log_category, this.quantity, this.imageFile});
+  Log({this.id, this.name, this.type, this.timestamp, this.notes, this.geofield, this.log_category, this.quantity, this.images});
 
 
   Map<String, dynamic> toMap(){
@@ -82,7 +82,7 @@ class Log{
       "timestamp": timestamp,
       "notes": notes,
       "geofield": geofield.toMap(),
-      "imageFile": imageFile,
+      "images": images,
       "log_category": log_category.map((t) => t.toMap()),
       "quantity": quantity.map((e) => e.toMap()),
     });

@@ -5,6 +5,9 @@ import 'package:hive/hive.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+
+const String PLACEHOLDER_IMG = "assets/placeholder.png";
+
 class SampleListTile extends StatelessWidget {
   final Log sampleLog;
   final Color color;
@@ -31,6 +34,14 @@ class SampleListTile extends StatelessWidget {
       }
     });
 
+    print(sampleLog.images);
+
+
+    File imgFile = File(sampleLog.images[0]);
+
+
+
+
     return Padding(
       padding: const EdgeInsets.only(top: 1.0),
       child: Container(
@@ -48,6 +59,9 @@ class SampleListTile extends StatelessWidget {
               color: Colors.red,
               icon: Icons.delete,
               onTap: () {
+                if (imgFile.path != PLACEHOLDER_IMG){
+                  imgFile.delete();
+                }
                 Box box = Hive.box(boxname);
                 print(box.keys);
                 box.delete(sampleLog.id);
@@ -64,7 +78,7 @@ class SampleListTile extends StatelessWidget {
           child: ListTile(
             trailing: CircleAvatar(
               radius: 80,
-              backgroundImage: sampleLog.imageFile == null ? AssetImage("assets/placeholder.png"): FileImage(File(sampleLog.imageFile.path)),
+              backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
             ),
             title: Text(
                 'ID: '+ sampleLog.id.toString()

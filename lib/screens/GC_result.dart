@@ -87,12 +87,17 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
           timestamp: DateTime.now().toString(),
           notes: "",
           geofield: geoField,
-          imageFile: imageFile,
+          images: [imageFile.path],
           log_category: [taxonomyTerm],
           quantity: selectedQuanties);
       GCbox.put(increment, newGroundCoverLog);
       increment = increment +1;
+
+      imageFile = PickedFile("assets/placeholder.png");
+
+
     }
+
 
 
     void _showGroundCoverPanel() {
@@ -340,6 +345,21 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                   child: Text('Confirm'),
                   onPressed: () {
                     Box groundCoverLog = Hive.box(GC_LOGS);
+
+                    List _logKeys = groundCoverLog.keys.toList();
+                    _logKeys.forEach((k) {
+                      Log log = groundCoverLog.get(k) as Log;
+                      log.images.forEach((img) {
+                        File imgFile = File(img);
+                        print(imgFile.path);
+                        if (imgFile.path != PLACEHOLDER_IMG){
+
+                          imgFile.delete();
+                        }
+                      });
+                    });
+
+
                     groundCoverLog.clear();
                     Navigator.pop(context);
                   },
