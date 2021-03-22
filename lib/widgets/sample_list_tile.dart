@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:soil_mate/models/log.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:soil_mate/widgets/credits_links_tile.dart';
 
 
 const String PLACEHOLDER_IMG = "assets/placeholder.png";
@@ -75,18 +76,36 @@ class SampleListTile extends StatelessWidget {
               onTap: (){},
             ),
           ],
-          child: ListTile(
-            trailing: CircleAvatar(
-              radius: 80,
-              backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
-            ),
-            title: Text(
-                'ID: '+ sampleLog.id.toString()
-                 + '    ' +sampleLog.name
-                + '\n' + sampleLog.geofield.lat.toString() + ', '
-                + sampleLog.geofield.lon.toString()
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(17,12, 12,8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          'ID: '+ sampleLog.id.toString()
+                              + ',    ' +sampleLog.name + '\n'
+                              + sampleLog.geofield.lat.toString() + ', '
+                              + sampleLog.geofield.lon.toString(),
+                        style: headingTextStyle(context),
+                      ),
+                      Text(quantityString, style: bodyTextStyle(context),),                  ],
+                  ),
                 ),
-            subtitle: Text(quantityString),
+                Expanded(
+                  flex: 1,
+                  child: CircleAvatar(
+                    radius: displayWidth(context)*0.1,
+                    backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
+                  ),
+                ),
+              ],
+
+            ),
           ),
         ),
       ),
