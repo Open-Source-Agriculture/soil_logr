@@ -58,7 +58,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
       TaxonomyTerm taxonomyTerm = TaxonomyTerm(tid: 57, name: "ground_cover", description: "", parent: [], parents_all: []);
       Box GCbox = Hive.box(GC_LOGS);
 
-      Position pos = await determinePosition();
+      Position pos = await determinePosition(context);
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);

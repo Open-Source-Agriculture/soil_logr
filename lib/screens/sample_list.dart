@@ -44,7 +44,7 @@ class _SampleListState extends State<SampleList> {
       TaxonomyTerm taxonomyTerm = taxonomyTermBox.get(selectedTexture.key);
       Box box = Hive.box("texture_logs");
 
-      Position pos = await determinePosition();
+      Position pos = await determinePosition(context);
       GeoField geoField = GeoField(lat: pos.latitude, lon: pos.longitude);
 
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);

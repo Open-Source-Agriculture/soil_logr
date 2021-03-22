@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 export 'package:geolocator/geolocator.dart';
 
-Future<Position> determinePosition() async {
+Future<Position> determinePosition(BuildContext context) async {
   bool serviceEnabled;
   LocationPermission permission;
 
@@ -31,9 +32,38 @@ Future<Position> determinePosition() async {
     Position position = await Geolocator.getCurrentPosition();
     return position;
   } on Exception catch (_){
-    Position position = await Geolocator.getCurrentPosition(forceAndroidLocationManager: true);
-    return position;
+    try{
+      Position position = await Geolocator.getCurrentPosition(timeLimit: Duration(seconds: 3),forceAndroidLocationManager: true);
+      return position;
+    } on Exception catch (_){
+      print("Could not get location");
+      _gpsErrorDialog(context);
+
+
+      return Future.error(
+          'Could not get a GPS fix');
+    }
+
+    }
 
   }
 
+
+_gpsErrorDialog(BuildContext context) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('GPS Error'),
+          content: Text('Could not get a GPS fix'),
+          actions: [
+            MaterialButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      });
 }
