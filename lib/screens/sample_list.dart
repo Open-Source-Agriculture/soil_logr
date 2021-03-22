@@ -140,8 +140,6 @@ class _SampleListState extends State<SampleList> {
                                         onPressed: () {
                                           setState(() {
                                             selectedTexture = texture;
-                                            print("setting state");
-                                            print(texture.name);
                                           });
                                         },
                                         child: Text(
@@ -181,7 +179,6 @@ class _SampleListState extends State<SampleList> {
                                             onChanged: (val) {
                                               setState(() {
                                                 depthUpper = int.parse(val);
-                                                print(depthUpper);
                                               });
                                             },
                                           ),
@@ -207,7 +204,6 @@ class _SampleListState extends State<SampleList> {
                                             onChanged: (val) {
                                               setState(() {
                                                 depthLower = int.parse(val);
-                                                print(depthLower);
                                               });
                                             },
                                           ),
@@ -233,7 +229,6 @@ class _SampleListState extends State<SampleList> {
                                             onChanged: (val) {
                                               setState(() {
                                                 increment = int.parse(val == ''? increment.toString(): val);
-                                                print(increment);
                                               });
                                             },
                                           ),
@@ -273,7 +268,6 @@ class _SampleListState extends State<SampleList> {
                                       File file = File(pickedFile.path);
                                       Directory dir = await getApplicationDocumentsDirectory();
                                       File newFile = await file.copy("${dir.path}" +"/texture_image${increment}_${DateTime.now().toIso8601String()}.jpg");
-                                      print(newFile.path);
                                       file.delete();
                                       setState(() {
                                         PickedFile newPickedFile = PickedFile(newFile.path);

@@ -35,7 +35,6 @@ class SampleListTile extends StatelessWidget {
       }
     });
 
-    print(sampleLog.images);
 
 
     File imgFile = File(sampleLog.images[0]);
@@ -64,9 +63,7 @@ class SampleListTile extends StatelessWidget {
                   imgFile.delete();
                 }
                 Box box = Hive.box(boxname);
-                print(box.keys);
                 box.delete(sampleLog.id);
-                print(box.keys);
               },
             ),
             IconSlideAction(

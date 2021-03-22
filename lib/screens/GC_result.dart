@@ -54,7 +54,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
 
     Future addGroundCoverLog() async {
-      final taxonomyTermBox = Hive.box("taxonomy_term");
       // TaxonomyTerm taxonomyTerm = taxonomyTermBox.get("ground_cover");
       TaxonomyTerm taxonomyTerm = TaxonomyTerm(tid: 57, name: "ground_cover", description: "", parent: [], parents_all: []);
       Box GCbox = Hive.box(GC_LOGS);
@@ -291,7 +290,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                               File file = File(pickedFile.path);
                                               Directory dir = await getApplicationDocumentsDirectory();
                                               File newFile = await file.copy("${dir.path}" +"/ground_cover_image${increment}_${DateTime.now().toIso8601String()}.jpg");
-                                              print(newFile.path);
                                               file.delete();
                                               setState(() {
                                                 PickedFile newPickedFile = PickedFile(newFile.path);
@@ -359,7 +357,6 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                       Log log = groundCoverLog.get(k) as Log;
                       log.images.forEach((img) {
                         File imgFile = File(img);
-                        print(imgFile.path);
                         if (imgFile.path != PLACEHOLDER_IMG){
 
                           imgFile.delete();
