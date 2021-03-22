@@ -29,7 +29,6 @@ Future<String> writeCSV(String csvString) async {
 
 Future<void> createEmailWithCSV(String csvContents, List<String> images) async {
   String path = await writeCSV(csvContents);
-  print(path);
 
   final MailOptions mailOptions = MailOptions(
     body: 'See attached the samples',
@@ -93,7 +92,6 @@ void sendEmail(List<Log> logs){
 
       l.quantity.forEach((q) {
         row.add(q.value.toString());
-        print(q.label);
       });
 
       allSamplesLists.add(row);
