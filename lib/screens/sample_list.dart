@@ -272,7 +272,7 @@ class _SampleListState extends State<SampleList> {
                                       );
                                       File file = File(pickedFile.path);
                                       Directory dir = await getApplicationDocumentsDirectory();
-                                      File newFile = await file.copy("${dir.path}" +"/image$increment.jpg");
+                                      File newFile = await file.copy("${dir.path}" +"/texture_image${increment}_${DateTime.now().toIso8601String()}.jpg");
                                       print(newFile.path);
                                       file.delete();
                                       setState(() {

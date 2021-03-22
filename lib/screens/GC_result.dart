@@ -290,7 +290,7 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
                                               );
                                               File file = File(pickedFile.path);
                                               Directory dir = await getApplicationDocumentsDirectory();
-                                              File newFile = await file.copy("${dir.path}" +"/image$increment.jpg");
+                                              File newFile = await file.copy("${dir.path}" +"/ground_cover_image${increment}_${DateTime.now().toIso8601String()}.jpg");
                                               print(newFile.path);
                                               file.delete();
                                               setState(() {
