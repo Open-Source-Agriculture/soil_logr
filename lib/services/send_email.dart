@@ -69,7 +69,7 @@ void sendEmail(List<Log> logs){
   if (logs.isNotEmpty){
     List<List<String>> allSamplesLists = [];
 
-    List<String> headers = ["id", "Latitude", "Longitude", "Category"];
+    List<String> headers = ["id", "Latitude", "Longitude", "Category", "Image"];
 
     Log firstLog = logs[0];
 
@@ -85,13 +85,11 @@ void sendEmail(List<Log> logs){
         l.geofield.lat.toString(),
         l.geofield.lon.toString(),
         l.log_category[0].name,
+        l.images[0].split("/").last
       ];
 
+      attachImages.add(l.images[0]);
 
-      l.images.forEach((img) {
-        attachImages.add(img);
-      }
-      );
 
       l.quantity.forEach((q) {
         row.add(q.value.toString());
