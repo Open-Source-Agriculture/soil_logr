@@ -49,8 +49,11 @@ class _SampleListState extends State<SampleList> {
 
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
       TaxonomyTerm cmUnit = TaxonomyTerm(tid: 18, name: "cm", description: "Center meters", parent: [], parents_all: []);
+      TaxonomyTerm mUnit = TaxonomyTerm(tid: 99, name: "m", description: "Meters", parent: [], parents_all: []);
 
       List<Quantity> selectedQuanties = [
+        Quantity(measure: "value", value: pos.altitude, units: mUnit, label: "altitude"),
+        Quantity(measure: "value", value: pos.accuracy, units: mUnit, label: "accuracy"),
         Quantity(measure: "value", value: selectedTexture.sand.toDouble(), units: percentUnit, label: "sand"),
         Quantity(measure: "value", value: selectedTexture.silt.toDouble(), units: percentUnit, label: "silt"),
         Quantity(measure: "value", value: selectedTexture.clay.toDouble(), units: percentUnit, label: "clay"),
@@ -452,7 +455,7 @@ class _TextureListState extends State<TextureList> {
                         return SampleListTile(
                           sampleLog: tLog,
                           color: getColor(quantityMap["sand"].toInt(), quantityMap["silt"].toInt(), quantityMap["clay"].toInt()),
-                          excludeList: ["sand", "silt", "clay"],
+                          excludeList: ["sand", "silt", "clay", "accuracy", "altitude"],
                           boxname: "texture_logs",
                         );
                       },
