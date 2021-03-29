@@ -64,8 +64,12 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
       TaxonomyTerm percentUnit = TaxonomyTerm(tid: 15, name: "%", description: "percentage", parent: [], parents_all: []);
       TaxonomyTerm cmUnit = TaxonomyTerm(tid: 18, name: "cm", description: "Center meters", parent: [], parents_all: []);
       TaxonomyTerm countUnit = TaxonomyTerm(tid: 69, name: "count", description: "Number of items", parent: [], parents_all: []);
+      TaxonomyTerm mUnit = TaxonomyTerm(tid: 99, name: "m", description: "Meters", parent: [], parents_all: []);
 
       List<Quantity> selectedQuanties = [
+        //Location stuff
+        Quantity(measure: "value", value: pos.altitude, units: mUnit, label: "altitude"),
+        Quantity(measure: "value", value: pos.accuracy, units: mUnit, label: "accuracy"),
         // percentages
         Quantity(measure: "value", value: coverPercentage, units: percentUnit, label: "Cover Percentage"),
         Quantity(measure: "value", value: weedsRatio, units: percentUnit, label: "Weed Ratio"),
@@ -507,7 +511,7 @@ class _GroundCoverTileState extends State<GroundCoverTile> {
                         return SampleListTile(
                           sampleLog: gcLog,
                           color: _getColor(quantityMap["Cover Percentage"].toInt()),
-                          excludeList: ignoreSpecies,
+                          excludeList: ignoreSpecies + ["accuracy", "altitude"],
                           boxname: GC_LOGS,
                         );
                       },
