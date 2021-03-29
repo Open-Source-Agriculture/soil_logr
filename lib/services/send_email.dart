@@ -2,7 +2,7 @@ import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:share/share.dart';
 import 'package:soil_mate/models/log.dart';
 
 
@@ -29,36 +29,8 @@ Future<String> writeCSV(String csvString) async {
 
 Future<void> createEmailWithCSV(String csvContents, List<String> images) async {
   String path = await writeCSV(csvContents);
+  Share.shareFiles([path] + images, text: 'See attached the samples',  subject: 'Soil LogR samples');
 
-  final MailOptions mailOptions = MailOptions(
-    body: 'See attached the samples',
-    subject: 'Soil LogR samples',
-//    recipients: ['example@example.com'],
-//    isHTML: true,
-//    bccRecipients: ['other@example.com'],
-//    ccRecipients: ['third@example.com'],
-    attachments: [path] + images,
-  );
-
-  final MailerResponse response = await FlutterMailer.send(mailOptions);
-  print(response);
-
-//  switch (response) {
-//    case MailerResponse.saved: /// ios only
-//      platformResponse = 'mail was saved to draft';
-//      break;
-//    case MailerResponse.sent: /// ios only
-//      platformResponse = 'mail was sent';
-//      break;
-//    case MailerResponse.cancelled: /// ios only
-//      platformResponse = 'mail was cancelled';
-//      break;
-//    case MailerResponse.android:
-//      platformResponse = 'intent was successful';
-//      break;
-//    default:
-//      platformResponse = 'unknown';
-//      break;
   }
 
 
@@ -87,7 +59,11 @@ void sendEmail(List<Log> logs){
         l.images[0].split("/").last
       ];
 
-      attachImages.add(l.images[0]);
+      if (l.images[0].split("/").last != "placeholder.png"){
+        attachImages.add(l.images[0]);
+
+      }
+
 
 
       l.quantity.forEach((q) {
