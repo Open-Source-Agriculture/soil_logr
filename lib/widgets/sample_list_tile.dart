@@ -73,64 +73,68 @@ class SampleListTile extends StatelessWidget {
               onTap: (){},
             ),
           ],
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 1,
-                child: CircleAvatar(
-                  radius: displayWidth(context)*0.07,
-                  backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8,2,8,0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              'ID: '+ sampleLog.id.toString(),
-                            style: heading2TextStyle(context),
-                          ),
-                          Text(
-                            sampleLog.name,
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.italic,
-                              fontSize: displayWidth(context) * 0.045,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(quantityString, style: bodyTextStyle(context),),                  ],
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0,5,0,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: CircleAvatar(
+                    radius: displayWidth(context)*0.07,
+                    backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      sampleLog.geofield.lat.toString() ,
-                      style: body2TextStyle(context),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8,0,8,0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                'ID: '+ sampleLog.id.toString(),
+                              style: heading2TextStyle(context),
+                            ),
+                            Text(
+                              sampleLog.name,
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.italic,
+                                fontSize: displayWidth(context) * 0.045,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(quantityString, style: bodyTextStyle(context),),                  ],
                     ),
-                    Text(
-                      sampleLog.geofield.lon.toString() + '\n' +'\n' + '\n',
-                      style: body2TextStyle(context),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        sampleLog.geofield.lat.toString() ,
+                        style: body2TextStyle(context),
+                      ),
+                      Text(
+                        sampleLog.geofield.lon.toString() + '\n' +'\n' + '\n',
+                        style: body2TextStyle(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
 
+            ),
           ),
         ),
       ),
