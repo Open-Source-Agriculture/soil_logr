@@ -73,36 +73,64 @@ class SampleListTile extends StatelessWidget {
               onTap: (){},
             ),
           ],
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(17,12, 12,8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 3,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 1,
+                child: CircleAvatar(
+                  radius: displayWidth(context)*0.07,
+                  backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8,2,8,0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          'ID: '+ sampleLog.id.toString()
-                              + ',    ' +sampleLog.name + '\n'
-                              + sampleLog.geofield.lat.toString() + ', '
-                              + sampleLog.geofield.lon.toString(),
-                        style: headingTextStyle(context),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              'ID: '+ sampleLog.id.toString(),
+                            style: heading2TextStyle(context),
+                          ),
+                          Text(
+                            sampleLog.name,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                              fontSize: displayWidth(context) * 0.045,
+                            ),
+                          ),
+                        ],
                       ),
                       Text(quantityString, style: bodyTextStyle(context),),                  ],
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: CircleAvatar(
-                    radius: displayWidth(context)*0.1,
-                    backgroundImage: (sampleLog.images == null) ? AssetImage(PLACEHOLDER_IMG) : (sampleLog.images.length < 1) ? AssetImage(PLACEHOLDER_IMG) : FileImage(File(sampleLog.images[0])),
-                  ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      sampleLog.geofield.lat.toString() ,
+                      style: body2TextStyle(context),
+                    ),
+                    Text(
+                      sampleLog.geofield.lon.toString() + '\n' +'\n' + '\n',
+                      style: body2TextStyle(context),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+            ],
 
-            ),
           ),
         ),
       ),
