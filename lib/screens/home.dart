@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SizedBox(
-        width: displayWidth(context)*0.7,
+        width: displayWidth(context)*0.85,
         child: Drawer(
            child: CustomDraw(),
         ),
@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
         //automaticallyImplyLeading: false,
         title: Text(
           "Home",
-          style: headingTextStyle(context),
+          style: heading1TextStyle(context),
         ),
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
                     SizedBox(height: displayHeight(context)*0.04,),
                   Column(
                     children: [
-                      Text('What is Soil LogR?', style: headingTextStyle(context),),
+                      Text('What is Soil LogR?', style: heading2TextStyle(context),),
                       SizedBox(height: displayHeight(context)*0.02,),
                       Text('The Soil LogR App is a tool to aid on site ', style: bodyTextStyle(context),),
                       Text('surveys by ' +

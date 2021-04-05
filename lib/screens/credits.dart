@@ -14,12 +14,12 @@ class _CreditsState extends State<Credits> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SizedBox(width: displayWidth(context)*0.7, child: Drawer(child: CustomDraw(),)),
+      drawer: SizedBox(width: displayWidth(context)*0.85, child: Drawer(child: CustomDraw(),)),
       backgroundColor: Colors.white,
       appBar:  AppBar(
         title: Text(
         "Credits",
-        style: headingTextStyle(context),
+        style: heading1TextStyle(context),
       ),
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -34,7 +34,7 @@ class _CreditsState extends State<Credits> {
                 <Widget>[
                   Text(
                     'Thank you for using Soil LogR!',
-                    style: headingTextStyle(context),
+                    style: heading1TextStyle(context),
                   ),
                   SizedBox(height: displayHeight(context) * 0.05,),
                   Text('To keep the development of the app free and open-source, please consider supporting us.',

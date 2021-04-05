@@ -381,14 +381,14 @@ class _GroundCoverResultState extends State<GroundCoverResult> {
 
     return Scaffold(
       drawer: SizedBox(
-        width: displayWidth(context)*0.7,
+        width: displayWidth(context)*0.85,
         child: Drawer(
           child: CustomDraw(),
         ),
       ),
       appBar: AppBar(title: Text(
         "Ground Cover Samples",
-        style: headingTextStyle(context),
+        style: heading1TextStyle(context),
       ),),
       body: Column(
         children: [
