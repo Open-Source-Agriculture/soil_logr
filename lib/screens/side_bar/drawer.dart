@@ -29,7 +29,7 @@ class CustomDraw extends StatelessWidget {
                   endIndent: 32,
                 ),
                 ListTile(
-                  title: Text('Texture Survey', style: headingTextStyle(context),),
+                  title: Text('Texture Survey', style: heading2TextStyle(context),),
                   leading: CircleAvatar(
                     backgroundImage: AssetImage('assets/soil.jpeg'),
                     radius: displayWidth(context)*0.07,
@@ -46,7 +46,7 @@ class CustomDraw extends StatelessWidget {
                   endIndent: 32,
                 ),
                 ListTile(
-                  title: Text('Ground Cover Survey', style: headingTextStyle(context)),
+                  title: Text('Ground Cover Survey', style: heading2TextStyle(context)),
                   leading: CircleAvatar(
                     backgroundImage: AssetImage('assets/grass.jpeg'),
                     radius: displayWidth(context)*0.07,
@@ -66,7 +66,7 @@ class CustomDraw extends StatelessWidget {
                   endIndent: 32,
                 ),
               ListTile(
-                title: Text('Request New Survey', style: headingTextStyle(context)),
+                title: Text('Request New Survey', style: heading2TextStyle(context)),
                 leading: Container(
                     height: displayWidth(context)*0.14,
                     width: displayWidth(context)*0.14,
@@ -92,7 +92,7 @@ class CustomDraw extends StatelessWidget {
                 endIndent: 32,
               ),
                 ListTile(
-                  title: Text('Credits', style: headingTextStyle(context)),
+                  title: Text('Credits', style: heading2TextStyle(context)),
                   leading: CircleAvatar(
                     backgroundImage: AssetImage('assets/website_logo.png'),
                     backgroundColor: Colors.white,
