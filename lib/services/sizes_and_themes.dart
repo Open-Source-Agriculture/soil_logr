@@ -80,16 +80,34 @@ double displayWidth(BuildContext context) {
 bodyTextStyle(context) {
   return TextStyle(
     fontFamily: 'Roboto',
-    fontWeight: FontWeight.w300,
-    fontSize: displayWidth(context) * 0.04,
+    fontWeight: FontWeight.w100,
+    color: Colors.grey[700],
+    fontSize: displayWidth(context) * 0.035,
   );
 }
 
-headingTextStyle(context) {
+body2TextStyle(context) {
+  return TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w600,
+    fontSize: displayWidth(context) * 0.027,
+    fontStyle: FontStyle.italic
+  );
+}
+
+heading1TextStyle(context) {
   return TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
     fontSize: displayWidth(context) * 0.06,
+  );
+}
+
+heading2TextStyle(context) {
+  return TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w500,
+    fontSize: displayWidth(context) * 0.045,
   );
 }
 
